@@ -1,0 +1,16 @@
+{
+  "name": "K-Trail Seoul — K-pop Pilgrimage Guide",
+  "short_name": "K-Trail Seoul",
+  "description": "Offline-ready K-pop pilgrimage map for Seoul.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2ECE1",
+  "theme_color": "#C1502E",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

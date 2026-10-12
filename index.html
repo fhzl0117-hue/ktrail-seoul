@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>K-Trail Seoul</title>
+<meta name="description" content="Offline-ready K-pop pilgrimage map for Seoul." />
+<meta name="theme-color" content="#C1502E" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="appbar">
+  <div class="appbar__title">
+    <span class="appbar__mark">K</span>
+    <div>
+      <h1>K-Trail Seoul</h1>
+      <p class="appbar__sub">K-pop pilgrimage guide &middot; prototype</p>
+    </div>
+  </div>
+</header>
+
+<main id="view-map" class="view view--active">
+  <div id="map"></div>
+  <div class="chips" id="chips"></div>
+</main>
+
+<main id="view-list" class="view">
+  <div class="chips" id="chips-list"></div>
+  <div class="list" id="list"></div>
+</main>
+
+<main id="view-saved" class="view">
+  <div class="list" id="saved-list"></div>
+  <p class="empty-state" id="saved-empty">No saved spots yet. Tap the star on any place to save it here.</p>
+</main>
+
+<main id="view-about" class="view about">
+  <h2>About this prototype</h2>
+  <p>This is an early skeleton for <strong>K-Trail Seoul</strong> &mdash; an offline-ready pilgrimage map for international K-pop fans visiting Seoul. Content shown here is <strong>placeholder sample data</strong>, not the final curated list.</p>
+  <p>Planned: real researched locations with verified addresses and credited photos, offline map caching for use without wifi, and deep links back to each group's dedicated site on the K-Wire Network.</p>
+  <p class="about__badge">Part of the K-Wire Network</p>
+</main>
+
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<section class="sheet" id="sheet">
+  <div class="sheet__handle"></div>
+  <div class="sheet__category" id="sheet-category"></div>
+  <h3 id="sheet-name"></h3>
+  <p class="sheet__address" id="sheet-address"></p>
+  <p class="sheet__blurb" id="sheet-blurb"></p>
+  <div class="sheet__actions">
+    <button class="btn btn--primary" id="sheet-directions">Directions</button>
+    <button class="btn btn--ghost" id="sheet-save">&#9734; Save</button>
+  </div>
+</section>
+
+<nav class="tabbar">
+  <button class="tab tab--active" data-view="map">
+    <span class="tab__icon">&#128506;</span>Map
+  </button>
+  <button class="tab" data-view="list">
+    <span class="tab__icon">&#9776;</span>List
+  </button>
+  <button class="tab" data-view="saved">
+    <span class="tab__icon">&#9733;</span>Saved
+  </button>
+  <button class="tab" data-view="about">
+    <span class="tab__icon">&#8505;</span>About
+  </button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

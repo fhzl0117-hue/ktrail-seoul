@@ -1,0 +1,103 @@
+// SAMPLE / PLACEHOLDER DATA — for prototype purposes only.
+// Addresses and coordinates are approximate. Replace with verified,
+// researched entries (with real photo credits) before launch.
+
+const PILGRIMAGE_SPOTS = [
+  {
+    id: "hybe-insight",
+    name: "HYBE INSIGHT",
+    category: "museum",
+    categoryLabel: "Museum",
+    lat: 37.5296,
+    lng: 126.9648,
+    blurb: "Official museum tracing HYBE's history — BTS, TXT, ENHYPEN, LE SSERAFIM and more, with exhibits and photo zones.",
+    address: "Yongsan-gu, Seoul (HYBE HQ building)",
+  },
+  {
+    id: "smtown-coex",
+    name: "SMTOWN &STORY",
+    category: "shopping",
+    categoryLabel: "Museum / Shopping",
+    lat: 37.5126,
+    lng: 127.0590,
+    blurb: "SM Entertainment's flagship experience space at COEX — exhibits, themed cafe, and official merch for aespa, NCT, Red Velvet and more.",
+    address: "COEX Mall, Gangnam-gu, Seoul",
+  },
+  {
+    id: "jyp-nation",
+    name: "JYP Nation Area",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.5172,
+    lng: 127.0286,
+    blurb: "Exterior pilgrimage spot near JYP Entertainment's building — home to Stray Kids, TWICE, ITZY and more. Please be respectful: exterior viewing only.",
+    address: "Gangnam-gu, Seoul",
+  },
+  {
+    id: "myeongdong-merch",
+    name: "Myeongdong K-pop Street",
+    category: "shopping",
+    categoryLabel: "Shopping",
+    lat: 37.5636,
+    lng: 126.9850,
+    blurb: "Dense cluster of official and multi-brand K-pop merch stores, photocard shops, and pop-up spaces in the Myeongdong shopping district.",
+    address: "Myeongdong, Jung-gu, Seoul",
+  },
+  {
+    id: "hongdae-busking",
+    name: "Hongdae Busking Street",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.5563,
+    lng: 126.9237,
+    blurb: "Iconic street-performance strip near Hongik University — many idols busked here pre-debut. Lively nights with live covers and dance crews.",
+    address: "Hongdae, Mapo-gu, Seoul",
+  },
+  {
+    id: "kbs-arena",
+    name: "KBS Music Bank Hall",
+    category: "venue",
+    categoryLabel: "Concert / Broadcast",
+    lat: 37.5586,
+    lng: 126.8780,
+    blurb: "Home of KBS Music Bank tapings. Check the broadcast schedule and ticketing windows before your trip.",
+    address: "Yeouido-dong, Yeongdeungpo-gu, Seoul",
+  },
+  {
+    id: "gocheok-skydome",
+    name: "Gocheok Sky Dome",
+    category: "venue",
+    categoryLabel: "Concert Venue",
+    lat: 37.4982,
+    lng: 126.8672,
+    blurb: "Major indoor arena frequently hosting large-scale K-pop concerts and fan events.",
+    address: "Guro-gu, Seoul",
+  },
+  {
+    id: "kspo-dome",
+    name: "KSPO Dome (Olympic Gym)",
+    category: "venue",
+    categoryLabel: "Concert Venue",
+    lat: 37.5206,
+    lng: 127.1268,
+    blurb: "One of Seoul's most-used concert arenas inside Olympic Park, hosting fan meets and comeback showcases year-round.",
+    address: "Olympic Park, Songpa-gu, Seoul",
+  },
+];
+
+const CATEGORIES = [
+  { key: "all", label: "All" },
+  { key: "museum", label: "Museums" },
+  { key: "agency", label: "Agencies" },
+  { key: "shopping", label: "Shopping" },
+  { key: "culture", label: "Culture" },
+  { key: "venue", label: "Venues" },
+];
+
+const CATEGORY_COLORS = {
+  museum: "#C1502E",
+  agency: "#8A5A3B",
+  shopping: "#B8863B",
+  culture: "#6B7A5E",
+  venue: "#3B5873",
+};
