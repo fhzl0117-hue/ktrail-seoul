@@ -34,6 +34,29 @@ document.querySelectorAll(".tab").forEach(tab => {
   });
 });
 
+// ---- City toggle ----
+let activeCity = "seoul";
+function renderCityToggle(containerId, onPick) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  CITIES.forEach(city => {
+    const btn = document.createElement("button");
+    btn.className = "city-btn" + (city.key === activeCity ? " city-btn--active" : "");
+    btn.textContent = city.label;
+    btn.addEventListener("click", () => {
+      if (city.key === activeCity) return;
+      activeCity = city.key;
+      renderCityToggle("city-toggle", onPick);
+      renderCityToggle("city-toggle-list", onPick);
+      if (window._leafletMap) {
+        window._leafletMap.setView(city.center, city.zoom);
+      }
+      onPick();
+    });
+    el.appendChild(btn);
+  });
+}
+
 // ---- Chips (category filter) ----
 let activeCategory = "all";
 function renderChips(containerId, onPick) {
@@ -54,15 +77,16 @@ function renderChips(containerId, onPick) {
 }
 
 function filteredSpots() {
-  return activeCategory === "all"
-    ? PILGRIMAGE_SPOTS
-    : PILGRIMAGE_SPOTS.filter(s => s.category === activeCategory);
+  return PILGRIMAGE_SPOTS.filter(s =>
+    s.city === activeCity && (activeCategory === "all" || s.category === activeCategory)
+  );
 }
 
 // ---- Map ----
 let markers = [];
 function initMap() {
-  const map = L.map("map", { zoomControl: false }).setView([37.5505, 126.99], 12);
+  const startCity = CITIES.find(c => c.key === activeCity) || CITIES[0];
+  const map = L.map("map", { zoomControl: false }).setView(startCity.center, startCity.zoom);
   window._leafletMap = map;
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -165,6 +189,8 @@ document.getElementById("sheet-directions").addEventListener("click", () => {
 });
 
 // ---- Boot ----
+renderCityToggle("city-toggle", () => { renderMarkers(); renderList(); });
+renderCityToggle("city-toggle-list", () => { renderMarkers(); renderList(); });
 renderChips("chips", () => { renderMarkers(); renderList(); });
 renderChips("chips-list", () => { renderMarkers(); renderList(); });
 initMap();

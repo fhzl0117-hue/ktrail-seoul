@@ -6,11 +6,25 @@
 // paid release. HYBE Insight museum closed to the public in Jan 2023;
 // no confirmed Seoul reopening was found during this research pass, so
 // it is NOT listed as a visitable museum here — only the HQ exterior is.
+//
+// Busan note: "BTS THE CITY: ARIRANG in Busan" (Jun 5–21, 2026) added a
+// wave of temporary pop-ups/installations across the city — those are
+// NOT included here since they were time-limited and have since ended.
+// Only permanent, year-round spots are listed for Busan.
+// Also deliberately excluded: a specific school tied to a member's
+// childhood — kept off the list out of respect for a functioning school.
+
+const CITIES = [
+  { key: "seoul", label: "Seoul", center: [37.5505, 126.99], zoom: 12 },
+  { key: "busan", label: "Busan", center: [35.1595, 129.0756], zoom: 12 },
+];
 
 const PILGRIMAGE_SPOTS = [
+  // ---- Seoul ----
   {
     id: "hybe-hq",
     name: "HYBE Headquarters",
+    city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
     lat: 37.5326,
@@ -21,6 +35,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "sm-hq",
     name: "SM Entertainment HQ (D-Tower)",
+    city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
     lat: 37.5445,
@@ -31,6 +46,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "kwangya-seongsu",
     name: "KWANGYA@SEONGSU",
+    city: "seoul",
     category: "shopping",
     categoryLabel: "Shopping",
     lat: 37.5443,
@@ -41,6 +57,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "jyp-hq",
     name: "JYP Entertainment HQ",
+    city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
     lat: 37.5301,
@@ -51,6 +68,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "yg-hq",
     name: "YG Entertainment HQ",
+    city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
     lat: 37.5497,
@@ -61,6 +79,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "yg-republique",
     name: "YG Republique / Same Cafe",
+    city: "seoul",
     category: "shopping",
     categoryLabel: "Shopping",
     lat: 37.5495,
@@ -71,6 +90,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "myeongdong-street",
     name: "Myeongdong K-pop Street",
+    city: "seoul",
     category: "shopping",
     categoryLabel: "Shopping",
     lat: 37.5636,
@@ -81,6 +101,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "hongdae-busking",
     name: "Hongdae Busking Street",
+    city: "seoul",
     category: "culture",
     categoryLabel: "Culture",
     lat: 37.5563,
@@ -91,6 +112,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "line-friends-hongdae",
     name: "LINE Friends Flagship Store",
+    city: "seoul",
     category: "shopping",
     categoryLabel: "Shopping",
     lat: 37.5537,
@@ -101,6 +123,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "thanks-nature-cafe",
     name: "Thanks Nature Cafe",
+    city: "seoul",
     category: "cafe",
     categoryLabel: "Cafe",
     lat: 37.5558,
@@ -111,6 +134,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "kbs-music-bank",
     name: "KBS Music Bank Hall",
+    city: "seoul",
     category: "venue",
     categoryLabel: "Concert / Broadcast",
     lat: 37.5305,
@@ -121,6 +145,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "sbs-inkigayo",
     name: "SBS Inkigayo (Prism Tower)",
+    city: "seoul",
     category: "venue",
     categoryLabel: "Concert / Broadcast",
     lat: 37.5264,
@@ -131,6 +156,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "gocheok-skydome",
     name: "Gocheok Sky Dome",
+    city: "seoul",
     category: "venue",
     categoryLabel: "Concert Venue",
     lat: 37.4982,
@@ -141,6 +167,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "kspo-dome",
     name: "KSPO Dome (Olympic Gym)",
+    city: "seoul",
     category: "venue",
     categoryLabel: "Concert Venue",
     lat: 37.5206,
@@ -151,6 +178,7 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "jamsil-arena",
     name: "Jamsil Indoor Stadium",
+    city: "seoul",
     category: "venue",
     categoryLabel: "Concert Venue",
     lat: 37.5151,
@@ -161,12 +189,103 @@ const PILGRIMAGE_SPOTS = [
   {
     id: "seongsu-dong",
     name: "Seongsu-dong",
+    city: "seoul",
     category: "culture",
     categoryLabel: "Culture",
     lat: 37.5445,
     lng: 127.0520,
     blurb: "Seoul's reclaimed-warehouse district turned dessert-cafe and flagship-store hotspot — now also SM's home neighborhood, and a magnet for idol sightings and brand pop-ups.",
     address: "Seongsu-dong, Seongdong-gu, Seoul",
+  },
+
+  // ---- Busan ----
+  {
+    id: "busan-asiad-stadium",
+    name: "Busan Asiad Main Stadium",
+    city: "busan",
+    category: "venue",
+    categoryLabel: "Concert Venue",
+    lat: 35.1930,
+    lng: 129.0587,
+    blurb: "Busan's largest stadium and the city's go-to K-pop mega-concert venue — hosted BTS's free 'Yet To Come' concert in 2022 and the 'ARIRANG' world tour stop in June 2026.",
+    address: "344 World Cup-daero, Geoje-dong, Yeonje-gu, Busan",
+  },
+  {
+    id: "bexco",
+    name: "BEXCO",
+    city: "busan",
+    category: "venue",
+    categoryLabel: "Concert / Convention",
+    lat: 35.1687,
+    lng: 129.1363,
+    blurb: "Busan's main exhibition and convention center — main stage for the annual Busan One Asia Festival (BOF), a K-pop festival co-organized by SM Culture & Contents.",
+    address: "55 APEC-ro, Haeundae-gu, Busan",
+  },
+  {
+    id: "busan-cinema-center",
+    name: "Busan Cinema Center",
+    city: "busan",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 35.1697,
+    lng: 129.1289,
+    blurb: "Striking rooftop-canopy venue that hosts the Busan International Film Festival (BIFF) — red carpet events regularly draw idol-actors and their fans.",
+    address: "1467 U-dong, Haeundae-gu, Busan",
+  },
+  {
+    id: "gamcheon-culture-village",
+    name: "Gamcheon Culture Village",
+    city: "busan",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 35.0973,
+    lng: 129.0106,
+    blurb: "Colorful hillside village turned open-air art district — also known among fans for murals of BTS members painted by visiting fans over the years.",
+    address: "203 Gamnae 2-ro, Saha-gu, Busan",
+  },
+  {
+    id: "dadaepo-beach",
+    name: "Dadaepo Beach",
+    city: "busan",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 35.0486,
+    lng: 128.9690,
+    blurb: "Wide sunset beach with wooden boardwalks — a fan pilgrimage spot since BTS's Jimin shared making New Year's wishes here in 2016.",
+    address: "14 Morundae 1-gil, Dadae-dong, Saha-gu, Busan",
+  },
+  {
+    id: "zm-illennial-cafe",
+    name: "ZM-illennial Cafe",
+    city: "busan",
+    category: "cafe",
+    categoryLabel: "Cafe",
+    lat: 35.1379,
+    lng: 129.0943,
+    blurb: "Cafe run by BTS member Jimin's father (formerly Magnate) — displays fan gifts and BTS memorabilia, and has hosted fan-facing events around BTS milestones.",
+    address: "135 Jinnam-ro, Nam-gu, Busan",
+  },
+  {
+    id: "jagalchi-market",
+    name: "Jagalchi Market",
+    city: "busan",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 35.0969,
+    lng: 129.0305,
+    blurb: "Korea's largest seafood market and a classic Busan landmark — featured in Korean film and a regular stop on Busan K-pop/K-culture fan tours.",
+    address: "52 Jagalchihaean-ro, Jung-gu, Busan",
+  },
+  {
+    id: "gwangalli-beach",
+    name: "Gwangalli Beach",
+    city: "busan",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 35.1532,
+    lng: 129.1186,
+    blurb: "Beach with a postcard view of Gwangan Bridge, lit up nightly — a favorite backdrop for K-pop content and the site of a BTS drone light show in June 2026.",
+    address: "Gwangalli, Suyeong-gu, Busan",
   },
 ];
 
