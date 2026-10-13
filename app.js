@@ -349,6 +349,55 @@ function openSharedSpotFromUrl() {
   openSheet(spot);
 }
 
+// ---- Theme (dark mode) ----
+// Three-state model: no explicit choice -> follow the OS (prefers-color-scheme,
+// handled entirely in CSS); explicit "light"/"dark" -> set data-theme on <html>
+// and remember it, overriding the OS either direction. The toggle button always
+// shows the icon for what tapping it will switch TO, not the current state.
+const THEME_KEY = "ktrail_theme_v1";
+const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>';
+const MOON_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 12.5z"/></svg>';
+
+function getEffectiveTheme() {
+  const explicit = document.documentElement.getAttribute("data-theme");
+  if (explicit === "light" || explicit === "dark") return explicit;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+function updateThemeToggleIcon() {
+  const el = document.getElementById("theme-toggle-icon");
+  if (!el) return;
+  // Icon shown is the TARGET of a tap, so a dark page shows the sun
+  // (tap to go light) and a light page shows the moon (tap to go dark).
+  el.innerHTML = getEffectiveTheme() === "dark" ? SUN_ICON : MOON_ICON;
+}
+function setTheme(theme) {
+  if (theme === "light" || theme === "dark") {
+    document.documentElement.setAttribute("data-theme", theme);
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable */ }
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    try { localStorage.removeItem(THEME_KEY); } catch (e) { /* storage unavailable */ }
+  }
+  updateThemeToggleIcon();
+}
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (e) { /* storage unavailable */ }
+  if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+  updateThemeToggleIcon();
+})();
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  setTheme(getEffectiveTheme() === "dark" ? "light" : "dark");
+});
+// No explicit override set -> the icon should still track a live OS theme
+// change (e.g. the phone's auto dark-mode schedule kicking in) while the
+// app is open, same as the CSS already does via prefers-color-scheme.
+if (window.matchMedia) {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (!document.documentElement.getAttribute("data-theme")) updateThemeToggleIcon();
+  });
+}
+
 // ---- Boot ----
 renderCityToggle("city-toggle", applyFilters);
 renderCityToggle("city-toggle-list", applyFilters);

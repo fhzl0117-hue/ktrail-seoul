@@ -942,21 +942,40 @@ const CATEGORIES = [
   { key: "venue", label: "Venues" },
 ];
 
+// Design refresh (Oct 2026): these point at CSS custom properties
+// (--cat-agency etc., defined in style.css) rather than hardcoded hex —
+// that's what lets the same five categories repaint with a separate,
+// validated set of steps in dark mode instead of just going dim.
+// The light/dark hex pairs themselves were chosen with the dataviz
+// skill's categorical-color procedure, not eyeballed: 5 hues spread
+// around the wheel staying clear of the terracotta accent's own hue
+// band (~H15–65), then checked with scripts/validate_palette.js
+// (--pairs all, since pins can sit at any two positions on the map) —
+// both the light set (surface #fff) and the dark set (surface #221D16)
+// clear the lightness band, chroma floor, CVD separation (target 8,
+// worst pair ~9.5–14.7), and the normal-vision floor (worst pair
+// ~17–18, comfortably above the 15 hard gate).
 const CATEGORY_COLORS = {
-  agency: "#8A5A3B",
-  shopping: "#B8863B",
-  culture: "#6B7A5E",
-  cafe: "#A2607A",
-  venue: "#3B5873",
+  agency: "var(--cat-agency)",
+  shopping: "var(--cat-shopping)",
+  culture: "var(--cat-culture)",
+  cafe: "var(--cat-cafe)",
+  venue: "var(--cat-venue)",
 };
 
 // Per-category pin/card icons. Using these (not the first letter of
 // categoryLabel) avoids collisions — "Culture", "Cafe" and every Venue
 // label ("Concert Venue", "Concert / Broadcast", ...) all start with "C".
+// Switched from emoji to inline SVG (Oct 2026 design refresh) for
+// consistent rendering across platforms — emoji glyphs vary by OS/browser
+// (a different "🏢" on iOS vs Android vs Windows) while these line icons
+// look identical everywhere. No width/height on the <svg> itself: CSS
+// sizes them via `width/height: 1em` so they scale with each container's
+// existing font-size, exactly like the emoji they replaced.
 const CATEGORY_ICONS = {
-  agency: "🏢",
-  shopping: "🛍️",
-  culture: "🏛️",
-  cafe: "☕",
-  venue: "🎤",
+  agency: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20"/><line x1="9" y1="22" x2="9" y2="18"/><line x1="15" y1="22" x2="15" y2="18"/><line x1="8" y1="6" x2="10" y2="6"/><line x1="14" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>',
+  shopping: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  culture: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="10"/><line x1="10" y1="18" x2="10" y2="10"/><line x1="14" y1="18" x2="14" y2="10"/><line x1="18" y1="18" x2="18" y2="10"/><polygon points="3 10 12 4 21 10"/></svg>',
+  cafe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><line x1="8" y1="2" x2="8" y2="4"/><line x1="12" y1="2" x2="12" y2="4"/></svg>',
+  venue: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>',
 };
