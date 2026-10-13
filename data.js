@@ -184,24 +184,25 @@ const PILGRIMAGE_SPOTS = [
     address: "Hongdae, Mapo-gu, Seoul",
   },
   {
-    // FLAGGED Oct 2026, not yet resolved — checked this against Google's own
-    // listing while CID-matching the rest of the map, and the Hongdae LINE
-    // FRIENDS store shows "폐업함" (permanently closed) on Google Maps. A
-    // follow-up search found the Gangnam and Sinsa flagship stores are ALSO
-    // marked closed — this looks like a chain-wide pullback from big Seoul
-    // physical stores (LINE FRIENDS has been closing retail elsewhere too,
-    // e.g. China), not a one-off. Left in place pending a decision on
-    // whether to remove this spot or swap in a still-open alternative —
-    // do not add a placeCid here, since deep-linking to a closed listing
-    // would just repeat the kind of bug this whole pass was fixing.
+    // RESOLVED Oct 2026 — flagged earlier the same day as possibly closed,
+    // because Google had a separate "홍대 라인프렌즈 스토어" listing marked
+    // "폐업함." Turned out to be a stale duplicate: the actual store at this
+    // same address (141 Yanghwa-ro) is alive and well, just re-listed under
+    // its current brand name "케이팝 스퀘어 홍대" / LINE FRIENDS SQUARE
+    // (linefriendssquare.com) — confirmed by the listing's own storefront
+    // photo, which shows a large lit-up "LINE FRIENDS" sign. 4.7★ (1,302
+    // reviews), open daily until 10pm. Coordinates refined to Google's
+    // anchor point, Plus Code 8Q98HW4C+6J9.
     id: "line-friends-hongdae",
-    name: "LINE Friends Flagship Store",
+    name: "LINE FRIENDS SQUARE Hongdae",
     city: "seoul",
     category: "shopping",
     categoryLabel: "Shopping",
-    lat: 37.5537,
-    lng: 126.9228,
-    blurb: "Multi-floor character store in Hongdae with a dedicated BT21 (BTS) section plus official merch corners for other groups.",
+    lat: 37.555537,
+    lng: 126.921609,
+    // Google's CID for the "케이팝 스퀘어 홍대" (LINE FRIENDS SQUARE) listing.
+    placeCid: "2270385078175387144",
+    blurb: "Multi-floor character store in Hongdae (inside L7 Hongdae) with a dedicated BT21 (BTS) section plus official merch corners for other groups — now operating under the name LINE FRIENDS SQUARE.",
     address: "141 Yanghwa-ro, Mapo-gu, Seoul",
   },
   {
