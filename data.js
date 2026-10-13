@@ -520,6 +520,48 @@ const PILGRIMAGE_SPOTS = [
     blurb: "Mnet's broadcast center in Sangam DMC, where M Countdown is filmed — right next to SBS's Prism Tower.",
     address: "66 Sangamsan-ro, Mapo-gu, Seoul",
   },
+  {
+    // Added Oct 2026 — Cafe and Culture were thin relative to Agencies
+    // (15 agency pins vs. 1 cafe / 3 culture), so this batch widens scope
+    // from strictly K-pop-run spots to K-culture-adjacent hotspots fans
+    // visit as part of the same trip, per Boss's go-ahead. Gangnam-gu's
+    // official Hallyu walking trail along Dosan-daero (Cheongdam-dong to
+    // Apgujeong Rodeo Station), lined with large "Gangnamdol" art-toy
+    // statues honoring top K-pop acts. This pin marks the BTS statue —
+    // confirmed via Google's "BTS GangnamDol" listing (Plus Code
+    // 8Q99G2GV+PWX, 4.3★, 52 reviews) — the best-anchored single POI
+    // along the trail; walk the street to find the others (Girls'
+    // Generation, EXO, and more).
+    id: "k-star-road-gangnamdol",
+    name: "K-Star Road (Gangnamdol Statues)",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.526863,
+    lng: 127.044859,
+    placeCid: "6855479743375263331",
+    blurb: "Gangnam-gu's official Hallyu walking trail along Dosan-daero, lined with large \"Gangnamdol\" art-toy statues honoring top K-pop acts. This pin marks the BTS statue in Cheongdam-dong — keep walking toward Apgujeong Rodeo Station to find Girls' Generation, EXO, and more.",
+    address: "141-14 Cheongdam-dong, Gangnam-gu, Seoul",
+  },
+  {
+    // Added Oct 2026, same Cafe-section reinforcement as k-star-road-
+    // gangnamdol above. The original branch that kicked off Seongsu-dong's
+    // reinvention — the existing seongsu-dong pin already calls the
+    // neighborhood "a magnet for idol sightings and brand pop-ups," and
+    // this is its best-known anchor cafe. Confirmed via Google's "어니언
+    // 성수점" listing (Plus Code 8Q99G3V5+V7W, 4.2★, 3,542 reviews, still
+    // operating).
+    id: "onion-seongsu",
+    name: "Onion Seongsu",
+    city: "seoul",
+    category: "cafe",
+    categoryLabel: "Cafe",
+    lat: 37.544738,
+    lng: 127.058203,
+    placeCid: "16399518467326764911",
+    blurb: "Industrial-chic bakery cafe in a converted 1970s factory — the original branch that kicked off Seongsu-dong's reinvention as Seoul's trendiest neighborhood (now also SM's home turf), and a steady magnet for content shoots and idol sightings.",
+    address: "8 Achasan-ro 9-gil, Seongdong-gu, Seoul",
+  },
 
   // ---- Busan ----
   {
