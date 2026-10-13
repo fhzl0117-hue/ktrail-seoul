@@ -214,12 +214,25 @@ document.getElementById("sheet-save").addEventListener("click", () => {
 
 document.getElementById("sheet-directions").addEventListener("click", () => {
   if (!currentSpot) return;
-  // Pairing the name with the coordinates (rather than passing coordinates
-  // alone) lets Google Maps resolve this to the real, named place — with
-  // its own card, hours, and "explore nearby" — instead of dropping an
-  // unlabeled pin that gets snapped to the nearest road for routing.
-  const destination = `${currentSpot.name}, ${currentSpot.lat},${currentSpot.lng}`;
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+  // REVERTED, then REPLACED Oct 2026. First tried pairing the name with
+  // coordinates ("Name, lat,lng") so Google Maps would resolve to the real
+  // named place — backfired, because Google's destination geocoder matches
+  // the NAME against its own business listings first and, when it finds
+  // one, uses THAT listing's location and silently ignores the coordinates
+  // (sent JYP to the stale/cancelled Olympic Park site). When the name
+  // matches nothing (e.g. "HYBE Headquarters", not an indexed alias), it
+  // fails outright with "could not be found."
+  // Falling back to coordinates alone fixed the correctness problem but
+  // lost the rich place card (name, photo, hours, rating) that Google shows
+  // for a real listing — landing straight on a bare Plus Code pin instead.
+  // The fix for spots where the exact listing is known: use Google's CID
+  // (a stable per-place numeric id, unambiguous unlike name-matching) via
+  // the `https://www.google.com/maps?cid=<id>` deep link, which opens the
+  // real place card directly. Spots without a verified placeCid fall back
+  // to the plain coordinate link, which is always correct even if plainer.
+  const url = currentSpot.placeCid
+    ? `https://www.google.com/maps?cid=${currentSpot.placeCid}`
+    : `https://www.google.com/maps/dir/?api=1&destination=${currentSpot.lat},${currentSpot.lng}`;
   window.open(url, "_blank");
 });
 

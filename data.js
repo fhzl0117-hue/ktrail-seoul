@@ -35,6 +35,10 @@ const PILGRIMAGE_SPOTS = [
     // anchor point for the building, not a re-derived estimate.
     lat: 37.524438,
     lng: 126.964063,
+    // Google's CID for the "하이브 본사" listing — lets the Directions button
+    // deep-link straight to the real place card (photo, hours, rating)
+    // instead of a bare coordinate pin. See placeCid note on sm-hq below.
+    placeCid: "13144725326438441994",
     blurb: "Working HQ for BTS, TXT, ENHYPEN, LE SSERAFIM, BOYNEXTDOOR and more — exterior photo spot only, no public entry. The HYBE Insight museum here closed in Jan 2023 and has not confirmed a Seoul reopening — check official channels before planning a museum visit.",
     address: "42 Hangang-daero, Yongsan-gu, Seoul",
   },
@@ -56,6 +60,12 @@ const PILGRIMAGE_SPOTS = [
     // off by ~30m, but still landed one building over).
     lat: 37.544438,
     lng: 127.043813,
+    // Google's CID (a stable per-place numeric id, found via the place's
+    // own Google Maps URL) for the "SM엔터테인먼트" listing. Used by the
+    // Directions button (maps?cid=...) to open the real place card
+    // directly — unlike name-based matching, a CID can't silently resolve
+    // to the wrong listing (see app.js for what that bug looked like).
+    placeCid: "13360487032937613638",
     blurb: "SM's current headquarters near Seoul Forest, after moving from Gangnam. Distinctive facade is a popular exterior photo spot — no public tours of the building itself.",
     address: "83-21 Wangsimni-ro, Seongdong-gu, Seoul",
   },
@@ -90,6 +100,11 @@ const PILGRIMAGE_SPOTS = [
     // had before either "fix."
     lat: 37.530263,
     lng: 127.122578,
+    // Google's CID for the "JYP Training Center" listing at this address —
+    // the Seongnae-dong compound itself isn't separately indexed as "JYP
+    // headquarters" on Google, so this is the closest verified, correctly
+    // located listing to deep-link the Directions button to.
+    placeCid: "6067173456796752006",
     blurb: "JYP's headquarters in Seongnae-dong, near Gangdong-gu Office Station — the company scrapped a planned move to a new Godeok-dong building in Oct 2026 and is staying put, expanding into neighboring buildings instead. Exterior photo spot only.",
     address: "17 Seongnae-ro, Gangdong-gu, Seoul",
   },
@@ -109,6 +124,8 @@ const PILGRIMAGE_SPOTS = [
     // this value is Google's own ground truth for the place.
     lat: 37.548938,
     lng: 126.907813,
+    // Google's CID for the "YG 엔터테인먼트" listing.
+    placeCid: "6942462994394796577",
     blurb: "YG's Hapjeong headquarters, expanded with a newer building alongside the original. The exterior and logo sign are a regular stop on fan walking routes.",
     address: "7 Huiujeong-ro 1-gil, Mapo-gu, Seoul",
   },
