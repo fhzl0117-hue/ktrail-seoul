@@ -214,7 +214,12 @@ document.getElementById("sheet-save").addEventListener("click", () => {
 
 document.getElementById("sheet-directions").addEventListener("click", () => {
   if (!currentSpot) return;
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${currentSpot.lat},${currentSpot.lng}`;
+  // Pairing the name with the coordinates (rather than passing coordinates
+  // alone) lets Google Maps resolve this to the real, named place — with
+  // its own card, hours, and "explore nearby" — instead of dropping an
+  // unlabeled pin that gets snapped to the nearest road for routing.
+  const destination = `${currentSpot.name}, ${currentSpot.lat},${currentSpot.lng}`;
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
   window.open(url, "_blank");
 });
 

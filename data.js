@@ -27,8 +27,14 @@ const PILGRIMAGE_SPOTS = [
     city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
-    lat: 37.5326,
-    lng: 126.9653,
+    // Corrected Oct 2026 — the old coordinates (37.5326, 126.9653) landed
+    // ~900m north, up around Yongsan Electronics Market, while the real
+    // building (Yongsan Trade Center) sits much further south near Sinyongsan
+    // Station. Pulled directly from Google's own listing for "하이브 본사"
+    // (Plus Code 8Q98GXF7+QJ, decoded via Open Location Code) — Google's own
+    // anchor point for the building, not a re-derived estimate.
+    lat: 37.524438,
+    lng: 126.964063,
     blurb: "Working HQ for BTS, TXT, ENHYPEN, LE SSERAFIM, BOYNEXTDOOR and more — exterior photo spot only, no public entry. The HYBE Insight museum here closed in Jan 2023 and has not confirmed a Seoul reopening — check official channels before planning a museum visit.",
     address: "42 Hangang-daero, Yongsan-gu, Seoul",
   },
@@ -44,8 +50,12 @@ const PILGRIMAGE_SPOTS = [
     // coordinates (37.5446, 127.0398) and Seoul-forest Station's (37.5436,
     // 127.0447) — the D-Tower sits right between them, "in front of Seoul
     // Forest," which the old pin's position didn't match at all.
-    lat: 37.5442,
-    lng: 127.0434,
+    // Refined again Oct 2026 — pulled directly from Google's own listing for
+    // "SM엔터테인먼트" (Plus Code 8Q99G2VV+QG) to land exactly on the building
+    // instead of the neighboring one (the prior estimate was already close,
+    // off by ~30m, but still landed one building over).
+    lat: 37.544438,
+    lng: 127.043813,
     blurb: "SM's current headquarters near Seoul Forest, after moving from Gangnam. Distinctive facade is a popular exterior photo spot — no public tours of the building itself.",
     address: "83-21 Wangsimni-ro, Seongdong-gu, Seoul",
   },
@@ -57,8 +67,8 @@ const PILGRIMAGE_SPOTS = [
     categoryLabel: "Shopping",
     // Same building as sm-hq above (basement level of 83-21 Wangsimni-ro,
     // confirmed via the store's own listed address) — corrected alongside it.
-    lat: 37.5442,
-    lng: 127.0433,
+    lat: 37.544438,
+    lng: 127.043813,
     blurb: "SM's official fixed-location store near its Seongsu HQ — merch for EXO, NCT, aespa and the rest of the roster, plus occasional artist pop-up events.",
     address: "Seongsu-dong, Seongdong-gu, Seoul",
   },
@@ -68,8 +78,13 @@ const PILGRIMAGE_SPOTS = [
     city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
-    lat: 37.5301,
-    lng: 127.1326,
+    // Corrected Oct 2026 — the old coordinates (37.5301, 127.1326) were off
+    // by roughly 700m, the same class of error as the other three agency
+    // pins. Pulled directly from Google's own listing for "JYP
+    // ENTERTAINMENT" (Plus Code 8Q99G4FH+HJR, decoded via Open Location
+    // Code) — Google's own anchor point for the building.
+    lat: 37.523988,
+    lng: 127.129016,
     blurb: "JYP's headquarters near Olympic Park, after moving from Cheongdam-dong. Exterior photo spot only — the public cafe here has closed, and it's roughly 45–60 min from central Seoul by subway.",
     address: "205 Gangdong-daero, Seongnae-dong, Gangdong-gu, Seoul",
   },
@@ -80,14 +95,15 @@ const PILGRIMAGE_SPOTS = [
     category: "agency",
     categoryLabel: "Agency (exterior)",
     // Corrected Oct 2026 — the old coordinates (37.5497, 126.9138) landed
-    // almost exactly on Hapjeong Station, ~500m east of the real building,
-    // which is why tapping this pin only ever showed generic "nearby
-    // station" results instead of YG's own building. Re-verified against
-    // Wikipedia's listed address (7 Huiujeong-ro 1-gil) and two independent
-    // POI sources giving ~37.5488, 126.908 for that address — closer to the
-    // Han River / Mangwon-dong border, matching on-the-ground descriptions.
-    lat: 37.5489,
-    lng: 126.9079,
+    // almost exactly on Hapjeong Station, ~500m east of the real building.
+    // Refined again Oct 2026 — pulled directly from Google's own listing
+    // for "YG 엔터테인먼트" (Plus Code 8Q98GWX5+H4, decoded via the Open
+    // Location Code algorithm), which is the exact anchor point Google Maps
+    // itself uses for the building. The earlier estimate (37.5489, 126.9079,
+    // from Wikipedia + two independent POI sources) was already close, but
+    // this value is Google's own ground truth for the place.
+    lat: 37.548938,
+    lng: 126.907813,
     blurb: "YG's Hapjeong headquarters, expanded with a newer building alongside the original. The exterior and logo sign are a regular stop on fan walking routes.",
     address: "7 Huiujeong-ro 1-gil, Mapo-gu, Seoul",
   },
