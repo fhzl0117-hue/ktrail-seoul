@@ -82,6 +82,25 @@ function filteredSpots() {
   );
 }
 
+// Re-renders both the map markers and the list — the one thing every
+// filter control (city toggle, chips, legend) needs to do after a pick.
+function applyFilters() {
+  renderMarkers();
+  renderList();
+}
+
+// Sets the category filter and jumps to the Map tab showing it — used by
+// the About page's legend, so tapping "Agencies" there behaves like tapping
+// the "Agencies" chip and switching to Map, instead of doing nothing.
+function filterByCategoryAndShowMap(categoryKey) {
+  activeCategory = categoryKey;
+  renderChips("chips", applyFilters);
+  renderChips("chips-list", applyFilters);
+  applyFilters();
+  const mapTab = document.querySelector('.tab[data-view="map"]');
+  if (mapTab) mapTab.click();
+}
+
 // ---- Map ----
 let markers = [];
 function initMap() {
@@ -109,6 +128,15 @@ function renderMarkers() {
       iconAnchor: [14, 28],
     });
     const marker = L.marker([spot.lat, spot.lng], { icon }).addTo(window._leafletMap);
+    // Always-on name label next to the pin — without it, every agency pin
+    // on the map is just the same building icon, and there's no way to
+    // tell HYBE's pin from SM's or JYP's without tapping each one.
+    marker.bindTooltip(spot.name, {
+      permanent: true,
+      direction: "right",
+      offset: [10, -16],
+      className: "map-label",
+    });
     marker.on("click", () => openSheet(spot));
     markers.push(marker);
   });
@@ -191,27 +219,32 @@ document.getElementById("sheet-directions").addEventListener("click", () => {
 });
 
 // ---- Legend (About page) ----
+// Rows are buttons: tapping a category filters the map/list to it and
+// jumps to the Map tab, the same as tapping that category's chip.
 function renderLegend() {
   const el = document.getElementById("legend");
   if (!el) return;
   el.innerHTML = "";
   CATEGORIES.filter(cat => cat.key !== "all").forEach(cat => {
-    const row = document.createElement("div");
+    const row = document.createElement("button");
     row.className = "legend-row";
+    row.type = "button";
     const color = CATEGORY_COLORS[cat.key] || "#C1502E";
     const glyph = CATEGORY_ICONS[cat.key] || "📍";
     row.innerHTML = `
       <span class="legend-row__icon" style="background:${color}">${glyph}</span>
-      <span class="legend-row__label">${cat.label}</span>`;
+      <span class="legend-row__label">${cat.label}</span>
+      <span class="legend-row__arrow">&rsaquo;</span>`;
+    row.addEventListener("click", () => filterByCategoryAndShowMap(cat.key));
     el.appendChild(row);
   });
 }
 
 // ---- Boot ----
-renderCityToggle("city-toggle", () => { renderMarkers(); renderList(); });
-renderCityToggle("city-toggle-list", () => { renderMarkers(); renderList(); });
-renderChips("chips", () => { renderMarkers(); renderList(); });
-renderChips("chips-list", () => { renderMarkers(); renderList(); });
+renderCityToggle("city-toggle", applyFilters);
+renderCityToggle("city-toggle-list", applyFilters);
+renderChips("chips", applyFilters);
+renderChips("chips-list", applyFilters);
 initMap();
 renderList();
 renderLegend();
