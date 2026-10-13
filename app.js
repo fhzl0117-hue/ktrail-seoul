@@ -76,9 +76,37 @@ function renderChips(containerId, onPick) {
   });
 }
 
+// ---- Search ----
+// Scoped to the active city (not global) on purpose: the map is always
+// zoomed to one city, so a cross-city match would show pins the user
+// can't see anyway. The List tab stays consistent with the Map tab
+// rather than behaving differently depending on which tab you're on.
+let searchQuery = "";
+function setSearchQuery(q) {
+  searchQuery = q;
+  [["search-input", "search-clear"], ["search-input-list", "search-clear-list"]].forEach(([inputId, clearId]) => {
+    const input = document.getElementById(inputId);
+    const clearBtn = document.getElementById(clearId);
+    if (input && input.value !== q) input.value = q;
+    if (clearBtn) clearBtn.hidden = q.length === 0;
+  });
+  applyFilters();
+}
+["search-input", "search-input-list"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("input", (e) => setSearchQuery(e.target.value));
+});
+["search-clear", "search-clear-list"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("click", () => setSearchQuery(""));
+});
+
 function filteredSpots() {
+  const q = searchQuery.trim().toLowerCase();
   return PILGRIMAGE_SPOTS.filter(s =>
-    s.city === activeCity && (activeCategory === "all" || s.category === activeCategory)
+    s.city === activeCity &&
+    (activeCategory === "all" || s.category === activeCategory) &&
+    (q === "" || s.name.toLowerCase().includes(q) || s.blurb.toLowerCase().includes(q))
   );
 }
 
@@ -145,8 +173,11 @@ function renderMarkers() {
 // ---- List ----
 function renderList() {
   const el = document.getElementById("list");
+  const empty = document.getElementById("list-empty");
+  const spots = filteredSpots();
   el.innerHTML = "";
-  filteredSpots().forEach(spot => el.appendChild(makeCard(spot)));
+  spots.forEach(spot => el.appendChild(makeCard(spot)));
+  if (empty) empty.style.display = spots.length === 0 ? "block" : "none";
 }
 
 function makeCard(spot) {
@@ -212,6 +243,45 @@ document.getElementById("sheet-save").addEventListener("click", () => {
   updateSaveButton();
 });
 
+// ---- Share ----
+// Builds a canonical link back into this spot — `location.origin +
+// location.pathname` (not location.href) so a share made FROM an already-
+// shared page doesn't compound query params.
+function buildSpotShareUrl(spot) {
+  return `${location.origin}${location.pathname}?spot=${encodeURIComponent(spot.id)}`;
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add("toast--show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("toast--show"), 2200);
+}
+
+document.getElementById("sheet-share").addEventListener("click", async () => {
+  if (!currentSpot) return;
+  const url = buildSpotShareUrl(currentSpot);
+  // Web Share API opens the device's native share sheet (KakaoTalk,
+  // Messages, etc. on mobile) — preferred whenever it's available.
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: `${currentSpot.name} — K-Trail Seoul`, text: currentSpot.blurb, url });
+    } catch (e) { /* user cancelled the native share sheet — not an error */ }
+    return;
+  }
+  // Fallback for browsers without Web Share (most desktop browsers):
+  // copy the link, with a last-resort prompt() if Clipboard API fails.
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast("Link copied!");
+  } catch (e) {
+    window.prompt("Copy this link:", url);
+  }
+});
+
 document.getElementById("sheet-directions").addEventListener("click", () => {
   if (!currentSpot) return;
   // REVERTED, then REPLACED Oct 2026. First tried pairing the name with
@@ -258,6 +328,27 @@ function renderLegend() {
   });
 }
 
+// ---- Shared-link deep linking ----
+// A link from the Share button (sheet-share) looks like
+// "...?spot=<id>" — on load, jump straight to that spot's city and open
+// its detail sheet, rather than always landing on Seoul/All.
+function openSharedSpotFromUrl() {
+  const spotId = new URLSearchParams(location.search).get("spot");
+  if (!spotId) return;
+  const spot = PILGRIMAGE_SPOTS.find(s => s.id === spotId);
+  if (!spot) return;
+  activeCity = spot.city;
+  activeCategory = "all";
+  renderCityToggle("city-toggle", applyFilters);
+  renderCityToggle("city-toggle-list", applyFilters);
+  renderChips("chips", applyFilters);
+  renderChips("chips-list", applyFilters);
+  const city = CITIES.find(c => c.key === spot.city);
+  if (window._leafletMap && city) window._leafletMap.setView(city.center, city.zoom);
+  applyFilters();
+  openSheet(spot);
+}
+
 // ---- Boot ----
 renderCityToggle("city-toggle", applyFilters);
 renderCityToggle("city-toggle-list", applyFilters);
@@ -266,6 +357,7 @@ renderChips("chips-list", applyFilters);
 initMap();
 renderList();
 renderLegend();
+openSharedSpotFromUrl();
 
 // ---- Service worker (offline support) ----
 if ("serviceWorker" in navigator) {

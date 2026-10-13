@@ -32,14 +32,25 @@
 
 <main id="view-map" class="view view--active">
   <div class="city-toggle" id="city-toggle"></div>
+  <div class="search-bar">
+    <span class="search-bar__icon">&#128269;</span>
+    <input type="text" id="search-input" class="search-bar__input" placeholder="Search spots…" autocomplete="off" />
+    <button type="button" class="search-bar__clear" id="search-clear" hidden>&#10005;</button>
+  </div>
   <div class="chips" id="chips"></div>
   <div id="map"></div>
 </main>
 
 <main id="view-list" class="view">
   <div class="city-toggle" id="city-toggle-list"></div>
+  <div class="search-bar">
+    <span class="search-bar__icon">&#128269;</span>
+    <input type="text" id="search-input-list" class="search-bar__input" placeholder="Search spots…" autocomplete="off" />
+    <button type="button" class="search-bar__clear" id="search-clear-list" hidden>&#10005;</button>
+  </div>
   <div class="chips" id="chips-list"></div>
   <div class="list" id="list"></div>
+  <p class="empty-state" id="list-empty">No spots match your search.</p>
 </main>
 
 <main id="view-saved" class="view">
@@ -66,8 +77,11 @@
   <div class="sheet__actions">
     <button class="btn btn--primary" id="sheet-directions">Directions</button>
     <button class="btn btn--ghost" id="sheet-save">&#9734; Save</button>
+    <button class="btn btn--ghost" id="sheet-share">&#128279; Share</button>
   </div>
 </section>
+
+<div class="toast" id="toast"></div>
 
 <nav class="tabbar">
   <button class="tab tab--active" data-view="map">
