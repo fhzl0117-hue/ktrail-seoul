@@ -2,7 +2,7 @@
 // Caches the app shell for offline use, and runtime-caches map tiles
 // as they are viewed so previously-browsed areas work without wifi.
 
-const SHELL_CACHE = "ktrail-shell-v5";
+const SHELL_CACHE = "ktrail-shell-v6";
 const TILE_CACHE = "ktrail-tiles-v1";
 
 const SHELL_FILES = [
@@ -19,7 +19,18 @@ const SHELL_FILES = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(SHELL_CACHE)
-      .then((cache) => cache.addAll(SHELL_FILES))
+      .then((cache) =>
+        // cache.addAll() uses the browser's normal HTTP cache, which can
+        // silently serve a stale same-origin file (style.css, app.js, ...)
+        // instead of the version just deployed. Force a real network
+        // fetch for every shell file so the cache always matches what
+        // was actually just pushed.
+        Promise.all(
+          SHELL_FILES.map((url) =>
+            fetch(url, { cache: "reload" }).then((resp) => cache.put(url, resp))
+          )
+        )
+      )
       .then(() => self.skipWaiting())
   );
 });
