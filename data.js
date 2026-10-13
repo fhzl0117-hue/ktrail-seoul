@@ -13,12 +13,24 @@
 // Only permanent, year-round spots are listed for Busan.
 // Also deliberately excluded: a specific school tied to a member's
 // childhood — kept off the list out of respect for a functioning school.
+//
+// Jeju note: added Oct 2026, deliberately starting with Culture only.
+// Researched a Jeju cafe angle too (idol-family/idol-run businesses, same
+// pattern as Thanks Nature Cafe / ZM-illennial Cafe) — the one real
+// candidate, musician Lee Sang-soon's (Lee Hyori's husband) cafe
+// "Longplay" in Gujwa-eup, closed in Apr 2024 after 2 years (part of a
+// broader wave — 252 Jeju cafes closed in 2024, a record high), so it's
+// NOT included. No K-pop idol was found to be from Jeju or running a
+// family business there either. Agencies/concert venues don't apply —
+// Jeju has no agency HQs and sees very little large-scale K-pop touring
+// given the logistics of an island. Revisit the cafe gap in a future pass.
 
 const CITIES = [
   { key: "seoul", label: "Seoul", center: [37.5505, 126.99], zoom: 12 },
   { key: "busan", label: "Busan", center: [35.1595, 129.0756], zoom: 12 },
   { key: "goyang", label: "Goyang", center: [37.6729, 126.7445], zoom: 13 },
   { key: "incheon", label: "Incheon", center: [37.4674, 126.5283], zoom: 11 },
+  { key: "jeju", label: "Jeju", center: [33.33, 126.45], zoom: 10 },
 ];
 
 const PILGRIMAGE_SPOTS = [
@@ -790,6 +802,45 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "1254261659163781375",
     blurb: "Major arena at the Inspire Entertainment Resort on Yeongjongdo, near Incheon Airport — hosts HYBE's own annual Weverse Con festival plus a steady stream of standalone K-pop concerts (LE SSERAFIM, Xdinary Heroes and more).",
     address: "127 Gonghangmunhwa-ro, Jung-gu, Incheon",
+  },
+
+  // ---- Jeju ----
+  {
+    // Added Oct 2026 — new city, Culture-only to start (see the Jeju note
+    // near CITIES above for why no Cafe entry). Confirmed via multiple
+    // Korean entertainment-press reports (Seoul Shinmun, May 2024) that
+    // this beach is the filming location for NewJeans' "Bubble Gum" music
+    // video (30M+ views). Verified via Google's "황우치해안" listing (Plus
+    // Code 8Q5868P8+WQQ, 4.3★, 22 reviews).
+    id: "hwangwuchi-beach",
+    name: "Hwangwuchi Beach",
+    city: "jeju",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 33.237338,
+    lng: 126.316984,
+    placeCid: "12898838176534340394",
+    blurb: "Quiet volcanic-rock beach in Andeok-myeon, best known to fans as the filming location for NewJeans' \"Bubble Gum\" music video.",
+    address: "Sagye-ri, Andeok-myeon, Seogwipo, Jeju",
+  },
+  {
+    // Added Oct 2026. Garden/cafe venue confirmed via Korean press (Seoul
+    // Shinmun, Aug 2025) as the filming site for BTS member Jin's variety
+    // show "Handsomes" (핸썸즈) — and, not coincidentally, the official Sept
+    // 2025 venue for Jeju province's own Hallyu fan-tourism festival
+    // ("Purple Festa"), run specifically because of that Jin connection.
+    // Verified via Google's "베케" listing (Plus Code 8Q587J63+PP4, 4.4★,
+    // 712 reviews, operating).
+    id: "becke-garden",
+    name: "Becke Garden",
+    city: "jeju",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 33.261763,
+    lng: 126.604328,
+    placeCid: "9910919085685905836",
+    blurb: "Sprawling private garden and cafe in Seogwipo, used as a filming site for BTS Jin's variety show \"Handsomes\" — and the venue Jeju province chose for its own Hallyu fan-tourism festival in 2025 because of it.",
+    address: "48 Hyodon-ro, Seogwipo, Jeju",
   },
 ];
 
