@@ -54,8 +54,14 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
    (not floated on top of it). Leaflet repaints/pans its tile layer
    continuously, and overlaying absolute/fixed controls directly on top
    of that turned out to render unreliably on some browsers — stacking
-   them above the map container sidesteps that entirely. */
-#view-map {
+   them above the map container sidesteps that entirely.
+   NOTE: this must be gated on .view--active — an ID selector like
+   #view-map beats the .view--active CLASS selector on specificity, so
+   an unconditional `#view-map { display: flex }` would keep the map
+   view visible (overlapping other tabs) even when .view--active was
+   removed from it. Scoping to #view-map.view--active keeps the base
+   .view { display: none } rule in control when this tab isn't active. */
+#view-map.view--active {
   padding: 0;
   overflow: hidden;
   display: flex;
