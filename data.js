@@ -24,6 +24,14 @@
 // family business there either. Agencies/concert venues don't apply —
 // Jeju has no agency HQs and sees very little large-scale K-pop touring
 // given the logistics of an island. Revisit the cafe gap in a future pass.
+//
+// Busan/Goyang/Incheon Cafe+Culture pass (Oct 2026): widened scope to
+// K-culture-adjacent spots, same lens as Seoul's Onion/K-Star Road pass.
+// Found one solid culture add each for Busan (hwangnyeongsan) and Goyang
+// (goyang-rm-mural, RM's hometown connection). A second Busan cafe was
+// searched for and not found. Incheon came up empty on both counts this
+// pass — a Minji-from-Incheon hometown lead didn't check out on
+// verification — so it's unchanged; revisit in a future pass.
 
 const CITIES = [
   { key: "seoul", label: "Seoul", center: [37.5505, 126.99], zoom: 12 },
@@ -700,6 +708,31 @@ const PILGRIMAGE_SPOTS = [
     blurb: "Beach with a postcard view of Gwangan Bridge, lit up nightly — a favorite backdrop for K-pop content and the site of a BTS drone light show in June 2026.",
     address: "Gwangalli, Suyeong-gu, Busan",
   },
+  {
+    // Added Oct 2026 — Busan/Goyang/Incheon cafe+culture pass, same lens
+    // as the Seoul widen-to-K-culture-adjacent pass. Searched hard for a
+    // second Busan cafe (another idol-family business, same pattern as
+    // zm-illennial-cafe) and came up empty — so this is a culture add
+    // instead. A standing, independently famous Busan night-view landmark
+    // (427m, view of Gwangan Bridge) that ALSO got a one-off purple-light
+    // tribute during BTS's free Oct 2022 Busan Expo-bid concert (reported
+    // alongside the stadium and the New Port promotion booth as the
+    // city's "Purple Road"). The lights were a 2022 one-off; the
+    // beacon-mound viewpoint itself is permanent and not an event space,
+    // so unlike the excluded ARIRANG pop-ups this is listed as a normal
+    // standing spot, not a time-limited one. Verified via Google's "황령산
+    // 봉수대" listing (Plus Code 8Q7F534J+RRW, 4.7★, 3,947 reviews, 24hr).
+    id: "hwangnyeongsan",
+    name: "Hwangnyeongsan Beacon Mound",
+    city: "busan",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 35.157113,
+    lng: 129.082078,
+    placeCid: "9894731693206159625",
+    blurb: "Busan's best-known night-view peak (427m), overlooking Gwangan Bridge — lit purple for a night during BTS's free 2022 Busan Expo-bid concert, part of the city's \"Purple Road\" tribute alongside the stadium itself.",
+    address: "San 50-1, Daeyeon-dong, Nam-gu, Busan",
+  },
 
   // ---- Goyang ----
   {
@@ -739,6 +772,30 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "13858383688022604352",
     blurb: "Korea's largest convention center and a long-running home of KCON Korea, plus major K-pop concerts and fan conventions throughout the year.",
     address: "217-60 Kintex-ro, Ilsanseo-gu, Goyang",
+  },
+  {
+    // Added Oct 2026 — same Busan/Goyang/Incheon cafe+culture pass as
+    // hwangnyeongsan above. RM (BTS) grew up in Ilsan, Goyang, and the
+    // city leaned into that for its own tourism marketing ahead of the
+    // Goyang Stadium BTS-adjacent concert season: a large RM mural on the
+    // Goyang Tourist Information Center's exterior wall, the starting
+    // point of an official city "star course" walking route through spots
+    // tied to his youth (Ilsan Lake Park, La Festa/Western Dome shopping,
+    // Bamnidan-gil), confirmed via Korean press (Hankyung, Apr 2026).
+    // Pinned at the Information Center itself, the course's fixed anchor
+    // point, rather than the informal multi-stop route. Verified via
+    // Google's "고양관광정보센터" listing (Plus Code 8Q98MQ5F+Q6W, 4.2★, 23
+    // reviews, operating).
+    id: "goyang-rm-mural",
+    name: "Goyang Tourist Info Center (RM Mural)",
+    city: "goyang",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.659488,
+    lng: 126.773078,
+    placeCid: "7418265619931547844",
+    blurb: "A large mural of BTS's RM — who grew up in Ilsan, Goyang — covers the Goyang Tourist Information Center's exterior wall, marking the start of the city's official \"star course\" walking route through spots tied to his youth.",
+    address: "1271-1 Jungang-ro, Ilsandong-gu, Goyang",
   },
 
   // ---- Incheon ----
