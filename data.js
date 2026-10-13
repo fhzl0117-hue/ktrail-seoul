@@ -17,6 +17,7 @@
 const CITIES = [
   { key: "seoul", label: "Seoul", center: [37.5505, 126.99], zoom: 12 },
   { key: "busan", label: "Busan", center: [35.1595, 129.0756], zoom: 12 },
+  { key: "goyang", label: "Goyang", center: [37.6729, 126.7445], zoom: 13 },
 ];
 
 const PILGRIMAGE_SPOTS = [
@@ -643,6 +644,46 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "18405632102592812795",
     blurb: "Beach with a postcard view of Gwangan Bridge, lit up nightly — a favorite backdrop for K-pop content and the site of a BTS drone light show in June 2026.",
     address: "Gwangalli, Suyeong-gu, Busan",
+  },
+
+  // ---- Goyang ----
+  {
+    // Added Oct 2026. Verified via Google's "고양종합운동장" listing
+    // (Plus Code 8Q98MPGV+H64). Promoted by Goyang's own mayor as a
+    // "K-culture 성지" (K-culture pilgrimage site) in 2025-2026 coverage —
+    // hosted G-Dragon, BLACKPINK, and Coldplay stadium concerts. Distinct
+    // from the adjacent 고양종합운동장 보조경기장 (auxiliary stadium),
+    // same main-vs-auxiliary distinction checked for busan-asiad-stadium.
+    id: "goyang-stadium",
+    name: "Goyang Stadium",
+    city: "goyang",
+    category: "venue",
+    categoryLabel: "Concert Venue",
+    lat: 37.676388,
+    lng: 126.743078,
+    placeCid: "17157002227709954818",
+    blurb: "Goyang's main stadium and a fast-rising K-pop mega-concert venue, having hosted G-Dragon, BLACKPINK, and Coldplay stadium shows.",
+    address: "1601 Jungang-ro, Ilsanseo-gu, Goyang",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "킨텍스 제1전시장" listing
+    // (Plus Code 8Q98MP9W+H9R), kintex.com confirmed. KINTEX is a
+    // multi-hall complex (Hall 1 / Hall 2 / Hall 3A); Hall 1 is used here
+    // as the representative, most-reviewed building, same pattern as the
+    // HYBE/Yongsan complex entries. Long-running home of KCON Korea and
+    // other major K-pop conventions/concerts — note: MAMA 2026 is
+    // confirmed to be held in Osaka, Japan, not here, so that event is
+    // intentionally not referenced in the blurb.
+    id: "kintex",
+    name: "KINTEX",
+    city: "goyang",
+    category: "venue",
+    categoryLabel: "Concert / Convention",
+    lat: 37.668988,
+    lng: 126.745891,
+    placeCid: "13858383688022604352",
+    blurb: "Korea's largest convention center and a long-running home of KCON Korea, plus major K-pop concerts and fan conventions throughout the year.",
+    address: "217-60 Kintex-ro, Ilsanseo-gu, Goyang",
   },
 ];
 
