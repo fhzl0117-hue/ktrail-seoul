@@ -133,6 +133,176 @@ const PILGRIMAGE_SPOTS = [
     address: "7 Huiujeong-ro 1-gil, Mapo-gu, Seoul",
   },
   {
+    // Added Oct 2026 — "더 많은 스팟 추가" / "나머지 기획사들도 올려" pass. Not SM's
+    // Seongsu HQ (D-Tower) — this is SM's separate production/recording
+    // studio in Gangnam, where fansigns and comeback promo events are
+    // regularly held. Google lists it with 4,200+ reviews, more than any
+    // other agency building on this map, which tracks with it being a
+    // well-known fan gathering spot in its own right. Verified via Google's
+    // own listing for "SM엔터테인먼트 스튜디오센터" (Plus Code 8Q99G3H2+48M),
+    // domain smtown.com confirmed.
+    id: "sm-studio-center",
+    name: "SM Entertainment Studio Center",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.527838,
+    lng: 127.050797,
+    placeCid: "12645987624944663126",
+    blurb: "SM's production/recording studio in Gangnam, separate from the Seongsu HQ — a long-running fan gathering spot for fansigns and comeback promotions.",
+    address: "114 Seolleung-ro 190-gil, Gangnam-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Same Yongsan Trade Center complex as hybe-hq above
+    // (coordinates land within ~50m of it) — ADOR is a HYBE label, not a
+    // separate building. Verified via Google's "어도어" listing (Plus Code
+    // 8Q98GXF7+VPW), domain ador.world confirmed.
+    id: "ador",
+    name: "ADOR",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.524738,
+    lng: 126.964328,
+    placeCid: "7871264265742838178",
+    blurb: "HYBE's NewJeans label, based in the same Yongsan Trade Center complex as HYBE HQ — exterior only, no public entry.",
+    address: "42 Hangang-daero, Yongsan-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Same HYBE/Yongsan Trade Center complex as hybe-hq.
+    // Verified via Google's "쏘스뮤직" listing (Plus Code 8Q98GXF7+QMX),
+    // domain sourcemusic.com confirmed.
+    id: "source-music",
+    name: "Source Music",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.524488,
+    lng: 126.964234,
+    placeCid: "9366497415417202892",
+    blurb: "HYBE's LE SSERAFIM label, based in the same Yongsan Trade Center complex as HYBE HQ — exterior only, no public entry.",
+    address: "42 Hangang-daero, Yongsan-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Same HYBE/Yongsan Trade Center complex as hybe-hq.
+    // Verified via Google's "빌리프랩" listing (Plus Code 8Q98GXF7+RP9),
+    // domain beliftlab.com confirmed.
+    id: "belift-lab",
+    name: "Belift Lab",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.524537,
+    lng: 126.964359,
+    placeCid: "2807343437586447066",
+    blurb: "HYBE's ENHYPEN label, based in the same Yongsan Trade Center complex as HYBE HQ — exterior only, no public entry.",
+    address: "42 Hangang-daero, Yongsan-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Same HYBE/Yongsan Trade Center complex as hybe-hq —
+    // but unlike ador/source-music/belift-lab, this one has its own
+    // street-level entrance with visible "PLEDIS" signage (confirmed via
+    // the listing's own storefront photo). Verified via Google's
+    // "플레디스엔터테인먼트" listing (Plus Code 8Q98GXF7+VM9), domain
+    // pledis.co.kr confirmed.
+    id: "pledis",
+    name: "Pledis Entertainment",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.524663,
+    lng: 126.964234,
+    placeCid: "4423944542037532638",
+    blurb: "HYBE's SEVENTEEN and NU'EST label — a dedicated street-level building with visible PLEDIS signage, a popular exterior photo stop.",
+    address: "42 Hangang-daero, Yongsan-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "스타쉽엔터테인먼트" listing
+    // (Plus Code 8Q99G2FX+3HR), domain starship-ent.com confirmed.
+    id: "starship",
+    name: "Starship Entertainment",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.522738,
+    lng: 127.048891,
+    placeCid: "3086743827876969422",
+    blurb: "Home to IVE, Monsta X, Cravity and more, in Cheongdam — exterior only, no public entry.",
+    address: "4-5 Samseong-ro 146-gil, Gangnam-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "큐브엔터테인먼트" listing (Plus
+    // Code 8Q99G3W3+794) — storefront photo shows clear "CUBE
+    // ENTERTAINMENT" signage. Domain cubeent.co.kr confirmed.
+    id: "cube",
+    name: "Cube Entertainment",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.545637,
+    lng: 127.053453,
+    placeCid: "3574919407948452786",
+    blurb: "Home to (G)I-DLE, BTOB and more — storefront-level building with clear CUBE ENTERTAINMENT signage, near Seongsu.",
+    address: "83 Achasan-ro, Seongdong-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "FNC엔터테인먼트" listing (Plus
+    // Code 8Q99G2HX+2X5), domain confirmed via listing's own website link.
+    id: "fnc",
+    name: "FNC Entertainment",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.527513,
+    lng: 127.049984,
+    placeCid: "3823376765188789805",
+    blurb: "Home to SF9 and FNC's acting roster — exterior only, no public entry.",
+    address: "46 Dosan-daero 85-gil, Gangnam-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "RBW 엔터테인먼트" listing (Plus
+    // Code 8Q99H39C+H44), domain rbbridge.com (RBW's parent company)
+    // confirmed. Located in Dongdaemun-gu, not Gangnam like most agencies.
+    id: "rbw",
+    name: "RBW Entertainment",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.568888,
+    lng: 127.070328,
+    placeCid: "16494609962765781815",
+    blurb: "Home to Mamamoo, Oneus and Onewe — exterior only, in Dongdaemun-gu, a bit off the usual Gangnam/Yongsan agency circuit.",
+    address: "7 Janghan-ro 20-gil, Dongdaemun-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "WAKEONE Entertainment" listing
+    // (Plus Code 8Q98GWWH+85W), domain wake-one.com confirmed.
+    id: "wakeone",
+    name: "WAKEONE Entertainment",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.545862,
+    lng: 126.927953,
+    placeCid: "2028545611017023193",
+    blurb: "Home to ZEROBASEONE — exterior only, no public entry.",
+    address: "153 Tojeong-ro, Mapo-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "피네이션" listing (Plus Code
+    // 8Q99G29G+WHQ), domain pnation.com confirmed.
+    id: "p-nation",
+    name: "P NATION",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.519838,
+    lng: 127.026484,
+    placeCid: "603840989169456954",
+    blurb: "PSY's label, also home to Jessi and more — exterior only, in southern Gangnam.",
+    address: "21 Nonhyeon-ro 151-gil, Gangnam-gu, Seoul",
+  },
+  {
     id: "yg-republique",
     name: "Same Cafe (더세임)",
     city: "seoul",
@@ -314,6 +484,39 @@ const PILGRIMAGE_SPOTS = [
     lng: 127.0520,
     blurb: "Seoul's reclaimed-warehouse district turned dessert-cafe and flagship-store hotspot — now also SM's home neighborhood, and a magnet for idol sightings and brand pop-ups.",
     address: "Seongsu-dong, Seongdong-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Free K-culture experience center run by the Korea
+    // Tourism Organization at its Seoul Center — found while researching
+    // this batch; confirmed still operating (4.6★, 1,159 reviews) via
+    // Google's "하이커 그라운드" listing (Plus Code 8Q98HX9J+CPQ).
+    id: "hikr-ground",
+    name: "HiKR Ground",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.568588,
+    lng: 126.981859,
+    placeCid: "16102048317544180866",
+    blurb: "Free K-culture experience center run by the Korea Tourism Organization — K-pop dance challenges, XR photo zones, and music-video green-screen booths.",
+    address: "40 Cheonggyecheon-ro, Jung-gu, Seoul",
+  },
+  {
+    // Added Oct 2026. Mnet/CJ ENM's broadcast center in Sangam DMC, where
+    // M Countdown is filmed — rounds out the KBS Music Bank / SBS Inkigayo
+    // pair above into the full weekly-music-show trio. Verified via
+    // Google's "CJ ENM" listing (Plus Code 8Q98HVHR+CJ8), right next to the
+    // SBS Prism Tower pin on the map.
+    id: "cj-enm-center",
+    name: "CJ ENM Center (Mnet)",
+    city: "seoul",
+    category: "venue",
+    categoryLabel: "Concert / Broadcast",
+    lat: 37.578538,
+    lng: 126.891578,
+    placeCid: "6008577960837327191",
+    blurb: "Mnet's broadcast center in Sangam DMC, where M Countdown is filmed — right next to SBS's Prism Tower.",
+    address: "66 Sangamsan-ro, Mapo-gu, Seoul",
   },
 
   // ---- Busan ----
