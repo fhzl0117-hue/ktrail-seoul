@@ -274,12 +274,6 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
 }
 .leaflet-tooltip.map-label::before { display: none; }
 
-/* Zoomed-out overview: hide name labels so dense clusters of pins (e.g.
-   Seoul's 30+ spots) don't overlap into unreadable clutter. Pins stay
-   visible and tappable — see updateLabelVisibility() in app.js, which
-   toggles this class based on the current zoom level. */
-#map.hide-labels .leaflet-tooltip.map-label { display: none; }
-
 .pin-marker {
   width: 28px; height: 28px;
   border-radius: 50% 50% 50% 0;
