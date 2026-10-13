@@ -305,3 +305,14 @@ const CATEGORY_COLORS = {
   cafe: "#A2607A",
   venue: "#3B5873",
 };
+
+// Per-category pin/card icons. Using these (not the first letter of
+// categoryLabel) avoids collisions — "Culture", "Cafe" and every Venue
+// label ("Concert Venue", "Concert / Broadcast", ...) all start with "C".
+const CATEGORY_ICONS = {
+  agency: "🏢",
+  shopping: "🛍️",
+  culture: "🏛️",
+  cafe: "☕",
+  venue: "🎤",
+};

@@ -101,9 +101,10 @@ function renderMarkers() {
   markers = [];
   filteredSpots().forEach(spot => {
     const color = CATEGORY_COLORS[spot.category] || "#C1502E";
+    const glyph = CATEGORY_ICONS[spot.category] || "📍";
     const icon = L.divIcon({
       className: "",
-      html: `<div class="pin-marker" style="background:${color}"><span>${spot.categoryLabel[0]}</span></div>`,
+      html: `<div class="pin-marker" style="background:${color}"><span>${glyph}</span></div>`,
       iconSize: [28, 28],
       iconAnchor: [14, 28],
     });
@@ -124,8 +125,9 @@ function makeCard(spot) {
   const card = document.createElement("button");
   card.className = "card";
   const color = CATEGORY_COLORS[spot.category] || "#C1502E";
+  const glyph = CATEGORY_ICONS[spot.category] || "📍";
   card.innerHTML = `
-    <div class="card__swatch" style="background:${color}">${spot.categoryLabel[0]}</div>
+    <div class="card__swatch" style="background:${color}">${glyph}</div>
     <div class="card__body">
       <p class="card__cat">${spot.categoryLabel}</p>
       <p class="card__name">${spot.name}</p>
@@ -188,6 +190,23 @@ document.getElementById("sheet-directions").addEventListener("click", () => {
   window.open(url, "_blank");
 });
 
+// ---- Legend (About page) ----
+function renderLegend() {
+  const el = document.getElementById("legend");
+  if (!el) return;
+  el.innerHTML = "";
+  CATEGORIES.filter(cat => cat.key !== "all").forEach(cat => {
+    const row = document.createElement("div");
+    row.className = "legend-row";
+    const color = CATEGORY_COLORS[cat.key] || "#C1502E";
+    const glyph = CATEGORY_ICONS[cat.key] || "📍";
+    row.innerHTML = `
+      <span class="legend-row__icon" style="background:${color}">${glyph}</span>
+      <span class="legend-row__label">${cat.label}</span>`;
+    el.appendChild(row);
+  });
+}
+
 // ---- Boot ----
 renderCityToggle("city-toggle", () => { renderMarkers(); renderList(); });
 renderCityToggle("city-toggle-list", () => { renderMarkers(); renderList(); });
@@ -195,6 +214,7 @@ renderChips("chips", () => { renderMarkers(); renderList(); });
 renderChips("chips-list", () => { renderMarkers(); renderList(); });
 initMap();
 renderList();
+renderLegend();
 
 // ---- Service worker (offline support) ----
 if ("serviceWorker" in navigator) {
