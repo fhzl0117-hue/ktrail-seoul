@@ -78,15 +78,20 @@ const PILGRIMAGE_SPOTS = [
     city: "seoul",
     category: "agency",
     categoryLabel: "Agency (exterior)",
-    // Corrected Oct 2026 — the old coordinates (37.5301, 127.1326) were off
-    // by roughly 700m, the same class of error as the other three agency
-    // pins. Pulled directly from Google's own listing for "JYP
-    // ENTERTAINMENT" (Plus Code 8Q99G4FH+HJR, decoded via Open Location
-    // Code) — Google's own anchor point for the building.
-    lat: 37.523988,
-    lng: 127.129016,
-    blurb: "JYP's headquarters near Olympic Park, after moving from Cheongdam-dong. Exterior photo spot only — the public cafe here has closed, and it's roughly 45–60 min from central Seoul by subway.",
-    address: "205 Gangdong-daero, Seongnae-dong, Gangdong-gu, Seoul",
+    // Corrected Oct 2026, then corrected AGAIN same day — first pass used
+    // Google's "JYP ENTERTAINMENT" listing (Plus Code 8Q99G4FH+HJR), which
+    // turned out to be geotagged at the Gangdong-daero/Olympic Park site
+    // for JYP's planned new headquarters. A news search (Oct 8, 2026
+    // reporting) found that project was CANCELLED — JYP is staying at its
+    // existing Seongnae-dong office instead, so that Olympic Park pin was
+    // never right to begin with. Re-anchored to JYP Training Center (Plus
+    // Code 8Q99G4JF+424), part of the real Seongnae-dong compound right by
+    // Gangdong-gu Office Station — matching the address this entry already
+    // had before either "fix."
+    lat: 37.530263,
+    lng: 127.122578,
+    blurb: "JYP's headquarters in Seongnae-dong, near Gangdong-gu Office Station — the company scrapped a planned move to a new Godeok-dong building in Oct 2026 and is staying put, expanding into neighboring buildings instead. Exterior photo spot only.",
+    address: "17 Seongnae-ro, Gangdong-gu, Seoul",
   },
   {
     id: "yg-hq",
