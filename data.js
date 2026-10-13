@@ -18,6 +18,7 @@ const CITIES = [
   { key: "seoul", label: "Seoul", center: [37.5505, 126.99], zoom: 12 },
   { key: "busan", label: "Busan", center: [35.1595, 129.0756], zoom: 12 },
   { key: "goyang", label: "Goyang", center: [37.6729, 126.7445], zoom: 13 },
+  { key: "incheon", label: "Incheon", center: [37.4674, 126.5283], zoom: 11 },
 ];
 
 const PILGRIMAGE_SPOTS = [
@@ -684,6 +685,48 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "13858383688022604352",
     blurb: "Korea's largest convention center and a long-running home of KCON Korea, plus major K-pop concerts and fan conventions throughout the year.",
     address: "217-60 Kintex-ro, Ilsanseo-gu, Goyang",
+  },
+
+  // ---- Incheon ----
+  {
+    // Added Oct 2026. Verified via Google's "인천국제공항" listing (Plus
+    // Code 8Q98FC5R+FQ8). Korea's main international gateway and a
+    // long-documented site of "airport fashion" fan culture — idols'
+    // arrival/departure outfits are closely watched by fans and press, and
+    // the airport has repeatedly made news (incl. a 2024 "celebrity
+    // entrance" proposal that was scrapped after backlash) over how to
+    // manage the fan crowds that gather here. Pinned at the airport's own
+    // Google anchor point, not a specific terminal/gate.
+    id: "incheon-airport",
+    name: "Incheon International Airport",
+    city: "incheon",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.458663,
+    lng: 126.441953,
+    placeCid: "10181407952118529748",
+    blurb: "Korea's main international gateway and the epicenter of \"airport fashion\" culture — idols' arrival and departure outfits are closely tracked by fans and press, and crowds regularly gather here around major group comings and goings.",
+    address: "272 Gonghang-ro, Jung-gu, Incheon",
+  },
+  {
+    // Added Oct 2026. Verified via Google's "상상플랫폼" listing (Plus Code
+    // 8Q98FJG7+FR5), domain sangsangplatform.or.kr confirmed. A converted
+    // warehouse cultural space near Wolmido/Incheon Chinatown that hosts
+    // the city's own long-running INK (Incheon K-POP) Concert each autumn
+    // at its outdoor plaza — the 16th edition ran Oct 25, 2025 with
+    // BOYNEXTDOOR, KISS OF LIFE and others. Year-round cultural venue, not
+    // a one-off pop-up, so listed as a standing spot rather than a
+    // time-limited event.
+    id: "sangsang-platform",
+    name: "Sangsang Platform",
+    city: "incheon",
+    category: "venue",
+    categoryLabel: "Concert / Culture",
+    lat: 37.476138,
+    lng: 126.614609,
+    placeCid: "5521682040626759256",
+    blurb: "Converted-warehouse cultural space near Wolmido and Incheon Chinatown — its outdoor plaza hosts the city's own INK (Incheon K-POP) Concert every autumn, drawing a rotating lineup of current idol groups.",
+    address: "33 Wolmi-ro, Jung-gu, Incheon",
   },
 ];
 
