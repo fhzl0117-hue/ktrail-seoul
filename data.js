@@ -728,6 +728,27 @@ const PILGRIMAGE_SPOTS = [
     blurb: "Converted-warehouse cultural space near Wolmido and Incheon Chinatown — its outdoor plaza hosts the city's own INK (Incheon K-POP) Concert every autumn, drawing a rotating lineup of current idol groups.",
     address: "33 Wolmi-ro, Jung-gu, Incheon",
   },
+  {
+    // Added Oct 2026 — reinforcement pass for Busan/Goyang/Incheon.
+    // Verified via Google's "인스파이어 아레나" listing (Plus Code
+    // 8Q98F98R+M6X), domain inspireresorts.com confirmed. A major indoor
+    // arena at the Inspire Entertainment Resort on Yeongjongdo, a short
+    // ride from Incheon Airport — hosts HYBE's own annual Weverse Con
+    // festival (2024 and 2025 editions) plus standalone concerts (LE
+    // SSERAFIM's 2025 spring lineup, Xdinary Heroes' sold-out 2026 show).
+    // Currently one of the most active K-pop concert venues to open in
+    // Korea since 2024, not a one-off event space.
+    id: "inspire-arena",
+    name: "Inspire Arena",
+    city: "incheon",
+    category: "venue",
+    categoryLabel: "Concert Venue",
+    lat: 37.466738,
+    lng: 126.390609,
+    placeCid: "1254261659163781375",
+    blurb: "Major arena at the Inspire Entertainment Resort on Yeongjongdo, near Incheon Airport — hosts HYBE's own annual Weverse Con festival plus a steady stream of standalone K-pop concerts (LE SSERAFIM, Xdinary Heroes and more).",
+    address: "127 Gonghangmunhwa-ro, Jung-gu, Incheon",
+  },
 ];
 
 const CATEGORIES = [
