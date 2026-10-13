@@ -50,6 +50,7 @@ function renderCityToggle(containerId, onPick) {
       renderCityToggle("city-toggle-list", onPick);
       if (window._leafletMap) {
         window._leafletMap.setView(city.center, city.zoom);
+        updateLabelVisibility();
       }
       onPick();
     });
@@ -103,6 +104,21 @@ function filterByCategoryAndShowMap(categoryKey) {
 
 // ---- Map ----
 let markers = [];
+// Below this zoom, name labels are hidden and only pins show — with 30+
+// spots in Seoul alone, permanent labels at the city-wide overview zoom
+// (Seoul defaults to 12) overlap into unreadable clutter. Zooming in past
+// this threshold spreads pins out enough for labels to read cleanly.
+// Pins remain tappable at every zoom regardless — only the always-on
+// label is gated, so no information is lost, just decluttered.
+const LABEL_ZOOM_THRESHOLD = 14;
+
+function updateLabelVisibility() {
+  const map = window._leafletMap;
+  if (!map) return;
+  const mapEl = document.getElementById("map");
+  mapEl.classList.toggle("hide-labels", map.getZoom() < LABEL_ZOOM_THRESHOLD);
+}
+
 function initMap() {
   const startCity = CITIES.find(c => c.key === activeCity) || CITIES[0];
   const map = L.map("map", { zoomControl: false }).setView(startCity.center, startCity.zoom);
@@ -112,7 +128,9 @@ function initMap() {
     attribution: "&copy; OpenStreetMap contributors",
   }).addTo(map);
   L.control.zoom({ position: "bottomright" }).addTo(map);
+  map.on("zoomend", updateLabelVisibility);
   renderMarkers();
+  updateLabelVisibility();
 }
 
 function renderMarkers() {
