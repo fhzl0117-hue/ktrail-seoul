@@ -31,7 +31,14 @@
 // (goyang-rm-mural, RM's hometown connection). A second Busan cafe was
 // searched for and not found. Incheon came up empty on both counts this
 // pass — a Minji-from-Incheon hometown lead didn't check out on
-// verification — so it's unchanged; revisit in a future pass.
+// verification.
+//
+// Incheon follow-up pass (Oct 2026): found a culture add —
+// incheon-asiad-stadium, NewJeans' "Attention" MV filming location,
+// corroborated by Incheon's own tourism office. Cafe search retried via
+// the Incheon-native-idol angle (Minho/SHINee, Hyoyeon/Girls' Generation
+// are both confirmed Incheon-born) — no family-run business found for
+// either, so the cafe gap remains; revisit in a future pass.
 
 const CITIES = [
   { key: "seoul", label: "Seoul", center: [37.5505, 126.99], zoom: 12 },
@@ -859,6 +866,31 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "1254261659163781375",
     blurb: "Major arena at the Inspire Entertainment Resort on Yeongjongdo, near Incheon Airport — hosts HYBE's own annual Weverse Con festival plus a steady stream of standalone K-pop concerts (LE SSERAFIM, Xdinary Heroes and more).",
     address: "127 Gonghangmunhwa-ro, Jung-gu, Incheon",
+  },
+  {
+    // Added Oct 2026 — second Incheon cafe/culture pass. A cafe candidate
+    // was searched again (idol-family business, Incheon-native-idol
+    // angle via Minho/SHINee and Hyoyeon/Girls' Generation, both
+    // confirmed Incheon-born) and still came up empty — no verifiable
+    // business ownership found, so this is a culture add instead. Korean
+    // press (Informatics View travel site, Oct 2024) reports NewJeans'
+    // debut MV "Attention" (2022) was filmed here; independently
+    // corroborated by Incheon's own official tourism site
+    // (eng-itour.incheon.go.kr), which lists the stadium as the final
+    // stop on a site-visit tour specifically because of the "Attention"
+    // shoot. Built for the 2014 Incheon Asian Games, still an active
+    // public venue. Verified via Google's "인천아시아드주경기장" listing
+    // (Plus Code 8Q98GMX8+3J5, 4.3★, 1,504 reviews, operating).
+    id: "incheon-asiad-stadium",
+    name: "Incheon Asiad Main Stadium",
+    city: "incheon",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.547637,
+    lng: 126.666609,
+    placeCid: "14132670497398556508",
+    blurb: "Centerpiece stadium built for the 2014 Incheon Asian Games — the filming location for NewJeans' debut music video \"Attention\" (2022), confirmed by Incheon's own tourism office, which includes it as a stop on an official site-visit tour.",
+    address: "379-2 Yeonhui-dong, Seo-gu, Incheon",
   },
 
   // ---- Jeju ----
