@@ -100,6 +100,12 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
 .appbar h1 { font-size: 18px; }
 .appbar__sub { margin: 1px 0 0; font-size: 11px; color: var(--muted); letter-spacing: .02em; }
 
+/* Groups the language picker + theme toggle on the right so appbar__row's
+   space-between still has exactly two items (title, this group) — adding
+   the language picker (Oct 2026) alongside the pre-existing lone
+   theme-toggle button needed a wrapper rather than a third top-level item. */
+.appbar__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
 .theme-toggle {
   width: 32px; height: 32px; border-radius: 50%;
   border: 1px solid var(--line);
@@ -111,6 +117,53 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
   -webkit-tap-highlight-color: transparent;
 }
 .theme-toggle svg { width: 16px; height: 16px; display: block; }
+
+/* Language picker (Oct 2026): a globe button that opens a small dropdown
+   of the four supported languages. Positioned the same way as other
+   dropdowns on the page (.lang-picker is the positioning context,
+   .lang-menu is absolutely placed under the button) rather than a native
+   <select>, so it can match the app's own button/card styling. */
+.lang-picker { position: relative; flex-shrink: 0; }
+.lang-toggle {
+  height: 32px;
+  padding: 0 10px 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  display: flex; align-items: center; gap: 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.lang-toggle svg { width: 15px; height: 15px; display: block; flex-shrink: 0; }
+.lang-toggle span:last-child { font-size: 11px; font-weight: 700; letter-spacing: .02em; }
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  min-width: 128px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.14);
+  padding: 4px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.lang-menu[hidden] { display: none; }
+.lang-option {
+  border: none; background: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit; font-size: 13px; font-weight: 500;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.lang-option:active { background: var(--cream); }
+.lang-option--active { color: var(--terracotta); font-weight: 700; }
 
 .view {
   position: absolute;

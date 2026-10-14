@@ -2,13 +2,14 @@
 // Caches the app shell for offline use, and runtime-caches map tiles
 // as they are viewed so previously-browsed areas work without wifi.
 
-const SHELL_CACHE = "ktrail-shell-v32";
+const SHELL_CACHE = "ktrail-shell-v33";
 const TILE_CACHE = "ktrail-tiles-v1";
 
 const SHELL_FILES = [
   "./",
   "./index.html",
   "./style.css",
+  "./i18n.js",
   "./app.js",
   "./data.js",
   "./manifest.json",

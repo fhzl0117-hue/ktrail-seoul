@@ -1,5 +1,17 @@
 // K-Trail Seoul — prototype app logic
 
+// ---- Language ----
+// Must run before anything below that calls t()/tCity()/tCategoryChip()/
+// tCategoryLabel() — including the synchronous iOS install-banner check
+// further down, which fires during initial script evaluation, not from
+// an event listener. detectInitialLang()/UI_STRINGS/etc. live in i18n.js,
+// loaded before this file. The rest of the language-picker wiring (the
+// header's globe menu, setLang(), refreshAllText()) is set up in the
+// "Language picker" section further down, grouped with the other header
+// controls — only the detection itself needs to happen this early.
+currentLang = detectInitialLang();
+document.documentElement.lang = currentLang;
+
 const SAVE_KEY = "ktrail_saved_v1";
 
 function getSaved() {
@@ -42,7 +54,7 @@ function renderCityToggle(containerId, onPick) {
   CITIES.forEach(city => {
     const btn = document.createElement("button");
     btn.className = "city-btn" + (city.key === activeCity ? " city-btn--active" : "");
-    btn.textContent = city.label;
+    btn.textContent = tCity(city.key);
     btn.addEventListener("click", () => {
       if (city.key === activeCity) return;
       activeCity = city.key;
@@ -65,7 +77,7 @@ function renderChips(containerId, onPick) {
   CATEGORIES.forEach(cat => {
     const chip = document.createElement("button");
     chip.className = "chip" + (cat.key === activeCategory ? " chip--active" : "");
-    chip.textContent = cat.label;
+    chip.textContent = tCategoryChip(cat.key);
     chip.addEventListener("click", () => {
       activeCategory = cat.key;
       renderChips("chips", onPick);
@@ -188,7 +200,7 @@ function makeCard(spot) {
   card.innerHTML = `
     <div class="card__swatch" style="background:${color}">${glyph}</div>
     <div class="card__body">
-      <p class="card__cat">${spot.categoryLabel}</p>
+      <p class="card__cat">${tCategoryLabel(spot.categoryLabel)}</p>
       <p class="card__name">${spot.name}</p>
       <p class="card__blurb">${spot.blurb}</p>
     </div>`;
@@ -254,7 +266,7 @@ function openSheet(spot) {
   document.getElementById("sheet-address").textContent = spot.address;
   document.getElementById("sheet-blurb").textContent = spot.blurb;
   const catEl = document.getElementById("sheet-category");
-  catEl.textContent = spot.categoryLabel;
+  catEl.textContent = tCategoryLabel(spot.categoryLabel);
   catEl.style.background = CATEGORY_COLORS[spot.category] || "#C1502E";
   // Optional external link (Stay "Check rates", Eat/airport "View on
   // map" / "Search flights") — only rendered when the spot defines one,
@@ -263,7 +275,7 @@ function openSheet(spot) {
   const linkEl = document.getElementById("sheet-link");
   if (spot.linkUrl) {
     linkEl.href = spot.linkUrl;
-    linkEl.textContent = spot.linkLabel || "More info";
+    linkEl.textContent = spot.linkLabel ? tLinkLabel(spot.linkLabel) : t("sheetLinkMoreInfo");
     linkEl.hidden = false;
   } else {
     linkEl.hidden = true;
@@ -281,7 +293,7 @@ backdrop.addEventListener("click", closeSheet);
 function updateSaveButton() {
   const btn = document.getElementById("sheet-save");
   const saved = isSaved(currentSpot.id);
-  btn.textContent = saved ? "★ Saved" : "☆ Save";
+  btn.textContent = saved ? t("sheetSaveActive") : t("sheetSaveDefault");
   btn.classList.toggle("saved", saved);
 }
 
@@ -335,7 +347,7 @@ document.getElementById("sheet-share").addEventListener("click", async () => {
   // copy the link, with a last-resort prompt() if Clipboard API fails.
   try {
     await navigator.clipboard.writeText(url);
-    showToast("Link copied!");
+    showToast(t("toastLinkCopied"));
   } catch (e) {
     window.prompt("Copy this link:", url);
   }
@@ -448,7 +460,7 @@ async function saveCurrentViewOffline() {
   const btn = document.getElementById("offline-save");
   if (!map || !btn || btn.disabled) return;
   if (!("caches" in window)) {
-    showToast("This browser can't save for offline use");
+    showToast(t("toastOfflineUnsupported"));
     return;
   }
   const zoom = Math.round(map.getZoom());
@@ -490,7 +502,7 @@ async function saveCurrentViewOffline() {
           }
         } catch (e) { failed++; }
         done++;
-        showToast(`Saving offline view… ${done}/${urls.length}`);
+        showToast(t("toastSavingProgress").replace("{done}", done).replace("{total}", urls.length));
       }
     }
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, urls.length) }, worker));
@@ -498,7 +510,9 @@ async function saveCurrentViewOffline() {
     btn.disabled = false;
     btn.classList.remove("offline-save--busy");
   }
-  showToast(failed ? `Saved ${urls.length - failed}/${urls.length} tiles (${failed} failed)` : `Offline view saved — ${urls.length} tiles`);
+  showToast(failed
+    ? t("toastSavedPartial").replace("{ok}", urls.length - failed).replace("{total}", urls.length).replace("{failed}", failed)
+    : t("toastSavedFull").replace("{n}", urls.length));
 }
 document.getElementById("offline-save-icon").innerHTML = DOWNLOAD_ICON;
 document.getElementById("offline-save").addEventListener("click", saveCurrentViewOffline);
@@ -596,11 +610,16 @@ function showInstallBanner(mode) {
   if (!el) return;
   document.getElementById("install-banner-icon").innerHTML = INSTALL_ICON;
   document.getElementById("install-banner-text").textContent = mode === "ios"
-    ? "Install this app: tap Share, then “Add to Home Screen”"
-    : "Install K-Trail Seoul for quick, offline-ready access";
+    ? t("installIOSText")
+    : t("installPromptText");
   document.getElementById("install-banner-action").hidden = mode !== "prompt";
   el.hidden = false;
+  // Remembered so a language switch can re-render this banner's text in
+  // the new language without re-deriving iOS-vs-prompt from scratch —
+  // see refreshAllText() in the language-picker section below.
+  installBannerMode = mode;
 }
+let installBannerMode = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
@@ -624,7 +643,86 @@ if (isIOSDevice() && !isStandaloneDisplay() && !isInstallDismissed()) {
   showInstallBanner("ios");
 }
 
+// ---- Language picker ----
+// currentLang itself is already set (see the top of this file). This
+// wires the header's globe button/menu and keeps already-rendered chrome
+// in sync whenever the visitor changes language.
+const GLOBE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
+document.getElementById("lang-toggle-icon").innerHTML = GLOBE_ICON;
+
+function updateLangToggleLabel() {
+  const el = document.getElementById("lang-toggle-label");
+  if (el) el.textContent = currentLang.toUpperCase();
+}
+function renderLangMenu() {
+  const el = document.getElementById("lang-menu");
+  if (!el) return;
+  el.innerHTML = "";
+  SUPPORTED_LANGS.forEach(code => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "lang-option" + (code === currentLang ? " lang-option--active" : "");
+    btn.textContent = LANG_LABELS[code];
+    btn.addEventListener("click", () => {
+      closeLangMenu();
+      setLang(code);
+    });
+    el.appendChild(btn);
+  });
+}
+function openLangMenu() {
+  document.getElementById("lang-menu").hidden = false;
+  document.getElementById("lang-toggle").setAttribute("aria-expanded", "true");
+}
+function closeLangMenu() {
+  document.getElementById("lang-menu").hidden = true;
+  document.getElementById("lang-toggle").setAttribute("aria-expanded", "false");
+}
+document.getElementById("lang-toggle").addEventListener("click", (e) => {
+  e.stopPropagation();
+  document.getElementById("lang-menu").hidden ? openLangMenu() : closeLangMenu();
+});
+// Click anywhere outside the picker closes an open menu.
+document.addEventListener("click", (e) => {
+  const picker = document.getElementById("lang-picker");
+  if (picker && !picker.contains(e.target)) closeLangMenu();
+});
+
+function setLang(lang) {
+  if (!SUPPORTED_LANGS.includes(lang) || lang === currentLang) return;
+  currentLang = lang;
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* storage unavailable */ }
+  document.documentElement.lang = lang;
+  refreshAllText();
+}
+
+// Re-renders every piece of ALREADY-rendered UI that carries translated
+// text. applyI18n() alone only covers static markup (data-i18n attributes
+// in index.html) — anything built dynamically in JS (chips, city toggle,
+// cards, legend, an open sheet, a visible install banner) needs its own
+// re-render call here, or it would keep showing the previous language
+// until something else happened to trigger it.
+function refreshAllText() {
+  applyI18n();
+  updateLangToggleLabel();
+  renderLangMenu();
+  renderCityToggle("city-toggle", applyFilters);
+  renderCityToggle("city-toggle-list", applyFilters);
+  renderChips("chips", applyFilters);
+  renderChips("chips-list", applyFilters);
+  renderList();
+  renderLegend();
+  if (document.getElementById("view-saved").classList.contains("view--active")) renderSaved();
+  if (currentSpot && sheet.classList.contains("sheet--open")) openSheet(currentSpot);
+  if (installBannerMode && !document.getElementById("install-banner").hidden) {
+    showInstallBanner(installBannerMode);
+  }
+}
+
 // ---- Boot ----
+applyI18n();
+updateLangToggleLabel();
+renderLangMenu();
 renderCityToggle("city-toggle", applyFilters);
 renderCityToggle("city-toggle-list", applyFilters);
 renderChips("chips", applyFilters);
