@@ -344,7 +344,7 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
 .sheet-backdrop {
   position: fixed; inset: 0;
   background: rgba(27,23,18,.35);
-  z-index: 29;
+  z-index: 1002;
   opacity: 0; pointer-events: none;
   transition: opacity .2s ease;
 }
@@ -352,7 +352,7 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
 
 .sheet {
   position: fixed; left: 0; right: 0; bottom: 0;
-  z-index: 30;
+  z-index: 1003;
   background: var(--cream);
   border-radius: 20px 20px 0 0;
   padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
@@ -402,13 +402,32 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
   padding: 9px 16px;
   border-radius: 999px;
   box-shadow: 0 4px 14px rgba(0,0,0,.25);
-  z-index: 40;
+  z-index: 1004;
   opacity: 0; pointer-events: none;
   transition: opacity .2s ease, transform .2s ease;
   white-space: nowrap;
 }
 .toast--show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* Bug fix (Oct 2026) — the install banner was invisible on the Map tab
+   until you switched to another tab, reported live on a real iPhone.
+   Root cause: Leaflet's own CSS gives its internal panes z-index values
+   up to 1000 (tile pane 200, tooltip pane 650, .leaflet-top/-bottom
+   control containers 1000) — see leaflet.min.css. Neither #map nor any
+   ancestor between it and <body> sets its own z-index, so none of them
+   establish a stacking context; Leaflet's panes end up competing
+   directly against OUR page-level z-index values in the SAME (root)
+   stacking context. The appbar/tabbar never collided with this because
+   the view's top/bottom offsets keep #map's box from ever reaching into
+   their strip of the screen — but a fixed overlay like this banner (or
+   the sheet/backdrop/toast below) floats ON TOP of the view content, so
+   it DOES spatially overlap the map, and at z-index 25 it was losing to
+   the map tiles at z-index 200. Fix: push every one of this app's own
+   floating-over-the-map overlays (install banner, sheet, its backdrop,
+   toast) comfortably above Leaflet's highest value (1000) instead of
+   the low two-digit range that was fine everywhere else in the app.
+   Kept in the same relative order as before (banner < backdrop < sheet
+   < toast) so nothing about how they stack AMONG THEMSELVES changes. */
 /* PWA install banner — see the install-prompt block in app.js for when
    this shows (beforeinstallprompt on Chrome/Edge/Android, static iOS
    instructions elsewhere, never once installed or dismissed). Placed
@@ -419,7 +438,7 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
   position: fixed;
   left: 14px; right: 14px;
   bottom: calc(130px + env(safe-area-inset-bottom));
-  z-index: 25;
+  z-index: 1001;
   display: flex; align-items: center; gap: 10px;
   background: var(--surface);
   border: 1px solid var(--line);
