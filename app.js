@@ -349,6 +349,101 @@ function openSharedSpotFromUrl() {
   openSheet(spot);
 }
 
+// ---- Offline map caching (current view only) ----
+// The tile cache-first logic in sw.js already saves whatever tiles you
+// happen to pan across — but that's incidental, not something you can
+// rely on before going offline. This button makes it deliberate: tap it
+// and the tiles for exactly what's on screen right now get saved.
+//
+// Deliberately NOT a "download this whole city" button. OpenStreetMap's
+// tile usage policy (operations.osmfoundation.org/policies/tiles)
+// prohibits bulk/automated downloading — a few hundred tiles for one
+// city, fetched all at once, reads as exactly that kind of bulk scraping
+// and risks tile.openstreetmap.org rate-limiting or blocking this app's
+// requests entirely, which would break the map for every K-Trail user,
+// not just the one person who tapped "download." Capping this to the
+// current viewport keeps the request count in the same ballpark as what
+// a person panning around that same screen would trigger anyway.
+//
+// "ktrail-tiles-v1" is sw.js's TILE_CACHE name, duplicated here rather
+// than shared — app.js (page) and sw.js (service worker) are separate
+// script contexts with no direct access to each other's constants. Keep
+// the two in sync by hand if that name ever changes.
+const OFFLINE_TILE_CACHE = "ktrail-tiles-v1";
+const DOWNLOAD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>';
+const TILE_SUBDOMAINS = ["a", "b", "c"];
+// Mirrors Leaflet's own TileLayer._getSubdomain (index = |x+y| % subdomains.length)
+// so a prefetched tile's URL — and therefore its cache key — exactly matches
+// the URL Leaflet requests later when that tile actually scrolls into view.
+function tileUrl(z, x, y) {
+  const s = TILE_SUBDOMAINS[Math.abs(x + y) % TILE_SUBDOMAINS.length];
+  return `https://${s}.tile.openstreetmap.org/${z}/${x}/${y}.png`;
+}
+function lngToTileX(lng, z) { return Math.floor((lng + 180) / 360 * Math.pow(2, z)); }
+function latToTileY(lat, z) {
+  const rad = lat * Math.PI / 180;
+  return Math.floor((1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * Math.pow(2, z));
+}
+async function saveCurrentViewOffline() {
+  const map = window._leafletMap;
+  const btn = document.getElementById("offline-save");
+  if (!map || !btn || btn.disabled) return;
+  if (!("caches" in window)) {
+    showToast("This browser can't save for offline use");
+    return;
+  }
+  const zoom = Math.round(map.getZoom());
+  const bounds = map.getBounds();
+  const minX = lngToTileX(bounds.getWest(), zoom);
+  const maxX = lngToTileX(bounds.getEast(), zoom);
+  const minY = latToTileY(bounds.getNorth(), zoom);
+  const maxY = latToTileY(bounds.getSouth(), zoom);
+  const urls = [];
+  for (let x = minX; x <= maxX; x++) {
+    for (let y = minY; y <= maxY; y++) urls.push(tileUrl(zoom, x, y));
+  }
+  if (!urls.length) return;
+
+  btn.disabled = true;
+  btn.classList.add("offline-save--busy");
+  let done = 0;
+  let failed = 0;
+  try {
+    const cache = await caches.open(OFFLINE_TILE_CACHE);
+    // A small worker pool, not one request per tile at once — polite to
+    // the tile server and still finishes a screen's worth in a couple
+    // of seconds.
+    const CONCURRENCY = 4;
+    let next = 0;
+    async function worker() {
+      while (next < urls.length) {
+        const url = urls[next++];
+        try {
+          if (!(await cache.match(url))) {
+            // no-cors: tile.openstreetmap.org doesn't send CORS headers
+            // (Leaflet normally loads tiles as plain <img> requests, not
+            // fetch()). The resulting "opaque" response can't be status-
+            // checked, but it's still a valid, servable Cache Storage
+            // entry — exactly how the existing runtime tile cache in
+            // sw.js stores them too.
+            const resp = await fetch(url, { mode: "no-cors" });
+            await cache.put(url, resp);
+          }
+        } catch (e) { failed++; }
+        done++;
+        showToast(`Saving offline view… ${done}/${urls.length}`);
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, urls.length) }, worker));
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove("offline-save--busy");
+  }
+  showToast(failed ? `Saved ${urls.length - failed}/${urls.length} tiles (${failed} failed)` : `Offline view saved — ${urls.length} tiles`);
+}
+document.getElementById("offline-save-icon").innerHTML = DOWNLOAD_ICON;
+document.getElementById("offline-save").addEventListener("click", saveCurrentViewOffline);
+
 // ---- Theme (dark mode) ----
 // Three-state model: no explicit choice -> follow the OS (prefers-color-scheme,
 // handled entirely in CSS); explicit "light"/"dark" -> set data-theme on <html>

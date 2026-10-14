@@ -41,6 +41,9 @@
     <span class="search-bar__icon">&#128269;</span>
     <input type="text" id="search-input" class="search-bar__input" placeholder="Search spots…" autocomplete="off" />
     <button type="button" class="search-bar__clear" id="search-clear" hidden>&#10005;</button>
+    <button type="button" class="search-bar__offline" id="offline-save" aria-label="Save current map view for offline use" title="Save current view for offline use">
+      <span id="offline-save-icon"></span>
+    </button>
   </div>
   <div class="chips" id="chips"></div>
   <div id="map"></div>
@@ -66,7 +69,8 @@
 <main id="view-about" class="view about">
   <h2>About this prototype</h2>
   <p>This is an early skeleton for <strong>K-Trail Seoul</strong> &mdash; an offline-ready pilgrimage map for international K-pop fans visiting Korea, now covering both <strong>Seoul</strong> and <strong>Busan</strong>. Locations shown here were researched from public sources in Oct 2026 and cross-checked across 2+ sources where possible, but this is still a <strong>prototype list</strong> &mdash; verify hours, access and current addresses before relying on it to travel.</p>
-  <p>Planned: on-the-ground verification and photo credits, offline map caching for use without wifi, and deep links back to each group's dedicated site on the K-Wire Network.</p>
+  <p>Tip: on the Map tab, the download icon next to Search saves that view's map tiles for offline use — handy before you lose signal underground, on the subway, or abroad. It only saves what's on screen, not the whole city, to stay within OpenStreetMap's usage policy.</p>
+  <p>Planned: on-the-ground verification and photo credits.</p>
   <h2>What the pins mean</h2>
   <div class="legend" id="legend"></div>
   <p class="about__badge">Part of the K-Wire Network</p>

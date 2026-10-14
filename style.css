@@ -179,6 +179,19 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
 }
 .search-bar__clear[hidden] { display: none; }
 
+.search-bar__offline {
+  flex-shrink: 0;
+  width: 26px; height: 26px; border-radius: 50%;
+  border: none; background: var(--line); color: var(--muted);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.search-bar__offline svg { width: 14px; height: 14px; display: block; }
+.search-bar__offline:disabled { opacity: .5; cursor: default; }
+.search-bar__offline.offline-save--busy svg { animation: ktrail-spin 0.9s linear infinite; }
+@keyframes ktrail-spin { to { transform: rotate(360deg); } }
+
 .city-btn {
   flex: 1;
   border: none; background: none;
