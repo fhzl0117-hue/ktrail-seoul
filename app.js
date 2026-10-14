@@ -11,6 +11,7 @@
 // controls — only the detection itself needs to happen this early.
 currentLang = detectInitialLang();
 document.documentElement.lang = currentLang;
+document.documentElement.dir = isRTL(currentLang) ? "rtl" : "ltr";
 
 const SAVE_KEY = "ktrail_saved_v1";
 
@@ -390,10 +391,13 @@ function renderLegend() {
     row.type = "button";
     const color = CATEGORY_COLORS[cat.key] || "#C1502E";
     const glyph = CATEGORY_ICONS[cat.key] || "📍";
+    // Chevron direction follows reading direction — "next" points left in
+    // an RTL language (Arabic) instead of right.
+    const arrow = isRTL(currentLang) ? "&lsaquo;" : "&rsaquo;";
     row.innerHTML = `
       <span class="legend-row__icon" style="background:${color}">${glyph}</span>
       <span class="legend-row__label">${cat.label}</span>
-      <span class="legend-row__arrow">&rsaquo;</span>`;
+      <span class="legend-row__arrow">${arrow}</span>`;
     row.addEventListener("click", () => filterByCategoryAndShowMap(cat.key));
     el.appendChild(row);
   });
@@ -693,6 +697,7 @@ function setLang(lang) {
   currentLang = lang;
   try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* storage unavailable */ }
   document.documentElement.lang = lang;
+  document.documentElement.dir = isRTL(lang) ? "rtl" : "ltr";
   refreshAllText();
 }
 

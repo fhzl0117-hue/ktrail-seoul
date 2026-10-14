@@ -1,21 +1,61 @@
-// K-Trail Seoul — i18n (added Oct 2026, language-picker pass)
+// K-Trail Seoul — i18n (Oct 2026: 4-language launch, then expanded to 14
+// after a K-pop-fandom-by-country pass — see the scope note below)
 //
 // Scope, deliberately: UI chrome only (nav, buttons, labels, About copy).
 // Spot `name`, `blurb`, and `address` in data.js stay English in every
 // language — translating ~58 researched, source-checked spot descriptions
-// into 4 languages reliably (and keeping them in sync as spots are added)
-// was out of scope for this pass. Revisit if demand shows up.
+// into 14 languages reliably (and keeping them in sync as spots are added)
+// is out of scope for this pass. Revisit if demand shows up.
 //
 // Language is auto-detected from the visitor's browser/OS language
 // (navigator.languages) on first visit — no manual step required — and
 // can be overridden any time via the globe picker in the header, which is
 // then remembered (localStorage) for that visitor. Falls back to English
-// when the browser language isn't one of the four supported, since the
-// app's existing audience (before this pass) was already all-English.
+// when the browser language isn't one of the supported ones.
+//
+// Language list: the original 4 (en/ko/ja/zh) plus es/it/fr/hi/ar/id, which
+// Boss named directly, plus pt/th/vi/tr, added after researching which
+// other countries actually have the largest K-pop fan bases (Oct 2026
+// pass) — Brazil (pt), Thailand (th), Vietnam (vi) and Turkey (tr) all
+// rank in the global top tier for K-pop streaming/engagement alongside
+// the explicitly-requested set, per industry writeups (Twitter/X #KpopTwitter
+// country-tweet-volume rankings, and 2026 fan-engagement roundups citing
+// Spotify/YouTube growth by country). Malaysia (Malay) and the Philippines
+// (Filipino) also showed up in that research but were left out of this
+// pass — Malay has heavy mutual intelligibility with the Indonesian copy
+// already here, and the Philippines' K-pop fan base already consumes
+// English-language content at very high rates — revisit either if demand
+// shows up.
+//
+// `ar` (Arabic) is right-to-left — see RTL_LANGS/isRTL() below, and the
+// document.documentElement.dir wiring in app.js (initial load + setLang()).
+// Flexbox rows mirror automatically under dir="rtl" (no extra CSS needed
+// for most of the layout); style.css has a small `[dir="rtl"]` block for
+// the few spots that hardcode a physical left/right value instead of a
+// logical one. This is a good-faith RTL pass, not a native-speaker-
+// reviewed one — a real device/RTL QA pass is worth doing before leaning
+// on it heavily for an Arabic-speaking audience.
 
-const SUPPORTED_LANGS = ["en", "ko", "ja", "zh"];
-const LANG_LABELS = { en: "English", ko: "한국어", ja: "日本語", zh: "中文" };
+const SUPPORTED_LANGS = ["en", "ko", "ja", "zh", "es", "pt", "fr", "it", "id", "vi", "th", "hi", "ar", "tr"];
+const LANG_LABELS = {
+  en: "English",
+  ko: "한국어",
+  ja: "日本語",
+  zh: "中文",
+  es: "Español",
+  pt: "Português",
+  fr: "Français",
+  it: "Italiano",
+  id: "Bahasa Indonesia",
+  vi: "Tiếng Việt",
+  th: "ไทย",
+  hi: "हिन्दी",
+  ar: "العربية",
+  tr: "Türkçe",
+};
 const LANG_KEY = "ktrail_lang_v1";
+const RTL_LANGS = ["ar"];
+function isRTL(lang) { return RTL_LANGS.includes(lang); }
 
 let currentLang = "en";
 
@@ -36,6 +76,20 @@ function detectInitialLang() {
     // (Traditional included) gets routed to it rather than falling through
     // to English; revisit if Traditional-specific copy is ever added.
     if (code.startsWith("zh")) return "zh";
+    if (code.startsWith("es")) return "es";
+    // pt-BR and pt-PT both get the same (Brazilian-leaning) copy — see
+    // the pt block below; no PT-specific variant yet.
+    if (code.startsWith("pt")) return "pt";
+    if (code.startsWith("fr")) return "fr";
+    if (code.startsWith("it")) return "it";
+    // "id" is the modern ISO 639-1 code for Indonesian; "in" was the old
+    // one some older browsers/OSes still report — both map here.
+    if (code.startsWith("id") || code.startsWith("in")) return "id";
+    if (code.startsWith("vi")) return "vi";
+    if (code.startsWith("th")) return "th";
+    if (code.startsWith("hi")) return "hi";
+    if (code.startsWith("ar")) return "ar";
+    if (code.startsWith("tr")) return "tr";
     if (code.startsWith("en")) return "en";
   }
   return "en";
@@ -175,6 +229,336 @@ const UI_STRINGS = {
     aboutPinsHeading: "图钉颜色说明",
     aboutBadge: "K-Wire Network 成员站点",
   },
+  es: {
+    appSubtitle: "Guía de peregrinación K-pop",
+    themeToggleAria: "Cambiar modo oscuro",
+    langPickerAria: "Cambiar idioma",
+    searchPlaceholder: "Buscar lugares…",
+    offlineSaveAria: "Guardar vista actual para uso sin conexión",
+    listEmpty: "Ningún lugar coincide con tu búsqueda.",
+    savedEmpty: "Aún no has guardado ningún lugar. Toca la estrella de cualquier lugar para guardarlo aquí.",
+    tabMap: "Mapa",
+    tabList: "Lista",
+    tabSaved: "Guardados",
+    tabAbout: "Acerca de",
+    sheetDirections: "Cómo llegar",
+    sheetSaveDefault: "☆ Guardar",
+    sheetSaveActive: "★ Guardado",
+    sheetShare: "🔗 Compartir",
+    sheetLinkMoreInfo: "Más información",
+    installPromptText: "Instala K-Trail Seoul para un acceso rápido y sin conexión",
+    installIOSText: "Instala esta app: toca Compartir y luego “Añadir a pantalla de inicio”",
+    installActionLabel: "Instalar",
+    installDismissAria: "Cerrar",
+    toastLinkCopied: "¡Enlace copiado!",
+    toastOfflineUnsupported: "Este navegador no puede guardar contenido sin conexión",
+    toastSavingProgress: "Guardando vista sin conexión… {done}/{total}",
+    toastSavedPartial: "Guardados {ok}/{total} mosaicos ({failed} fallidos)",
+    toastSavedFull: "Vista guardada sin conexión — {n} mosaicos",
+    aboutTitle: "Acerca de K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> es un mapa de peregrinación listo para uso sin conexión, pensado para fans internacionales de K-pop que visitan Corea, con cobertura de <strong>Seúl</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> y <strong>Jeju</strong> — sedes de agencias, recintos de conciertos, cafés, lugares culturales y ahora también alojamiento y restaurantes cercanos. Cada lugar se investigó a partir de fuentes públicas y se verificó con 2 o más fuentes cuando fue posible, pero el mapa K-pop de Corea cambia rápido (las agencias se mudan, los recintos cambian) — verifica siempre el horario, el acceso y la dirección actual antes de viajar.",
+    aboutP2: "Consejo: en la pestaña Mapa, el icono de descarga junto a Buscar guarda los mosaicos del mapa de esa vista para uso sin conexión — útil antes de perder la señal bajo tierra, en el metro o en el extranjero. Solo guarda lo que ves en pantalla, no toda la ciudad, para respetar la política de uso de OpenStreetMap.",
+    aboutP3: "¿Encontraste algo desactualizado o que falta? Este mapa sigue creciendo — se planea más cobertura de alojamiento/restaurantes y ciudades adicionales.",
+    aboutPinsHeading: "Qué significan los pines",
+    aboutBadge: "Parte de K-Wire Network",
+  },
+  pt: {
+    appSubtitle: "Guia de peregrinação K-pop",
+    themeToggleAria: "Alternar modo escuro",
+    langPickerAria: "Mudar idioma",
+    searchPlaceholder: "Buscar locais…",
+    offlineSaveAria: "Salvar visualização atual para uso offline",
+    listEmpty: "Nenhum local corresponde à sua busca.",
+    savedEmpty: "Você ainda não salvou nenhum local. Toque na estrela de qualquer local para salvá-lo aqui.",
+    tabMap: "Mapa",
+    tabList: "Lista",
+    tabSaved: "Salvos",
+    tabAbout: "Sobre",
+    sheetDirections: "Como chegar",
+    sheetSaveDefault: "☆ Salvar",
+    sheetSaveActive: "★ Salvo",
+    sheetShare: "🔗 Compartilhar",
+    sheetLinkMoreInfo: "Mais informações",
+    installPromptText: "Instale o K-Trail Seoul para acesso rápido, mesmo offline",
+    installIOSText: "Instale este app: toque em Compartilhar e depois em “Adicionar à Tela de Início”",
+    installActionLabel: "Instalar",
+    installDismissAria: "Fechar",
+    toastLinkCopied: "Link copiado!",
+    toastOfflineUnsupported: "Este navegador não consegue salvar para uso offline",
+    toastSavingProgress: "Salvando visualização offline… {done}/{total}",
+    toastSavedPartial: "Salvos {ok}/{total} blocos ({failed} falharam)",
+    toastSavedFull: "Visualização offline salva — {n} blocos",
+    aboutTitle: "Sobre o K-Trail Seoul",
+    aboutP1: "O <strong>K-Trail Seoul</strong> é um mapa de peregrinação pronto para uso offline, feito para fãs internacionais de K-pop que visitam a Coreia, cobrindo <strong>Seul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> e <strong>Jeju</strong> — sedes de agências, locais de shows, cafés, pontos culturais e agora também hospedagens e restaurantes próximos. Cada local foi pesquisado a partir de fontes públicas e verificado com 2 ou mais fontes sempre que possível, mas o mapa do K-pop na Coreia muda rápido (agências se mudam, locais mudam) — sempre confira horários, acesso e o endereço atual antes de viajar.",
+    aboutP2: "Dica: na aba Mapa, o ícone de download ao lado da busca salva os blocos do mapa dessa visualização para uso offline — útil antes de perder sinal no metrô ou no exterior. Só salva o que está na tela, não a cidade inteira, para respeitar a política de uso do OpenStreetMap.",
+    aboutP3: "Encontrou algo desatualizado ou faltando? Este mapa continua crescendo — mais hospedagens/restaurantes e novas cidades estão planejados.",
+    aboutPinsHeading: "O que os pinos significam",
+    aboutBadge: "Parte da K-Wire Network",
+  },
+  fr: {
+    appSubtitle: "Guide de pèlerinage K-pop",
+    themeToggleAria: "Activer/désactiver le mode sombre",
+    langPickerAria: "Changer de langue",
+    searchPlaceholder: "Rechercher un lieu…",
+    offlineSaveAria: "Enregistrer la vue actuelle pour une utilisation hors ligne",
+    listEmpty: "Aucun lieu ne correspond à votre recherche.",
+    savedEmpty: "Aucun lieu enregistré pour l'instant. Touchez l'étoile d'un lieu pour l'enregistrer ici.",
+    tabMap: "Carte",
+    tabList: "Liste",
+    tabSaved: "Enregistrés",
+    tabAbout: "À propos",
+    sheetDirections: "Itinéraire",
+    sheetSaveDefault: "☆ Enregistrer",
+    sheetSaveActive: "★ Enregistré",
+    sheetShare: "🔗 Partager",
+    sheetLinkMoreInfo: "Plus d'infos",
+    installPromptText: "Installez K-Trail Seoul pour un accès rapide, même hors ligne",
+    installIOSText: "Installer l'application : touchez Partager, puis « Sur l'écran d'accueil »",
+    installActionLabel: "Installer",
+    installDismissAria: "Fermer",
+    toastLinkCopied: "Lien copié !",
+    toastOfflineUnsupported: "Ce navigateur ne permet pas l'enregistrement hors ligne",
+    toastSavingProgress: "Enregistrement de la vue hors ligne… {done}/{total}",
+    toastSavedPartial: "{ok}/{total} tuiles enregistrées ({failed} échecs)",
+    toastSavedFull: "Vue hors ligne enregistrée — {n} tuiles",
+    aboutTitle: "À propos de K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> est une carte de pèlerinage utilisable hors ligne, conçue pour les fans internationaux de K-pop qui visitent la Corée, couvrant <strong>Séoul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> et <strong>Jeju</strong> — sièges d'agences, salles de concert, cafés, lieux culturels et désormais hébergements et restaurants à proximité. Chaque lieu a été recherché à partir de sources publiques et recoupé avec au moins 2 sources lorsque possible, mais la carte K-pop de Corée évolue vite (déménagements d'agences, changements de salles) — vérifiez toujours les horaires, l'accès et l'adresse actuelle avant de vous y rendre.",
+    aboutP2: "Astuce : dans l'onglet Carte, l'icône de téléchargement à côté de la recherche enregistre les tuiles de cette vue pour une utilisation hors ligne — pratique avant de perdre le signal dans le métro ou à l'étranger. Seul ce qui est affiché à l'écran est enregistré, pas la ville entière, afin de respecter la politique d'utilisation d'OpenStreetMap.",
+    aboutP3: "Vous avez trouvé une information obsolète ou manquante ? Cette carte continue de s'enrichir — davantage d'hébergements/restaurants et de nouvelles villes sont prévus.",
+    aboutPinsHeading: "Signification des épingles",
+    aboutBadge: "Fait partie de K-Wire Network",
+  },
+  it: {
+    appSubtitle: "Guida al pellegrinaggio K-pop",
+    themeToggleAria: "Attiva/disattiva modalità scura",
+    langPickerAria: "Cambia lingua",
+    searchPlaceholder: "Cerca luoghi…",
+    offlineSaveAria: "Salva la vista attuale per l'uso offline",
+    listEmpty: "Nessun luogo corrisponde alla tua ricerca.",
+    savedEmpty: "Non hai ancora salvato nessun luogo. Tocca la stella su un luogo per salvarlo qui.",
+    tabMap: "Mappa",
+    tabList: "Elenco",
+    tabSaved: "Salvati",
+    tabAbout: "Info",
+    sheetDirections: "Indicazioni",
+    sheetSaveDefault: "☆ Salva",
+    sheetSaveActive: "★ Salvato",
+    sheetShare: "🔗 Condividi",
+    sheetLinkMoreInfo: "Maggiori info",
+    installPromptText: "Installa K-Trail Seoul per un accesso rapido e offline",
+    installIOSText: "Installa l'app: tocca Condividi, poi “Aggiungi a Home”",
+    installActionLabel: "Installa",
+    installDismissAria: "Chiudi",
+    toastLinkCopied: "Link copiato!",
+    toastOfflineUnsupported: "Questo browser non supporta il salvataggio offline",
+    toastSavingProgress: "Salvataggio vista offline… {done}/{total}",
+    toastSavedPartial: "Salvati {ok}/{total} tile ({failed} falliti)",
+    toastSavedFull: "Vista offline salvata — {n} tile",
+    aboutTitle: "Informazioni su K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> è una mappa di pellegrinaggio utilizzabile offline, pensata per i fan internazionali del K-pop in visita in Corea, con copertura di <strong>Seoul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> e <strong>Jeju</strong> — sedi delle agenzie, luoghi per concerti, caffè, punti culturali e ora anche hotel e ristoranti nelle vicinanze. Ogni luogo è stato verificato tramite fonti pubbliche e, dove possibile, incrociato con 2 o più fonti, ma la mappa K-pop della Corea cambia rapidamente (le agenzie si trasferiscono, i luoghi cambiano) — verifica sempre orari, accessibilità e indirizzo attuale prima di partire.",
+    aboutP2: "Suggerimento: nella scheda Mappa, l'icona di download accanto alla ricerca salva le tile della mappa di quella vista per l'uso offline — utile prima di perdere il segnale in metropolitana o all'estero. Viene salvato solo ciò che è visibile a schermo, non l'intera città, per rispettare la policy d'uso di OpenStreetMap.",
+    aboutP3: "Hai trovato qualcosa di non aggiornato o mancante? Questa mappa continua a crescere — sono previste più informazioni su hotel/ristoranti e nuove città.",
+    aboutPinsHeading: "Cosa significano i pin",
+    aboutBadge: "Parte di K-Wire Network",
+  },
+  id: {
+    appSubtitle: "Panduan ziarah K-pop",
+    themeToggleAria: "Alihkan mode gelap",
+    langPickerAria: "Ubah bahasa",
+    searchPlaceholder: "Cari lokasi…",
+    offlineSaveAria: "Simpan tampilan saat ini untuk digunakan offline",
+    listEmpty: "Tidak ada lokasi yang cocok dengan pencarianmu.",
+    savedEmpty: "Belum ada lokasi tersimpan. Ketuk ikon bintang di lokasi mana pun untuk menyimpannya di sini.",
+    tabMap: "Peta",
+    tabList: "Daftar",
+    tabSaved: "Tersimpan",
+    tabAbout: "Tentang",
+    sheetDirections: "Petunjuk arah",
+    sheetSaveDefault: "☆ Simpan",
+    sheetSaveActive: "★ Tersimpan",
+    sheetShare: "🔗 Bagikan",
+    sheetLinkMoreInfo: "Info lebih lanjut",
+    installPromptText: "Pasang K-Trail Seoul untuk akses cepat dan siap offline",
+    installIOSText: "Pasang aplikasi ini: ketuk Bagikan, lalu pilih “Tambahkan ke Layar Utama”",
+    installActionLabel: "Pasang",
+    installDismissAria: "Tutup",
+    toastLinkCopied: "Tautan disalin!",
+    toastOfflineUnsupported: "Browser ini tidak dapat menyimpan untuk penggunaan offline",
+    toastSavingProgress: "Menyimpan tampilan offline… {done}/{total}",
+    toastSavedPartial: "Tersimpan {ok}/{total} ubin ({failed} gagal)",
+    toastSavedFull: "Tampilan offline tersimpan — {n} ubin",
+    aboutTitle: "Tentang K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> adalah peta ziarah siap-offline untuk penggemar K-pop internasional yang berkunjung ke Korea, mencakup <strong>Seoul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong>, dan <strong>Jeju</strong> — kantor pusat agensi, venue konser, kafe, titik budaya, dan kini juga penginapan serta tempat makan di sekitarnya. Setiap lokasi diteliti dari sumber publik dan, jika memungkinkan, diperiksa silang dengan 2+ sumber, tetapi peta K-pop Korea berubah cepat (agensi pindah, venue berganti) — selalu periksa kembali jam operasional, akses, dan alamat terkini sebelum bepergian.",
+    aboutP2: "Tips: di tab Peta, ikon unduh di samping Cari menyimpan ubin peta tampilan tersebut untuk digunakan offline — berguna sebelum sinyal hilang di bawah tanah, di kereta, atau di luar negeri. Hanya menyimpan apa yang terlihat di layar, bukan seluruh kota, agar sesuai dengan kebijakan penggunaan OpenStreetMap.",
+    aboutP3: "Menemukan info yang usang atau hilang? Peta ini terus berkembang — lebih banyak cakupan penginapan/tempat makan dan kota tambahan sedang direncanakan.",
+    aboutPinsHeading: "Arti warna pin",
+    aboutBadge: "Bagian dari K-Wire Network",
+  },
+  vi: {
+    appSubtitle: "Cẩm nang hành hương K-pop",
+    themeToggleAria: "Chuyển chế độ tối",
+    langPickerAria: "Đổi ngôn ngữ",
+    searchPlaceholder: "Tìm địa điểm…",
+    offlineSaveAria: "Lưu chế độ xem hiện tại để dùng ngoại tuyến",
+    listEmpty: "Không có địa điểm nào khớp với tìm kiếm của bạn.",
+    savedEmpty: "Bạn chưa lưu địa điểm nào. Chạm vào biểu tượng ngôi sao ở bất kỳ địa điểm nào để lưu vào đây.",
+    tabMap: "Bản đồ",
+    tabList: "Danh sách",
+    tabSaved: "Đã lưu",
+    tabAbout: "Giới thiệu",
+    sheetDirections: "Chỉ đường",
+    sheetSaveDefault: "☆ Lưu",
+    sheetSaveActive: "★ Đã lưu",
+    sheetShare: "🔗 Chia sẻ",
+    sheetLinkMoreInfo: "Xem thêm",
+    installPromptText: "Cài đặt K-Trail Seoul để truy cập nhanh, kể cả khi ngoại tuyến",
+    installIOSText: "Cài đặt ứng dụng: chạm vào Chia sẻ, sau đó chọn “Thêm vào MH chính”",
+    installActionLabel: "Cài đặt",
+    installDismissAria: "Đóng",
+    toastLinkCopied: "Đã sao chép liên kết!",
+    toastOfflineUnsupported: "Trình duyệt này không hỗ trợ lưu ngoại tuyến",
+    toastSavingProgress: "Đang lưu chế độ xem ngoại tuyến… {done}/{total}",
+    toastSavedPartial: "Đã lưu {ok}/{total} ô bản đồ ({failed} lỗi)",
+    toastSavedFull: "Đã lưu chế độ xem ngoại tuyến — {n} ô bản đồ",
+    aboutTitle: "Giới thiệu về K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> là bản đồ hành hương sẵn sàng dùng ngoại tuyến, dành cho fan K-pop quốc tế đến thăm Hàn Quốc, bao phủ <strong>Seoul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> và <strong>Jeju</strong> — trụ sở công ty quản lý, địa điểm tổ chức concert, quán cà phê, điểm văn hóa, và giờ đây cả chỗ ở và quán ăn gần đó. Mỗi địa điểm được nghiên cứu từ các nguồn công khai và đối chiếu với 2 nguồn trở lên khi có thể, nhưng bản đồ K-pop của Hàn Quốc thay đổi nhanh (công ty quản lý chuyển địa điểm, địa điểm biểu diễn thay đổi) — hãy luôn kiểm tra lại giờ mở cửa, khả năng tiếp cận và địa chỉ hiện tại trước khi đi.",
+    aboutP2: "Mẹo: ở tab Bản đồ, biểu tượng tải xuống cạnh ô tìm kiếm sẽ lưu các ô bản đồ của khung nhìn đó để dùng ngoại tuyến — hữu ích trước khi mất sóng dưới lòng đất, trên tàu điện ngầm, hoặc ở nước ngoài. Chỉ lưu phần hiển thị trên màn hình, không lưu toàn bộ thành phố, để tuân thủ chính sách sử dụng của OpenStreetMap.",
+    aboutP3: "Thấy thông tin nào lỗi thời hoặc còn thiếu? Bản đồ này vẫn đang tiếp tục mở rộng — sẽ có thêm thông tin chỗ ở/quán ăn và các thành phố khác.",
+    aboutPinsHeading: "Ý nghĩa các ghim",
+    aboutBadge: "Một phần của K-Wire Network",
+  },
+  th: {
+    appSubtitle: "คู่มือตามรอยสถานที่ K-pop",
+    themeToggleAria: "สลับโหมดมืด",
+    langPickerAria: "เปลี่ยนภาษา",
+    searchPlaceholder: "ค้นหาสถานที่…",
+    offlineSaveAria: "บันทึกมุมมองปัจจุบันไว้ใช้งานออฟไลน์",
+    listEmpty: "ไม่พบสถานที่ที่ตรงกับการค้นหาของคุณ",
+    savedEmpty: "ยังไม่มีสถานที่ที่บันทึกไว้ แตะไอคอนดาวที่สถานที่ใดก็ได้เพื่อบันทึกไว้ที่นี่",
+    tabMap: "แผนที่",
+    tabList: "รายการ",
+    tabSaved: "บันทึกไว้",
+    tabAbout: "เกี่ยวกับ",
+    sheetDirections: "เส้นทาง",
+    sheetSaveDefault: "☆ บันทึก",
+    sheetSaveActive: "★ บันทึกแล้ว",
+    sheetShare: "🔗 แชร์",
+    sheetLinkMoreInfo: "ข้อมูลเพิ่มเติม",
+    installPromptText: "ติดตั้ง K-Trail Seoul เพื่อเข้าถึงได้เร็วและใช้งานออฟไลน์ได้",
+    installIOSText: "ติดตั้งแอปนี้: แตะปุ่มแชร์ แล้วเลือก “เพิ่มไปยังหน้าจอโฮม”",
+    installActionLabel: "ติดตั้ง",
+    installDismissAria: "ปิด",
+    toastLinkCopied: "คัดลอกลิงก์แล้ว!",
+    toastOfflineUnsupported: "เบราว์เซอร์นี้ไม่รองรับการบันทึกออฟไลน์",
+    toastSavingProgress: "กำลังบันทึกมุมมองออฟไลน์… {done}/{total}",
+    toastSavedPartial: "บันทึกแล้ว {ok}/{total} ไทล์ (ล้มเหลว {failed} รายการ)",
+    toastSavedFull: "บันทึกมุมมองออฟไลน์แล้ว — {n} ไทล์",
+    aboutTitle: "เกี่ยวกับ K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> คือแผนที่ตามรอยสถานที่ K-pop ที่ใช้งานออฟไลน์ได้ ออกแบบมาสำหรับแฟน K-pop นานาชาติที่มาเที่ยวเกาหลี ครอบคลุม <strong>โซล</strong> <strong>ปูซาน</strong> <strong>โกยาง</strong> <strong>อินชอน</strong> และ <strong>เจจู</strong> — สำนักงานใหญ่ค่าย สถานที่จัดคอนเสิร์ต คาเฟ่ จุดวัฒนธรรม และตอนนี้มีที่พักและร้านอาหารใกล้เคียงด้วย ทุกสถานที่ผ่านการค้นคว้าจากแหล่งข้อมูลสาธารณะและตรวจสอบไขว้จาก 2 แหล่งขึ้นไปเท่าที่ทำได้ แต่แผนที่ K-pop ของเกาหลีเปลี่ยนแปลงเร็วมาก (ค่ายย้ายที่ สถานที่เปลี่ยนไป) — ควรตรวจสอบเวลาทำการ การเข้าถึง และที่อยู่ปัจจุบันอีกครั้งก่อนเดินทางเสมอ",
+    aboutP2: "เคล็ดลับ: ในแท็บแผนที่ ไอคอนดาวน์โหลดข้างช่องค้นหาจะบันทึกไทล์แผนที่ของมุมมองนั้นไว้ใช้งานออฟไลน์ — มีประโยชน์ก่อนสัญญาณหายในรถไฟใต้ดินหรือต่างประเทศ ระบบจะบันทึกเฉพาะส่วนที่แสดงบนหน้าจอเท่านั้น ไม่ใช่ทั้งเมือง เพื่อให้เป็นไปตามนโยบายการใช้งานของ OpenStreetMap",
+    aboutP3: "เจอข้อมูลที่ล้าสมัยหรือขาดหายไปไหม? แผนที่นี้ยังคงเติบโตต่อเนื่อง — มีแผนเพิ่มข้อมูลที่พัก/ร้านอาหารและเมืองใหม่ ๆ อีก",
+    aboutPinsHeading: "ความหมายของหมุด",
+    aboutBadge: "ส่วนหนึ่งของ K-Wire Network",
+  },
+  hi: {
+    appSubtitle: "K-पॉप तीर्थयात्रा गाइड",
+    themeToggleAria: "डार्क मोड बदलें",
+    langPickerAria: "भाषा बदलें",
+    searchPlaceholder: "स्थान खोजें…",
+    offlineSaveAria: "मौजूदा दृश्य ऑफ़लाइन उपयोग के लिए सेव करें",
+    listEmpty: "आपकी खोज से मेल खाने वाला कोई स्थान नहीं मिला।",
+    savedEmpty: "अभी तक कोई स्थान सेव नहीं किया गया। किसी भी स्थान पर स्टार आइकन दबाकर उसे यहाँ सेव करें।",
+    tabMap: "मैप",
+    tabList: "सूची",
+    tabSaved: "सेव किए गए",
+    tabAbout: "जानकारी",
+    sheetDirections: "दिशा-निर्देश",
+    sheetSaveDefault: "☆ सेव करें",
+    sheetSaveActive: "★ सेव किया गया",
+    sheetShare: "🔗 शेयर करें",
+    sheetLinkMoreInfo: "अधिक जानकारी",
+    installPromptText: "तेज़, ऑफ़लाइन एक्सेस के लिए K-Trail Seoul इंस्टॉल करें",
+    installIOSText: "ऐप इंस्टॉल करें: शेयर पर टैप करें, फिर “होम स्क्रीन पर जोड़ें” चुनें",
+    installActionLabel: "इंस्टॉल करें",
+    installDismissAria: "बंद करें",
+    toastLinkCopied: "लिंक कॉपी हो गया!",
+    toastOfflineUnsupported: "यह ब्राउज़र ऑफ़लाइन सेव करने को सपोर्ट नहीं करता",
+    toastSavingProgress: "ऑफ़लाइन दृश्य सेव हो रहा है… {done}/{total}",
+    toastSavedPartial: "{ok}/{total} टाइल सेव हुईं ({failed} असफल)",
+    toastSavedFull: "ऑफ़लाइन दृश्य सेव हो गया — {n} टाइल",
+    aboutTitle: "K-Trail Seoul के बारे में",
+    aboutP1: "<strong>K-Trail Seoul</strong> कोरिया आने वाले अंतरराष्ट्रीय K-पॉप फैंस के लिए एक ऑफ़लाइन-रेडी तीर्थयात्रा मैप है, जो <strong>सियोल</strong>, <strong>बुसान</strong>, <strong>गोयांग</strong>, <strong>इंचॉन</strong> और <strong>जेजू</strong> को कवर करता है — एजेंसी मुख्यालय, कॉन्सर्ट वेन्यू, कैफे, कल्चर स्पॉट्स, और अब आस-पास के ठहरने और खाने की जगहें भी। हर जगह सार्वजनिक स्रोतों से रिसर्च की गई है और जहाँ संभव हो वहाँ 2+ स्रोतों से क्रॉस-चेक की गई है, लेकिन कोरिया का K-पॉप मैप तेज़ी से बदलता है (एजेंसियाँ शिफ्ट होती हैं, वेन्यू बदलते हैं) — यात्रा से पहले हमेशा समय, एक्सेस और मौजूदा पता दोबारा जांच लें।",
+    aboutP2: "टिप: मैप टैब में, सर्च के बगल वाला डाउनलोड आइकन उस दृश्य के मैप टाइल्स को ऑफ़लाइन उपयोग के लिए सेव कर देता है — यह मेट्रो में या विदेश में सिग्नल जाने से पहले काम आता है। OpenStreetMap की उपयोग नीति का पालन करने के लिए यह केवल स्क्रीन पर दिख रहे हिस्से को सेव करता है, पूरे शहर को नहीं।",
+    aboutP3: "कुछ पुराना या छूटा हुआ मिला? यह मैप लगातार बढ़ रहा है — आगे और ठहरने/खाने की जगहें और नए शहर जोड़े जाने की योजना है।",
+    aboutPinsHeading: "पिन का मतलब",
+    aboutBadge: "K-Wire Network का हिस्सा",
+  },
+  ar: {
+    appSubtitle: "دليل رحلة حج K-pop",
+    themeToggleAria: "تبديل الوضع الداكن",
+    langPickerAria: "تغيير اللغة",
+    searchPlaceholder: "ابحث عن أماكن…",
+    offlineSaveAria: "حفظ العرض الحالي للاستخدام دون اتصال",
+    listEmpty: "لا توجد أماكن مطابقة لبحثك.",
+    savedEmpty: "لم تحفظ أي مكان بعد. اضغط على نجمة أي مكان لحفظه هنا.",
+    tabMap: "الخريطة",
+    tabList: "القائمة",
+    tabSaved: "المحفوظات",
+    tabAbout: "حول",
+    sheetDirections: "الاتجاهات",
+    sheetSaveDefault: "☆ حفظ",
+    sheetSaveActive: "★ محفوظ",
+    sheetShare: "🔗 مشاركة",
+    sheetLinkMoreInfo: "مزيد من المعلومات",
+    installPromptText: "ثبّت K-Trail Seoul للوصول السريع دون اتصال بالإنترنت",
+    installIOSText: "لتثبيت التطبيق: اضغط على مشاركة، ثم اختر “إضافة إلى الشاشة الرئيسية”",
+    installActionLabel: "تثبيت",
+    installDismissAria: "إغلاق",
+    toastLinkCopied: "تم نسخ الرابط!",
+    toastOfflineUnsupported: "لا يدعم هذا المتصفح الحفظ دون اتصال",
+    toastSavingProgress: "جارٍ حفظ العرض دون اتصال… {done}/{total}",
+    toastSavedPartial: "تم حفظ {ok}/{total} بلاطة ({failed} فشلت)",
+    toastSavedFull: "تم حفظ العرض دون اتصال — {n} بلاطة",
+    aboutTitle: "حول K-Trail Seoul",
+    aboutP1: "<strong>K-Trail Seoul</strong> خريطة حج جاهزة للعمل دون اتصال، مخصصة لمعجبي K-pop الدوليين الزائرين لكوريا، وتغطي <strong>سيول</strong> و<strong>بوسان</strong> و<strong>غويانغ</strong> و<strong>إنتشون</strong> و<strong>جيجو</strong> — مقرات الوكالات، وأماكن الحفلات، والمقاهي، والمواقع الثقافية، والآن أماكن الإقامة والمطاعم القريبة أيضًا. تم البحث عن كل موقع من مصادر عامة والتحقق منه عبر مصدرين أو أكثر قدر الإمكان، لكن خريطة K-pop في كوريا تتغير بسرعة (انتقال الوكالات، تغيّر الأماكن) — تحقق دائمًا من أوقات العمل وإمكانية الوصول والعنوان الحالي قبل السفر.",
+    aboutP2: "نصيحة: في تبويب الخريطة، تحفظ أيقونة التنزيل بجانب البحث بلاطات الخريطة لهذا العرض للاستخدام دون اتصال — مفيد قبل فقدان الإشارة تحت الأرض أو في المترو أو في الخارج. يتم حفظ ما يظهر على الشاشة فقط، وليس المدينة بأكملها، التزامًا بسياسة استخدام OpenStreetMap.",
+    aboutP3: "وجدت معلومة قديمة أو ناقصة؟ هذه الخريطة في تطور مستمر — من المخطط إضافة المزيد من أماكن الإقامة والمطاعم ومدن جديدة.",
+    aboutPinsHeading: "ماذا تعني الدبابيس",
+    aboutBadge: "جزء من شبكة K-Wire",
+  },
+  tr: {
+    appSubtitle: "K-pop hac rehberi",
+    themeToggleAria: "Koyu modu değiştir",
+    langPickerAria: "Dili değiştir",
+    searchPlaceholder: "Mekan ara…",
+    offlineSaveAria: "Mevcut görünümü çevrimdışı kullanım için kaydet",
+    listEmpty: "Aramanızla eşleşen bir mekan bulunamadı.",
+    savedEmpty: "Henüz kaydedilmiş bir mekan yok. Herhangi bir mekandaki yıldız simgesine dokunarak buraya kaydedin.",
+    tabMap: "Harita",
+    tabList: "Liste",
+    tabSaved: "Kayıtlılar",
+    tabAbout: "Hakkında",
+    sheetDirections: "Yol tarifi",
+    sheetSaveDefault: "☆ Kaydet",
+    sheetSaveActive: "★ Kaydedildi",
+    sheetShare: "🔗 Paylaş",
+    sheetLinkMoreInfo: "Daha fazla bilgi",
+    installPromptText: "Hızlı, çevrimdışı erişim için K-Trail Seoul'u yükleyin",
+    installIOSText: "Bu uygulamayı yükleyin: Paylaş'a dokunun, ardından “Ana Ekrana Ekle”yi seçin",
+    installActionLabel: "Yükle",
+    installDismissAria: "Kapat",
+    toastLinkCopied: "Bağlantı kopyalandı!",
+    toastOfflineUnsupported: "Bu tarayıcı çevrimdışı kaydetmeyi desteklemiyor",
+    toastSavingProgress: "Çevrimdışı görünüm kaydediliyor… {done}/{total}",
+    toastSavedPartial: "{ok}/{total} karo kaydedildi ({failed} başarısız)",
+    toastSavedFull: "Çevrimdışı görünüm kaydedildi — {n} karo",
+    aboutTitle: "K-Trail Seoul Hakkında",
+    aboutP1: "<strong>K-Trail Seoul</strong>, Kore'yi ziyaret eden uluslararası K-pop hayranları için çevrimdışı kullanıma hazır bir hac haritasıdır; <strong>Seul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> ve <strong>Jeju</strong>'yu kapsar — ajans merkezleri, konser mekanları, kafeler, kültür noktaları ve artık yakındaki konaklama ve yemek mekanları da dahil. Her konum, kamuya açık kaynaklardan araştırılmış ve mümkün olduğunda 2 veya daha fazla kaynakla çapraz kontrol edilmiştir; ancak Kore'nin K-pop haritası hızla değişiyor (ajanslar taşınıyor, mekanlar değişiyor) — yola çıkmadan önce çalışma saatlerini, erişimi ve güncel adresi her zaman tekrar kontrol edin.",
+    aboutP2: "İpucu: Harita sekmesinde, Ara'nın yanındaki indirme simgesi, o görünümün harita karolarını çevrimdışı kullanım için kaydeder — metroda veya yurt dışında sinyal kaybetmeden önce işe yarar. OpenStreetMap kullanım politikasına uymak için yalnızca ekranda görünen kısım kaydedilir, tüm şehir değil.",
+    aboutP3: "Güncel olmayan veya eksik bir şey mi buldunuz? Bu harita büyümeye devam ediyor — daha fazla konaklama/yemek kapsamı ve ek şehirler planlanıyor.",
+    aboutPinsHeading: "İğnelerin anlamı",
+    aboutBadge: "K-Wire Network'ün bir parçası",
+  },
 };
 
 function t(key) {
@@ -187,11 +571,11 @@ function t(key) {
 // labels for the same five keys, so data.js stays single-source for
 // coordinates/zoom and doesn't need a language-aware label itself) ----
 const CITY_LABELS = {
-  seoul: { en: "Seoul", ko: "서울", ja: "ソウル", zh: "首尔" },
-  busan: { en: "Busan", ko: "부산", ja: "釜山", zh: "釜山" },
-  goyang: { en: "Goyang", ko: "고양", ja: "高陽", zh: "高阳" },
-  incheon: { en: "Incheon", ko: "인천", ja: "仁川", zh: "仁川" },
-  jeju: { en: "Jeju", ko: "제주", ja: "済州", zh: "济州" },
+  seoul: { en: "Seoul", ko: "서울", ja: "ソウル", zh: "首尔", es: "Seúl", pt: "Seul", fr: "Séoul", it: "Seoul", id: "Seoul", vi: "Seoul", th: "โซล", hi: "सियोल", ar: "سيول", tr: "Seul" },
+  busan: { en: "Busan", ko: "부산", ja: "釜山", zh: "釜山", es: "Busan", pt: "Busan", fr: "Busan", it: "Busan", id: "Busan", vi: "Busan", th: "ปูซาน", hi: "बुसान", ar: "بوسان", tr: "Busan" },
+  goyang: { en: "Goyang", ko: "고양", ja: "高陽", zh: "高阳", es: "Goyang", pt: "Goyang", fr: "Goyang", it: "Goyang", id: "Goyang", vi: "Goyang", th: "โกยาง", hi: "गोयांग", ar: "غويانغ", tr: "Goyang" },
+  incheon: { en: "Incheon", ko: "인천", ja: "仁川", zh: "仁川", es: "Incheon", pt: "Incheon", fr: "Incheon", it: "Incheon", id: "Incheon", vi: "Incheon", th: "อินชอน", hi: "इंचॉन", ar: "إنتشون", tr: "Incheon" },
+  jeju: { en: "Jeju", ko: "제주", ja: "済州", zh: "济州", es: "Jeju", pt: "Jeju", fr: "Jeju", it: "Jeju", id: "Jeju", vi: "Jeju", th: "เจจู", hi: "जेजू", ar: "جيجو", tr: "Jeju" },
 };
 function tCity(cityKey) {
   const map = CITY_LABELS[cityKey];
@@ -202,14 +586,14 @@ function tCity(cityKey) {
 // ---- Category chip / legend labels (the short form, keyed by the same
 // `key` CATEGORIES already uses in data.js) ----
 const CATEGORY_CHIP_LABELS = {
-  all: { en: "All", ko: "전체", ja: "すべて", zh: "全部" },
-  agency: { en: "Agencies", ko: "소속사", ja: "事務所", zh: "经纪公司" },
-  shopping: { en: "Shopping", ko: "쇼핑", ja: "ショッピング", zh: "购物" },
-  culture: { en: "Culture", ko: "문화", ja: "カルチャー", zh: "文化" },
-  cafe: { en: "Cafes", ko: "카페", ja: "カフェ", zh: "咖啡馆" },
-  venue: { en: "Venues", ko: "공연장", ja: "会場", zh: "场馆" },
-  stay: { en: "Stay", ko: "숙박", ja: "宿泊", zh: "住宿" },
-  eat: { en: "Eat", ko: "맛집", ja: "グルメ", zh: "美食" },
+  all: { en: "All", ko: "전체", ja: "すべて", zh: "全部", es: "Todos", pt: "Todos", fr: "Tous", it: "Tutti", id: "Semua", vi: "Tất cả", th: "ทั้งหมด", hi: "सभी", ar: "الكل", tr: "Tümü" },
+  agency: { en: "Agencies", ko: "소속사", ja: "事務所", zh: "经纪公司", es: "Agencias", pt: "Agências", fr: "Agences", it: "Agenzie", id: "Agensi", vi: "Công ty quản lý", th: "ค่าย", hi: "एजेंसियाँ", ar: "الوكالات", tr: "Ajanslar" },
+  shopping: { en: "Shopping", ko: "쇼핑", ja: "ショッピング", zh: "购物", es: "Compras", pt: "Compras", fr: "Shopping", it: "Shopping", id: "Belanja", vi: "Mua sắm", th: "ช้อปปิ้ง", hi: "शॉपिंग", ar: "التسوق", tr: "Alışveriş" },
+  culture: { en: "Culture", ko: "문화", ja: "カルチャー", zh: "文化", es: "Cultura", pt: "Cultura", fr: "Culture", it: "Cultura", id: "Budaya", vi: "Văn hóa", th: "วัฒนธรรม", hi: "संस्कृति", ar: "الثقافة", tr: "Kültür" },
+  cafe: { en: "Cafes", ko: "카페", ja: "カフェ", zh: "咖啡馆", es: "Cafeterías", pt: "Cafés", fr: "Cafés", it: "Caffè", id: "Kafe", vi: "Quán cà phê", th: "คาเฟ่", hi: "कैफे", ar: "المقاهي", tr: "Kafeler" },
+  venue: { en: "Venues", ko: "공연장", ja: "会場", zh: "场馆", es: "Recintos", pt: "Locais", fr: "Salles", it: "Luoghi", id: "Venue", vi: "Địa điểm", th: "สถานที่จัดงาน", hi: "वेन्यू", ar: "الأماكن", tr: "Mekanlar" },
+  stay: { en: "Stay", ko: "숙박", ja: "宿泊", zh: "住宿", es: "Alojamiento", pt: "Hospedagem", fr: "Hébergement", it: "Alloggio", id: "Penginapan", vi: "Chỗ ở", th: "ที่พัก", hi: "ठहरना", ar: "الإقامة", tr: "Konaklama" },
+  eat: { en: "Eat", ko: "맛집", ja: "グルメ", zh: "美食", es: "Comer", pt: "Comer", fr: "Manger", it: "Mangiare", id: "Makan", vi: "Ăn uống", th: "ร้านอาหาร", hi: "खाना", ar: "المطاعم", tr: "Yemek" },
 };
 function tCategoryChip(catKey) {
   const map = CATEGORY_CHIP_LABELS[catKey];
@@ -225,16 +609,16 @@ function tCategoryChip(catKey) {
 // matching entry here) just falls back to showing the English text
 // as-is rather than breaking. ----
 const CATEGORY_LABEL_TRANSLATIONS = {
-  "Agency (exterior)": { ko: "소속사 (외관)", ja: "事務所（外観のみ）", zh: "经纪公司（仅外观）" },
-  "Cafe": { ko: "카페", ja: "カフェ", zh: "咖啡馆" },
-  "Concert / Broadcast": { ko: "공연 / 방송", ja: "コンサート/放送", zh: "演唱会/录制" },
-  "Concert / Convention": { ko: "공연 / 컨벤션", ja: "コンサート/コンベンション", zh: "演唱会/展会" },
-  "Concert / Culture": { ko: "공연 / 문화", ja: "コンサート/カルチャー", zh: "演唱会/文化" },
-  "Concert Venue": { ko: "공연장", ja: "コンサート会場", zh: "演出场馆" },
-  "Culture": { ko: "문화", ja: "カルチャー", zh: "文化" },
-  "Hotel": { ko: "호텔", ja: "ホテル", zh: "酒店" },
-  "Restaurant": { ko: "레스토랑", ja: "レストラン", zh: "餐厅" },
-  "Shopping": { ko: "쇼핑", ja: "ショッピング", zh: "购物" },
+  "Agency (exterior)": { ko: "소속사 (외관)", ja: "事務所（外観のみ）", zh: "经纪公司（仅外观）", es: "Agencia (exterior)", pt: "Agência (externo)", fr: "Agence (extérieur)", it: "Agenzia (esterno)", id: "Agensi (eksterior)", vi: "Công ty quản lý (bên ngoài)", th: "ค่าย (ภายนอกเท่านั้น)", hi: "एजेंसी (बाहरी भाग)", ar: "وكالة (من الخارج)", tr: "Ajans (dış görünüm)" },
+  "Cafe": { ko: "카페", ja: "カフェ", zh: "咖啡馆", es: "Cafetería", pt: "Café", fr: "Café", it: "Caffè", id: "Kafe", vi: "Quán cà phê", th: "คาเฟ่", hi: "कैफे", ar: "مقهى", tr: "Kafe" },
+  "Concert / Broadcast": { ko: "공연 / 방송", ja: "コンサート/放送", zh: "演唱会/录制", es: "Concierto / Transmisión", pt: "Show / Transmissão", fr: "Concert / Diffusion", it: "Concerto / Trasmissione", id: "Konser / Siaran", vi: "Concert / Phát sóng", th: "คอนเสิร์ต / ออกอากาศ", hi: "कॉन्सर्ट / प्रसारण", ar: "حفل / بث", tr: "Konser / Yayın" },
+  "Concert / Convention": { ko: "공연 / 컨벤션", ja: "コンサート/コンベンション", zh: "演唱会/展会", es: "Concierto / Convención", pt: "Show / Convenção", fr: "Concert / Convention", it: "Concerto / Convention", id: "Konser / Konvensi", vi: "Concert / Hội nghị", th: "คอนเสิร์ต / งานประชุม", hi: "कॉन्सर्ट / कन्वेंशन", ar: "حفل / مؤتمر", tr: "Konser / Kongre" },
+  "Concert / Culture": { ko: "공연 / 문화", ja: "コンサート/カルチャー", zh: "演唱会/文化", es: "Concierto / Cultura", pt: "Show / Cultura", fr: "Concert / Culture", it: "Concerto / Cultura", id: "Konser / Budaya", vi: "Concert / Văn hóa", th: "คอนเสิร์ต / วัฒนธรรม", hi: "कॉन्सर्ट / संस्कृति", ar: "حفل / ثقافة", tr: "Konser / Kültür" },
+  "Concert Venue": { ko: "공연장", ja: "コンサート会場", zh: "演出场馆", es: "Recinto de conciertos", pt: "Local de shows", fr: "Salle de concert", it: "Luogo per concerti", id: "Venue Konser", vi: "Địa điểm concert", th: "สถานที่จัดคอนเสิร์ต", hi: "कॉन्सर्ट वेन्यू", ar: "قاعة حفلات", tr: "Konser mekanı" },
+  "Culture": { ko: "문화", ja: "カルチャー", zh: "文化", es: "Cultura", pt: "Cultura", fr: "Culture", it: "Cultura", id: "Budaya", vi: "Văn hóa", th: "วัฒนธรรม", hi: "संस्कृति", ar: "ثقافة", tr: "Kültür" },
+  "Hotel": { ko: "호텔", ja: "ホテル", zh: "酒店", es: "Hotel", pt: "Hotel", fr: "Hôtel", it: "Hotel", id: "Hotel", vi: "Khách sạn", th: "โรงแรม", hi: "होटल", ar: "فندق", tr: "Otel" },
+  "Restaurant": { ko: "레스토랑", ja: "レストラン", zh: "餐厅", es: "Restaurante", pt: "Restaurante", fr: "Restaurant", it: "Ristorante", id: "Restoran", vi: "Nhà hàng", th: "ร้านอาหาร", hi: "रेस्तराँ", ar: "مطعم", tr: "Restoran" },
+  "Shopping": { ko: "쇼핑", ja: "ショッピング", zh: "购物", es: "Compras", pt: "Compras", fr: "Shopping", it: "Shopping", id: "Belanja", vi: "Mua sắm", th: "ช้อปปิ้ง", hi: "शॉपिंग", ar: "تسوق", tr: "Alışveriş" },
 };
 function tCategoryLabel(enLabel) {
   if (currentLang === "en") return enLabel;
@@ -243,9 +627,9 @@ function tCategoryLabel(enLabel) {
 }
 
 const LINK_LABEL_TRANSLATIONS = {
-  "Check rates": { ko: "요금 확인", ja: "料金を見る", zh: "查看房价" },
-  "Search flights": { ko: "항공편 검색", ja: "フライトを検索", zh: "搜索航班" },
-  "View on map": { ko: "지도에서 보기", ja: "地図で見る", zh: "在地图上查看" },
+  "Check rates": { ko: "요금 확인", ja: "料金を見る", zh: "查看房价", es: "Ver precios", pt: "Ver preços", fr: "Voir les tarifs", it: "Vedi tariffe", id: "Cek tarif", vi: "Xem giá", th: "ดูราคา", hi: "दरें देखें", ar: "التحقق من الأسعار", tr: "Fiyatlara bak" },
+  "Search flights": { ko: "항공편 검색", ja: "フライトを検索", zh: "搜索航班", es: "Buscar vuelos", pt: "Buscar voos", fr: "Rechercher des vols", it: "Cerca voli", id: "Cari penerbangan", vi: "Tìm chuyến bay", th: "ค้นหาเที่ยวบิน", hi: "फ्लाइट खोजें", ar: "البحث عن رحلات", tr: "Uçuş ara" },
+  "View on map": { ko: "지도에서 보기", ja: "地図で見る", zh: "在地图上查看", es: "Ver en el mapa", pt: "Ver no mapa", fr: "Voir sur la carte", it: "Vedi sulla mappa", id: "Lihat di peta", vi: "Xem trên bản đồ", th: "ดูบนแผนที่", hi: "मैप पर देखें", ar: "عرض على الخريطة", tr: "Haritada gör" },
 };
 function tLinkLabel(enLabel) {
   if (currentLang === "en") return enLabel;
