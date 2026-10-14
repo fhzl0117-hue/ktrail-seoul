@@ -197,14 +197,50 @@ function makeCard(spot) {
 }
 
 // ---- Saved ----
+// Grouped by city (fixed CITIES order, same as the city-toggle elsewhere),
+// then sorted within each city by category and, as a tiebreaker, by most-
+// recently-saved first — so a city you just starred something in shows
+// your newest pick at the top instead of wherever it happens to sit in
+// PILGRIMAGE_SPOTS. Previously this was a single flat, unsorted list.
+function updateSavedBadge() {
+  const count = getSaved().length;
+  const badge = document.getElementById("saved-count");
+  if (!badge) return;
+  badge.textContent = count > 0 ? `(${count})` : "";
+  badge.hidden = count === 0;
+}
 function renderSaved() {
   const el = document.getElementById("saved-list");
   const empty = document.getElementById("saved-empty");
-  const savedIds = getSaved();
-  const spots = PILGRIMAGE_SPOTS.filter(s => savedIds.includes(s.id));
+  const savedIds = getSaved(); // oldest -> newest, per toggleSaved's push order
+  const recencyRank = new Map(savedIds.map((id, i) => [id, i])); // higher = more recent
+  const savedSet = new Set(savedIds);
+  const catRank = new Map(CATEGORIES.filter(c => c.key !== "all").map((c, i) => [c.key, i]));
   el.innerHTML = "";
-  spots.forEach(spot => el.appendChild(makeCard(spot)));
-  empty.style.display = spots.length === 0 ? "block" : "none";
+
+  let totalShown = 0;
+  CITIES.forEach(city => {
+    const citySpots = PILGRIMAGE_SPOTS
+      .filter(s => s.city === city.key && savedSet.has(s.id))
+      .sort((a, b) => {
+        const catDiff = (catRank.get(a.category) ?? 99) - (catRank.get(b.category) ?? 99);
+        if (catDiff !== 0) return catDiff;
+        return (recencyRank.get(b.id) ?? 0) - (recencyRank.get(a.id) ?? 0);
+      });
+    if (!citySpots.length) return;
+    totalShown += citySpots.length;
+    const section = document.createElement("div");
+    section.className = "saved-section";
+    const header = document.createElement("h3");
+    header.className = "saved-section__header";
+    header.innerHTML = `${city.label} <span class="saved-section__count">${citySpots.length}</span>`;
+    section.appendChild(header);
+    citySpots.forEach(spot => section.appendChild(makeCard(spot)));
+    el.appendChild(section);
+  });
+
+  empty.style.display = totalShown === 0 ? "block" : "none";
+  updateSavedBadge();
 }
 
 // ---- Bottom sheet ----
@@ -241,6 +277,7 @@ document.getElementById("sheet-save").addEventListener("click", () => {
   if (!currentSpot) return;
   toggleSaved(currentSpot.id);
   updateSaveButton();
+  updateSavedBadge();
 });
 
 // ---- Share ----
@@ -501,6 +538,7 @@ renderChips("chips-list", applyFilters);
 initMap();
 renderList();
 renderLegend();
+updateSavedBadge();
 openSharedSpotFromUrl();
 
 // ---- Service worker (offline support) ----
