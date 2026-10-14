@@ -256,6 +256,18 @@ function openSheet(spot) {
   const catEl = document.getElementById("sheet-category");
   catEl.textContent = spot.categoryLabel;
   catEl.style.background = CATEGORY_COLORS[spot.category] || "#C1502E";
+  // Optional external link (Stay "Check rates", Eat/airport "View on
+  // map" / "Search flights") — only rendered when the spot defines one,
+  // added in the Oct 2026 Stay/Eat/flights pass. See data.js comment on
+  // linkUrl for why these are plain search links, not affiliate links yet.
+  const linkEl = document.getElementById("sheet-link");
+  if (spot.linkUrl) {
+    linkEl.href = spot.linkUrl;
+    linkEl.textContent = spot.linkLabel || "More info";
+    linkEl.hidden = false;
+  } else {
+    linkEl.hidden = true;
+  }
   updateSaveButton();
   sheet.classList.add("sheet--open");
   backdrop.classList.add("sheet-backdrop--open");

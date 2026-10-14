@@ -6,6 +6,22 @@
 <title>K-Trail Seoul</title>
 <meta name="description" content="Offline-ready K-pop pilgrimage map for Seoul." />
 <meta name="theme-color" content="#C1502E" />
+
+<!-- Open Graph / Twitter Card — added Oct 2026 launch-readiness pass, so
+     links shared from K-Wire Network sites and social get a real preview
+     card instead of a bare URL. og:image points at the maskable 512px
+     PWA icon as a placeholder; swap for a proper 1200x630 social-share
+     image in a future pass. -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="K-Trail Seoul — K-pop Pilgrimage Guide" />
+<meta property="og:description" content="Offline-ready K-pop pilgrimage map for Seoul, Busan, Goyang, Incheon and Jeju — agencies, concert venues, cafes, and now stays and eats near every stop." />
+<meta property="og:image" content="https://fhzl0117-hue.github.io/ktrail-seoul/icon-maskable-512.png" />
+<meta property="og:url" content="https://fhzl0117-hue.github.io/ktrail-seoul/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="K-Trail Seoul — K-pop Pilgrimage Guide" />
+<meta name="twitter:description" content="Offline-ready K-pop pilgrimage map for Seoul, Busan, Goyang, Incheon and Jeju." />
+<meta name="twitter:image" content="https://fhzl0117-hue.github.io/ktrail-seoul/icon-maskable-512.png" />
+
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icon-192.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,6 +33,20 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <link rel="stylesheet" href="style.css" />
+
+<!-- Google Analytics (GA4) — added Oct 2026 launch-readiness pass so we
+     can see what the K-Wire Network launch push actually drives.
+     G-XXXXXXXXXX is a PLACEHOLDER, not a working ID — create a free GA4
+     property at analytics.google.com (Boss's own Google account; this is
+     not something that can be set up on your behalf) and swap in the
+     real Measurement ID on both lines below before announcing launch. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 </head>
 <body>
 
@@ -26,7 +56,7 @@
       <span class="appbar__mark">K</span>
       <div>
         <h1>K-Trail Seoul</h1>
-        <p class="appbar__sub">K-pop pilgrimage guide &middot; prototype</p>
+        <p class="appbar__sub">K-pop pilgrimage guide</p>
       </div>
     </div>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
@@ -67,10 +97,10 @@
 </main>
 
 <main id="view-about" class="view about">
-  <h2>About this prototype</h2>
-  <p>This is an early skeleton for <strong>K-Trail Seoul</strong> &mdash; an offline-ready pilgrimage map for international K-pop fans visiting Korea, now covering both <strong>Seoul</strong> and <strong>Busan</strong>. Locations shown here were researched from public sources in Oct 2026 and cross-checked across 2+ sources where possible, but this is still a <strong>prototype list</strong> &mdash; verify hours, access and current addresses before relying on it to travel.</p>
+  <h2>About K-Trail Seoul</h2>
+  <p><strong>K-Trail Seoul</strong> is an offline-ready pilgrimage map for international K-pop fans visiting Korea, covering <strong>Seoul</strong>, <strong>Busan</strong>, <strong>Goyang</strong>, <strong>Incheon</strong> and <strong>Jeju</strong> — agency HQs, concert venues, cafes, culture spots, and now nearby stays and eats too. Every location is researched from public sources and cross-checked across 2+ sources where possible, but Korea's K-pop map moves fast (agencies relocate, venues change) — always verify hours, access and current addresses before relying on it to travel.</p>
   <p>Tip: on the Map tab, the download icon next to Search saves that view's map tiles for offline use — handy before you lose signal underground, on the subway, or abroad. It only saves what's on screen, not the whole city, to stay within OpenStreetMap's usage policy.</p>
-  <p>Planned: on-the-ground verification and photo credits.</p>
+  <p>Found something outdated or missing? This map keeps growing — more Stay/Eat coverage and additional cities are planned.</p>
   <h2>What the pins mean</h2>
   <div class="legend" id="legend"></div>
   <p class="about__badge">Part of the K-Wire Network</p>
@@ -85,6 +115,7 @@
   <p class="sheet__blurb" id="sheet-blurb"></p>
   <div class="sheet__actions">
     <button class="btn btn--primary" id="sheet-directions">Directions</button>
+    <a class="btn btn--ghost" id="sheet-link" href="#" target="_blank" rel="noopener" hidden></a>
     <button class="btn btn--ghost" id="sheet-save">&#9734; Save</button>
     <button class="btn btn--ghost" id="sheet-share">&#128279; Share</button>
   </div>

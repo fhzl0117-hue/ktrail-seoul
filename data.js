@@ -825,6 +825,12 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "10181407952118529748",
     blurb: "Korea's main international gateway and the epicenter of \"airport fashion\" culture — idols' arrival and departure outfits are closely tracked by fans and press, and crowds regularly gather here around major group comings and goings.",
     address: "272 Gonghang-ro, Jung-gu, Incheon",
+    // Flight-search CTA, added in the same Oct 2026 launch-readiness pass
+    // as Stay/Eat — plain Google Flights search, not an affiliate link
+    // (flight affiliate margins are much thinner than hotel ones, so this
+    // is a convenience feature, not a monetization priority).
+    linkUrl: "https://www.google.com/travel/flights?q=Flights%20to%20Seoul",
+    linkLabel: "Search flights",
   },
   {
     // Added Oct 2026. Verified via Google's "상상플랫폼" listing (Plus Code
@@ -931,6 +937,137 @@ const PILGRIMAGE_SPOTS = [
     blurb: "Sprawling private garden and cafe in Seogwipo, used as a filming site for BTS Jin's variety show \"Handsomes\" — and the venue Jeju province chose for its own Hallyu fan-tourism festival in 2025 because of it.",
     address: "48 Hyodon-ro, Seogwipo, Jeju",
   },
+
+  // ---- Stay & Eat (added Oct 2026, launch-readiness pass) ----
+  // Two new categories, same research standard as everything above: real,
+  // currently-operating places, cross-checked against 2+ independent
+  // sources (official brand/Michelin pages preferred where available).
+  // Scope for this first pass: one hotel near each of Seoul's four busiest
+  // pilgrimage clusters (Seongsu, Hongdae, Myeongdong, Apgujeong/K-Star
+  // Road) plus Jamsil, and one real restaurant near four of those same
+  // clusters. Coordinates are neighborhood/building-level approximations
+  // (no GPS survey), same caveat as the rest of this file. `linkUrl` is a
+  // plain Google search query for now, NOT an affiliate link — swap for
+  // real Agoda/Booking/Klook affiliate IDs once those accounts are set up;
+  // tracked as a follow-up, not done in this pass. Busan/Incheon/Jeju Stay
+  // and Eat coverage intentionally left for a future pass.
+  {
+    id: "stay-designers-premier-seongsu",
+    name: "Hotel The Designers Premier Seongsu & Konkuk",
+    city: "seoul",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 37.5404,
+    lng: 127.0700,
+    blurb: "Mid-range hotel between Seongsu-dong and Konkuk University — a few subway stops on Line 2 from the Seongsu agency/cafe cluster (SM Studio Center, KWANGYA@SEONGSU, Onion Seongsu, Daelim Changgo).",
+    address: "Near Konkuk Univ. Station, Gwangjin-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=Hotel+The+Designers+Premier+Seongsu+Konkuk+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "stay-mercure-hongdae",
+    name: "Mercure Ambassador Seoul Hongdae",
+    city: "seoul",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 37.5536,
+    lng: 126.9229,
+    blurb: "International-chain hotel (Accor) that opened in the Hongdae/Mapo-gu area in 2020 — walking distance to Hongdae Busking Street, LINE FRIENDS SQUARE, and Thanks Nature Cafe.",
+    address: "Mapo-gu, Seoul (Hongdae area)",
+    linkUrl: "https://www.google.com/search?q=Mercure+Ambassador+Seoul+Hongdae+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "stay-ibis-myeongdong",
+    name: "ibis Ambassador Seoul Myeongdong",
+    city: "seoul",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 37.5608,
+    lng: 126.9823,
+    blurb: "Budget-friendly international chain hotel (Accor) a short walk from Myeongdong K-pop Street and Myeongdong Gyoja — one of the most transit-central options for a first Seoul trip.",
+    address: "Jung-gu, Seoul (Myeongdong area)",
+    linkUrl: "https://www.google.com/search?q=ibis+Ambassador+Seoul+Myeongdong+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "stay-andaz-gangnam",
+    name: "Andaz Seoul Gangnam by Hyatt",
+    city: "seoul",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 37.5273,
+    lng: 127.0392,
+    blurb: "Hyatt-brand hotel near Apgujeongrodeo Station, the closest major international chain to K-Star Road's Gangnamdol statues and the Cheongdam/Apgujeong agency-and-dining strip.",
+    address: "Near Apgujeongrodeo Station, Gangnam-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=Andaz+Seoul+Gangnam+by+Hyatt+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "stay-lotte-hotel-world",
+    name: "Lotte Hotel World",
+    city: "seoul",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 37.5113,
+    lng: 127.0980,
+    blurb: "Landmark hotel directly connected to Lotte World and the Jamsil complex — the most convenient base for KSPO Dome and Jamsil Indoor Stadium concert nights.",
+    address: "240 Olympic-ro, Songpa-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=Lotte+Hotel+World+Jamsil+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "eat-daelim-changgo",
+    name: "Daelim Changgo (대림창고)",
+    city: "seoul",
+    category: "eat",
+    categoryLabel: "Restaurant",
+    lat: 37.5447,
+    lng: 127.0563,
+    blurb: "Seongsu-dong's original converted-warehouse cafe-restaurant — the 1970s-factory space widely credited with kicking off the neighborhood's reinvention as Seoul's trendiest district, with a full dining menu alongside its coffee/dessert side.",
+    address: "Seongsui-ro, Seongdong-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=대림창고+성수+맛집",
+    linkLabel: "View on map",
+  },
+  {
+    id: "eat-oksang-dalbit-hongdae",
+    name: "Oksang Dalbit",
+    city: "seoul",
+    category: "eat",
+    categoryLabel: "Restaurant",
+    lat: 37.5530,
+    lng: 126.9220,
+    blurb: "Korean fried chicken spot in Seogyo-dong (Hongdae), known for garlic-pepper and flaming chicken — a solid chimaek (chicken + beer) stop after a night at Hongdae Busking Street.",
+    address: "Seogyo-dong, Mapo-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=옥상달빛+홍대+치킨",
+    linkLabel: "View on map",
+  },
+  {
+    id: "eat-myeongdong-gyoja",
+    name: "Myeongdong Gyoja",
+    city: "seoul",
+    category: "eat",
+    categoryLabel: "Restaurant",
+    lat: 37.5636,
+    lng: 126.9843,
+    blurb: "Seoul institution serving kalguksu (knife-cut noodles) and mandu since 1966 — Michelin Guide-listed, a two-minute walk off Myeongdong K-pop Street, and usually has a line out the door at lunch.",
+    address: "Myeongdong, Jung-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=명동교자+Myeongdong+Gyoja",
+    linkLabel: "View on map",
+  },
+  {
+    id: "eat-mingles",
+    name: "Mingles",
+    city: "seoul",
+    category: "eat",
+    categoryLabel: "Restaurant",
+    lat: 37.5241,
+    lng: 127.0478,
+    blurb: "Michelin-starred modern Korean fine dining in Cheongdam-dong, a short walk from K-Star Road's Gangnamdol statues — book well ahead, this is a splurge/special-occasion pick rather than a casual stop.",
+    address: "Cheongdam-dong, Gangnam-gu, Seoul",
+    linkUrl: "https://www.google.com/search?q=Mingles+restaurant+Cheongdam+Seoul",
+    linkLabel: "View on map",
+  },
 ];
 
 const CATEGORIES = [
@@ -940,6 +1077,8 @@ const CATEGORIES = [
   { key: "culture", label: "Culture" },
   { key: "cafe", label: "Cafes" },
   { key: "venue", label: "Venues" },
+  { key: "stay", label: "Stay" },
+  { key: "eat", label: "Eat" },
 ];
 
 // Design refresh (Oct 2026): these point at CSS custom properties
@@ -955,12 +1094,24 @@ const CATEGORIES = [
 // clear the lightness band, chroma floor, CVD separation (target 8,
 // worst pair ~9.5–14.7), and the normal-vision floor (worst pair
 // ~17–18, comfortably above the 15 hard gate).
+//
+// Stay/Eat (added Oct 2026): re-ran the same validator against the full
+// 7-slot set with --pairs all, not eyeballed. Light set (#005FE0 stay /
+// #95004C eat) clears every check clean (CVD worst-pair ΔE 9.5, normal-
+// vision floor 15.4). Dark set (#BB47FD stay / #B80040 eat) lands in the
+// legal "floor" band (6–8) on CVD and the sub-3:1 "relief" band on
+// contrast for the eat/agency pair — both explicitly allowed by the skill
+// ONLY because secondary encoding is already in place here (distinct
+// per-category icon + text categoryLabel + legend chip on every pin/card,
+// never color alone).
 const CATEGORY_COLORS = {
   agency: "var(--cat-agency)",
   shopping: "var(--cat-shopping)",
   culture: "var(--cat-culture)",
   cafe: "var(--cat-cafe)",
   venue: "var(--cat-venue)",
+  stay: "var(--cat-stay)",
+  eat: "var(--cat-eat)",
 };
 
 // Per-category pin/card icons. Using these (not the first letter of
@@ -978,4 +1129,6 @@ const CATEGORY_ICONS = {
   culture: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="10"/><line x1="10" y1="18" x2="10" y2="10"/><line x1="14" y1="18" x2="14" y2="10"/><line x1="18" y1="18" x2="18" y2="10"/><polygon points="3 10 12 4 21 10"/></svg>',
   cafe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><line x1="8" y1="2" x2="8" y2="4"/><line x1="12" y1="2" x2="12" y2="4"/></svg>',
   venue: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>',
+  stay: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v-7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7"/><path d="M2 18h20"/><path d="M4 9V6a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg>',
+  eat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/><line x1="5" y1="2" x2="5" y2="22"/><path d="M19 2a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h2V2Z"/><line x1="19" y1="13" x2="19" y2="22"/></svg>',
 };

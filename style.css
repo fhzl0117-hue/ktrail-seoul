@@ -23,6 +23,8 @@
   --cat-culture: #00895D;
   --cat-cafe: #C06C9C;
   --cat-venue: #009DD4;
+  --cat-stay: #005FE0;
+  --cat-eat: #95004C;
   color-scheme: light;
 }
 
@@ -38,6 +40,8 @@
     --cat-culture: #188B68;
     --cat-cafe: #D861A7;
     --cat-venue: #00A0E0;
+    --cat-stay: #BB47FD;
+    --cat-eat: #B80040;
     color-scheme: dark;
   }
 }
@@ -53,6 +57,8 @@
   --cat-culture: #188B68;
   --cat-cafe: #D861A7;
   --cat-venue: #00A0E0;
+  --cat-stay: #BB47FD;
+  --cat-eat: #B80040;
   color-scheme: dark;
 }
 
@@ -387,6 +393,13 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
   font-size: 13.5px; font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
+  /* .btn is also used on an <a> (#sheet-link, added Oct 2026) — these three
+     make the anchor variant render identically to the <button> ones. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
 }
 .btn--primary { background: var(--terracotta); color: #fff; }
 .btn--ghost { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
