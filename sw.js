@@ -2,7 +2,7 @@
 // Caches the app shell for offline use, and runtime-caches map tiles
 // as they are viewed so previously-browsed areas work without wifi.
 
-const SHELL_CACHE = "ktrail-shell-v29";
+const SHELL_CACHE = "ktrail-shell-v30";
 const TILE_CACHE = "ktrail-tiles-v1";
 
 const SHELL_FILES = [
@@ -12,6 +12,16 @@ const SHELL_FILES = [
   "./app.js",
   "./data.js",
   "./manifest.json",
+  // PWA install polish (Oct 2026): the manifest referenced these three
+  // icons from the start, but they were never actually in SHELL_FILES —
+  // fine while online (the OS fetches them live when you install), but a
+  // gap for the "offline-ready" pitch this app makes: if install ever
+  // happened to be attempted with no connectivity, the home-screen icon
+  // could come back missing. Caching them with the rest of the shell
+  // closes that gap.
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-maskable-512.png",
   "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css",
   "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js",
 ];

@@ -278,6 +278,16 @@ document.getElementById("sheet-save").addEventListener("click", () => {
   toggleSaved(currentSpot.id);
   updateSaveButton();
   updateSavedBadge();
+  // Bug fix (full feature audit, Oct 2026): if the Saved tab is the view
+  // currently showing, re-render it right away. Previously only
+  // switching tabs triggered renderSaved() (see the tab click handler
+  // above), so unsaving a spot from its own sheet while already looking
+  // at the Saved tab left a stale card on screen — the badge count would
+  // update, but the card itself stuck around until you left and came
+  // back to the tab.
+  if (document.getElementById("view-saved").classList.contains("view--active")) {
+    renderSaved();
+  }
 });
 
 // ---- Share ----
@@ -528,6 +538,78 @@ if (window.matchMedia) {
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     if (!document.documentElement.getAttribute("data-theme")) updateThemeToggleIcon();
   });
+}
+
+// ---- PWA install prompt ----
+// Chrome/Edge/Android fire `beforeinstallprompt`; capturing it (and
+// calling preventDefault) lets us trigger the native install flow from
+// our own banner instead of leaving it to the browser's own mini-infobar,
+// which is easy to miss or dismiss by accident. iOS Safari never fires
+// this event — it has no programmatic install API at all — so there we
+// show static "Share -> Add to Home Screen" instructions instead, since
+// that's the only way to install on iOS. The banner never shows once the
+// app is already running installed (standalone display mode), and a
+// dismissal is remembered (localStorage) so it doesn't nag on every
+// visit — it only comes back if storage is cleared.
+const INSTALL_DISMISSED_KEY = "ktrail_install_dismissed_v1";
+const INSTALL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
+let deferredInstallPrompt = null;
+
+function isStandaloneDisplay() {
+  return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+}
+function isInstallDismissed() {
+  try { return localStorage.getItem(INSTALL_DISMISSED_KEY) === "1"; }
+  catch (e) { return false; }
+}
+function isIOSDevice() {
+  // iPadOS 13+ reports itself as "MacIntel" in the UA string, same as a
+  // real Mac — maxTouchPoints is the only reliable way to tell them apart.
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+function hideInstallBanner() {
+  const el = document.getElementById("install-banner");
+  if (el) el.hidden = true;
+}
+function dismissInstallBanner() {
+  try { localStorage.setItem(INSTALL_DISMISSED_KEY, "1"); } catch (e) { /* storage unavailable */ }
+  hideInstallBanner();
+}
+function showInstallBanner(mode) {
+  // mode: "prompt" (deferredInstallPrompt is ready to fire) or "ios"
+  // (static instructions, no programmatic prompt available).
+  if (isStandaloneDisplay() || isInstallDismissed()) return;
+  const el = document.getElementById("install-banner");
+  if (!el) return;
+  document.getElementById("install-banner-icon").innerHTML = INSTALL_ICON;
+  document.getElementById("install-banner-text").textContent = mode === "ios"
+    ? "Install this app: tap Share, then “Add to Home Screen”"
+    : "Install K-Trail Seoul for quick, offline-ready access";
+  document.getElementById("install-banner-action").hidden = mode !== "prompt";
+  el.hidden = false;
+}
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  showInstallBanner("prompt");
+});
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  hideInstallBanner();
+});
+document.getElementById("install-banner-action").addEventListener("click", async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  try { await deferredInstallPrompt.userChoice; } catch (e) { /* ignore */ }
+  deferredInstallPrompt = null;
+  hideInstallBanner();
+});
+document.getElementById("install-banner-dismiss").addEventListener("click", dismissInstallBanner);
+
+if (isIOSDevice() && !isStandaloneDisplay() && !isInstallDismissed()) {
+  showInstallBanner("ios");
 }
 
 // ---- Boot ----

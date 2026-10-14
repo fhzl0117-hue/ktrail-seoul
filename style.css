@@ -409,6 +409,53 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
 }
 .toast--show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* PWA install banner — see the install-prompt block in app.js for when
+   this shows (beforeinstallprompt on Chrome/Edge/Android, static iOS
+   instructions elsewhere, never once installed or dismissed). Placed
+   well above the tabbar AND above where .toast appears (same bottom
+   anchor as the sheet actions) so a toast firing while this is visible
+   (e.g. tapping Share right after install is offered) doesn't overlap it. */
+.install-banner {
+  position: fixed;
+  left: 14px; right: 14px;
+  bottom: calc(130px + env(safe-area-inset-bottom));
+  z-index: 25;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 10px 10px 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+}
+.install-banner[hidden] { display: none; }
+.install-banner__icon {
+  flex-shrink: 0;
+  width: 30px; height: 30px; border-radius: 9px;
+  background: var(--terracotta);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.install-banner__icon svg { width: 16px; height: 16px; display: block; }
+.install-banner__text { flex: 1; min-width: 0; margin: 0; font-size: 12.5px; line-height: 1.35; color: var(--ink); }
+.install-banner__action {
+  flex-shrink: 0;
+  border: none; border-radius: 999px;
+  background: var(--terracotta); color: #fff;
+  font-size: 12px; font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.install-banner__action[hidden] { display: none; }
+.install-banner__dismiss {
+  flex-shrink: 0;
+  width: 22px; height: 22px; border-radius: 50%;
+  border: none; background: var(--line); color: var(--muted);
+  font-size: 10px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .leaflet-popup, .leaflet-control-attribution { font-family: 'Inter', sans-serif; font-size: 11px; }
 
 /* Permanent name label shown next to each map pin (see renderMarkers in
