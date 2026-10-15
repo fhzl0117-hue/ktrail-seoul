@@ -15,6 +15,13 @@ document.documentElement.dir = isRTL(currentLang) ? "rtl" : "ltr";
 
 const SAVE_KEY = "ktrail_saved_v1";
 
+// GA4 event helper. Safe no-op if gtag is blocked (ad blockers) or missing.
+// Only sends coarse, non-personal params (spot id, tab name, language code).
+function track(name, params) {
+  try { if (typeof gtag === "function") gtag("event", name, params || {}); }
+  catch (e) { /* analytics must never break the app */ }
+}
+
 function getSaved() {
   try { return JSON.parse(localStorage.getItem(SAVE_KEY) || "[]"); }
   catch (e) { return []; }
@@ -44,6 +51,7 @@ document.querySelectorAll(".tab").forEach(tab => {
       setTimeout(() => window._leafletMap.invalidateSize(), 50);
     }
     if (tab.dataset.view === "saved") renderSaved();
+    track("tab_view", { tab_name: tab.dataset.view });
   });
 });
 
@@ -263,6 +271,7 @@ let currentSpot = null;
 
 function openSheet(spot) {
   currentSpot = spot;
+  track("view_spot", { spot_id: spot.id });
   document.getElementById("sheet-name").textContent = spot.name;
   document.getElementById("sheet-address").textContent = spot.address;
   document.getElementById("sheet-blurb").textContent = spot.blurb;
@@ -300,7 +309,8 @@ function updateSaveButton() {
 
 document.getElementById("sheet-save").addEventListener("click", () => {
   if (!currentSpot) return;
-  toggleSaved(currentSpot.id);
+  const nowSaved = toggleSaved(currentSpot.id);
+  track(nowSaved ? "save_spot" : "unsave_spot", { spot_id: currentSpot.id, saved_total: getSaved().length });
   updateSaveButton();
   updateSavedBadge();
   // Bug fix (full feature audit, Oct 2026): if the Saved tab is the view
@@ -336,6 +346,7 @@ function showToast(msg) {
 document.getElementById("sheet-share").addEventListener("click", async () => {
   if (!currentSpot) return;
   const url = buildSpotShareUrl(currentSpot);
+  track("share_spot", { spot_id: currentSpot.id });
   // Web Share API opens the device's native share sheet (KakaoTalk,
   // Messages, etc. on mobile) — preferred whenever it's available.
   if (navigator.share) {
@@ -631,6 +642,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
   showInstallBanner("prompt");
 });
 window.addEventListener("appinstalled", () => {
+  track("pwa_installed");
   deferredInstallPrompt = null;
   hideInstallBanner();
 });
@@ -695,6 +707,7 @@ document.addEventListener("click", (e) => {
 function setLang(lang) {
   if (!SUPPORTED_LANGS.includes(lang) || lang === currentLang) return;
   currentLang = lang;
+  track("change_language", { language: lang });
   try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* storage unavailable */ }
   document.documentElement.lang = lang;
   document.documentElement.dir = isRTL(lang) ? "rtl" : "ltr";
