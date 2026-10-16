@@ -366,7 +366,7 @@ const PILGRIMAGE_SPOTS = [
     categoryLabel: "Shopping",
     lat: 37.5636,
     lng: 126.9850,
-    blurb: "Dense cluster of official and multi-brand K-pop merch stores, photocard shops, and pop-up spaces in the Myeongdong shopping district.",
+    blurb: "Dense cluster of official and multi-brand K-pop merch stores, photocard shops, and pop-up spaces in the Myeongdong shopping district. Also a KPop Demon Hunters stop: the film sets its \"Soda Pop\" performance in a Myeongdong city square (per Seoul city's location list and Netflix's guide).",
     address: "Myeongdong, Jung-gu, Seoul",
   },
   {
@@ -588,6 +588,80 @@ const PILGRIMAGE_SPOTS = [
     placeCid: "16399518467326764911",
     blurb: "Industrial-chic bakery cafe in a converted 1970s factory — the original branch that kicked off Seongsu-dong's reinvention as Seoul's trendiest neighborhood (now also SM's home turf), and a steady magnet for content shoots and idol sightings.",
     address: "8 Achasan-ro 9-gil, Seongdong-gu, Seoul",
+  },
+
+  // ---- KPop Demon Hunters locations (added Oct 2026) ----
+  // The Netflix animated film KPop Demon Hunters (2025) sparked a real
+  // Seoul fan-tourism wave. These five spots appear in BOTH Seoul city's
+  // official "background locations" list (mediahub.seoul.go.kr, 케데헌 배경지
+  // 8곳) AND Netflix's own Tudum locations guide, so each is cross-checked
+  // against two independent sources. IMPORTANT: the film is ANIMATED —
+  // nothing was filmed on location; these places inspired or appear in the
+  // film. Blurbs say "set in" / "appears in", never "filmed at". No film
+  // imagery or characters are used anywhere in K-Trail.
+  // Coordinates are landmark-level (from Wikipedia infoboxes), not
+  // GPS-surveyed, and none have a verified Google placeCid yet, so the
+  // Directions button falls back to a coordinate pin. Addresses: Seoul
+  // city list (Naksan, N Seoul Tower, Olympic Stadium), Wikipedia/Visit
+  // Gangnam (COEX). Not added this pass: Cheongdam Bridge (not a visitable
+  // spot), Gyeongbokgung, Lotte World Tower, National Museum of Korea
+  // (merch shop) — candidates for a later pass. Myeongdong, also on both
+  // lists, already exists above (myeongdong-street) and was updated in place.
+  {
+    id: "naksan-park",
+    name: "Naksan Park & City Wall Trail",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.5805,
+    lng: 127.0086,
+    blurb: "Hilltop park along Seoul's old fortress wall with a night view over the city. In KPop Demon Hunters, a night-time walk-and-talk scene is set on this wall path — Seoul city lists it among its official film-location stops. The film is animated; nothing was filmed here.",
+    address: "41 Naksan-gil, Jongno-gu, Seoul",
+  },
+  {
+    id: "n-seoul-tower",
+    name: "N Seoul Tower",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.551216,
+    lng: 126.988276,
+    blurb: "Landmark tower on top of Namsan hill. KPop Demon Hunters stages its climactic concert at a fictional stadium set here — there is no real concert venue at the tower, so the draw is the view and the setting.",
+    address: "105 Namsangongwon-gil, Yongsan-gu, Seoul",
+  },
+  {
+    // Area, not a single POI — intentionally left without a placeCid.
+    id: "bukchon-hanok-village",
+    name: "Bukchon Hanok Village",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.58306,
+    lng: 126.98361,
+    blurb: "Hillside neighborhood of traditional hanok houses in Jongno. KPop Demon Hunters' hanok-alley conversation and rooftop song scenes are inspired by Bukchon, a stop on both Seoul city's and Netflix's location guides. It is a lived-in residential area, so keep voices down and follow posted visitor rules.",
+    address: "Gyedong-gil area, Jongno-gu, Seoul",
+  },
+  {
+    id: "seoul-olympic-stadium",
+    name: "Seoul Olympic Stadium (Jamsil)",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.51389,
+    lng: 127.07361,
+    blurb: "Main stadium of the Seoul Sports Complex, the setting for the opening concert scene in KPop Demon Hunters. Seoul city notes the site is under renovation, and Korea Times reported plans to convert it into a baseball ballpark (LG Twins/Doosan Bears, 2027\u20132031) — check access before you go; the outside of the complex is the safe plan.",
+    address: "25 Olympic-ro, Songpa-gu, Seoul",
+  },
+  {
+    id: "coex-kpop-square",
+    name: "COEX K-Pop Square",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.51194,
+    lng: 127.05889,
+    blurb: "Plaza in front of a huge curved LED billboard, a regular spot for idol birthday ads and comeback announcements. It appears in KPop Demon Hunters as a backdrop for a giant LED-screen scene (the film is animated; nothing was filmed here). Free to visit and best after sunset; nearest station is Samseong (Line 2), Exit 6.",
+    address: "513 Yeongdong-daero, Gangnam-gu, Seoul",
   },
 
   // ---- Busan ----

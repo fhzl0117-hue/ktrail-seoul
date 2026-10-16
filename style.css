@@ -475,6 +475,9 @@ h1, h2, h3 { font-family: 'Lora', serif; margin: 0; }
   text-align: center;
   text-decoration: none;
 }
+/* Added Oct 2026: .btn sets display, which overrides the hidden attribute on
+   #sheet-link, so spots without a linkUrl showed an empty button. */
+.btn[hidden] { display: none; }
 .btn--primary { background: var(--terracotta); color: #fff; }
 .btn--ghost { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
 .btn--ghost.saved { background: var(--ink); color: var(--cream); border-color: var(--ink); }
