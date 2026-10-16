@@ -603,10 +603,15 @@ const PILGRIMAGE_SPOTS = [
   // GPS-surveyed, and none have a verified Google placeCid yet, so the
   // Directions button falls back to a coordinate pin. Addresses: Seoul
   // city list (Naksan, N Seoul Tower, Olympic Stadium), Wikipedia/Visit
-  // Gangnam (COEX). Not added this pass: Cheongdam Bridge (not a visitable
-  // spot), Gyeongbokgung, Lotte World Tower, National Museum of Korea
-  // (merch shop) — candidates for a later pass. Myeongdong, also on both
-  // lists, already exists above (myeongdong-street) and was updated in place.
+  // Gangnam (COEX). Myeongdong, also on both lists, already exists above
+  // (myeongdong-street) and was updated in place.
+  // Second pass (Oct 2026): Gyeongbokgung, Lotte World Tower, Cheongdam
+  // Bridge (Netflix Tudum guide; Cheongdam Bridge + Lotte also in Seoul's
+  // list) and the National Museum of Korea MU:DS shop (Seoul city media hub
+  // story on KPDH-inspired goods). Cheongdam Bridge is NOT an on-foot stop:
+  // the film scene is the subway deck, so the blurb says ride Line 7.
+  // Lotte World Tower: the production did not get rights to the real
+  // building and drew a fictional, taller one — the blurb says so.
   {
     id: "naksan-park",
     name: "Naksan Park & City Wall Trail",
@@ -662,6 +667,51 @@ const PILGRIMAGE_SPOTS = [
     lng: 127.05889,
     blurb: "Plaza in front of a huge curved LED billboard, a regular spot for idol birthday ads and comeback announcements. It appears in KPop Demon Hunters as a backdrop for a giant LED-screen scene (the film is animated; nothing was filmed here). Free to visit and best after sunset; nearest station is Samseong (Line 2), Exit 6.",
     address: "513 Yeongdong-daero, Gangnam-gu, Seoul",
+  },
+  {
+    id: "gyeongbokgung-palace",
+    name: "Gyeongbokgung Palace",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.5796,
+    lng: 126.9770,
+    blurb: "Seoul's main royal palace, built in 1395. Netflix's location guide ties it to KPop Demon Hunters through Jinu's backstory, which includes an animated glimpse of how the palace may have looked. Admission is about 3,000 KRW, free if you wear hanbok, and the palace is closed on Tuesdays (check the official site before you go).",
+    address: "161 Sajik-ro, Jongno-gu, Seoul",
+  },
+  {
+    id: "lotte-world-tower",
+    name: "Lotte World Tower & Seoul Sky",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.5125,
+    lng: 127.1028,
+    blurb: "555 m skyscraper in Jamsil with the Seoul Sky observation deck on floors 117\u2013123. In KPop Demon Hunters, the HUNTR/X penthouse is based on this area of the production map (per Netflix's guide); the studio could not secure rights to the real tower, so the film shows a fictional, even taller version. Pair it with the Olympic Stadium stop nearby.",
+    address: "300 Olympic-ro, Songpa-gu, Seoul",
+  },
+  {
+    id: "national-museum-korea-shop",
+    name: "National Museum of Korea Shop (MU:DS)",
+    city: "seoul",
+    category: "shopping",
+    categoryLabel: "Shopping",
+    lat: 37.5239,
+    lng: 126.9803,
+    blurb: "The museum's goods shop became a fan stop for tiger and magpie badges, notebooks, and traditional-pattern items inspired by the animals and props in KPop Demon Hunters. Many items sold out when Seoul city's media hub visited, so stock varies. Museum admission is free (10:00\u201318:00, until 21:00 on Wed and Sat); shop hours are not listed, so check first. Nearest station: Ichon.",
+    address: "137 Seobinggo-ro, Yongsan-gu, Seoul",
+  },
+  {
+    // Subway deck of a road bridge, not a walking destination.
+    id: "cheongdam-bridge",
+    name: "Cheongdam Bridge (Line 7 Subway Deck)",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.5261,
+    lng: 127.0642,
+    blurb: "Han River bridge linking Gangnam and Gwangjin, with Seoul Subway Line 7 running on its lower deck between Cheongdam and Jayang stations. In KPop Demon Hunters, the trio fights demons on a speeding subway train here. It is a ride, not a viewpoint: take Line 7 across rather than trying to walk the bridge.",
+    address: "Cheongdam Bridge, Gangnam-gu / Gwangjin-gu, Seoul",
   },
 
   // ---- Busan ----
