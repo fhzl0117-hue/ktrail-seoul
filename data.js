@@ -713,6 +713,17 @@ const PILGRIMAGE_SPOTS = [
     blurb: "Han River bridge linking Gangnam and Gwangjin, with Seoul Subway Line 7 running on its lower deck between Cheongdam and Jayang stations. In KPop Demon Hunters, the trio fights demons on a speeding subway train here. It is a ride, not a viewpoint: take Line 7 across rather than trying to walk the bridge.",
     address: "Cheongdam Bridge, Gangnam-gu / Gwangjin-gu, Seoul",
   },
+  {
+    id: "jayang-station",
+    name: "Jayang Station (Line 7)",
+    city: "seoul",
+    category: "culture",
+    categoryLabel: "Culture",
+    lat: 37.5315,
+    lng: 127.0667,
+    blurb: "Seoul Subway Line 7 station in Gwangjin-gu, formerly Ttukseom Resort Station. Seoul city's KPop Demon Hunters guide says the film uses it under a slightly altered station name, in the scene where the trio performs and fights demons. It sits right by the Han River and the Ttukseom swimming pool, and is one stop from the Cheongdam Bridge subway deck.",
+    address: "10 Neungdong-ro, Gwangjin-gu, Seoul",
+  },
 
   // ---- Busan ----
   {
