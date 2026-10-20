@@ -121,12 +121,13 @@ let searchQuery = "";
 const _searchCache = { q: null, hits: null };
 
 function _escRe(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+function _matchEntries(qn) {
+  if (!qn) return [];
+  return _SEARCH_ENTRIES.filter(e => e.keys.some(k => k === qn || (qn.length >= 2 && k.startsWith(qn))));
+}
 function _entryHits(qn) {
   const out = new Set();
-  if (!qn) return out;
-  _SEARCH_ENTRIES.forEach(e => {
-    if (e.keys.some(k => k === qn || (qn.length >= 2 && k.startsWith(qn)))) e.spots.forEach(id => out.add(id));
-  });
+  _matchEntries(qn).forEach(e => e.spots.forEach(id => out.add(id)));
   return out;
 }
 function _textHits(t) {
@@ -164,8 +165,10 @@ function searchHits(qRaw) {
   const raw = qRaw.trim().toLowerCase();
   if (!raw) return null;
   if (_searchCache.q === raw) return _searchCache.hits;
-  let hits = _entryHits(_searchNorm(raw));
-  if (hits.size > 0) {
+  const matched = _matchEntries(_searchNorm(raw));
+  let hits = new Set();
+  matched.forEach(e => e.spots.forEach(id => hits.add(id)));
+  if (matched.length > 0) {
     // Known artist/label/place: its related pins, plus any pin literally named that.
     if (raw.length >= 2) _textHitsName(raw).forEach(id => hits.add(id));
     _cityHits(raw).forEach(id => hits.add(id));
@@ -179,6 +182,34 @@ function searchHits(qRaw) {
   }
   _searchCache.q = raw; _searchCache.hits = hits;
   return hits;
+}
+// Shows a short note (e.g. "this agency asks fans not to visit, so there is
+// no pin") under the search bar when the query matches an index entry that
+// carries one. Built here rather than in index.html so no markup changes.
+function renderSearchNotice() {
+  // Stricter than search matching: only an exact alias or a 4+ character
+  // prefix triggers a notice, so typing "bl" on the way to "blackpink"
+  // doesn't flash a note about a different group.
+  const qn = _searchNorm(searchQuery.trim().toLowerCase());
+  const keys = new Set(_SEARCH_ENTRIES
+    .filter(e => e.notice && e.keys.some(k => k === qn || (qn.length >= 4 && k.startsWith(qn))))
+    .map(e => e.notice));
+  ["search-input", "search-input-list"].forEach(id => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    const bar = input.closest(".search-bar") || input.parentElement;
+    const noticeId = id + "-notice";
+    let el = document.getElementById(noticeId);
+    if (keys.size === 0) { if (el) el.remove(); return; }
+    if (!el) {
+      el = document.createElement("div");
+      el.id = noticeId;
+      el.setAttribute("role", "note");
+      el.style.cssText = "margin:8px 0 0;padding:8px 12px;border-radius:8px;font-size:13px;line-height:1.4;background:rgba(193,80,46,0.12);color:inherit";
+      bar.insertAdjacentElement("afterend", el);
+    }
+    el.textContent = [...keys].map(k => t(k)).join(" ");
+  });
 }
 function searchCountsByCity() {
   const hits = searchHits(searchQuery);
@@ -230,6 +261,7 @@ function filteredSpots() {
 // Re-renders both the map markers and the list — the one thing every
 // filter control (city toggle, chips, legend) needs to do after a pick.
 function applyFilters() {
+  renderSearchNotice();
   renderCityToggle("city-toggle", applyFilters);       // per-city search counts
   renderCityToggle("city-toggle-list", applyFilters);
   renderMarkers();

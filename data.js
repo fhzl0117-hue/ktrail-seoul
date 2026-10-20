@@ -332,6 +332,24 @@ const PILGRIMAGE_SPOTS = [
     address: "21 Nonhyeon-ro 151-gil, Gangnam-gu, Seoul",
   },
   {
+    // Added Oct 2026. Address confirmed by Visit Gangnam (Gangnam-gu's
+    // tourism site), allkpop (Sep 2021 move report) and Wikipedia; the
+    // coordinates come from OpenStreetMap's "판타지오 엔터테인먼트"
+    // listing at 648 Samseong-ro. No Google placeCid captured, so the
+    // "Open in Maps" link falls back to a coordinate search. ASTRO's four
+    // members renewed with Fantagio; Weki Meki disbanded and left, so it
+    // is deliberately not mentioned.
+    id: "fantagio",
+    name: "Fantagio",
+    city: "seoul",
+    category: "agency",
+    categoryLabel: "Agency (exterior)",
+    lat: 37.518036,
+    lng: 127.051067,
+    blurb: "Home to ASTRO and actors Cha Eun-woo and Kim Seon-ho, in the building that used to house SM's headquarters — exterior only. It is a working office, so check official channels before planning anything beyond a photo from the street.",
+    address: "648 Samseong-ro, Gangnam-gu, Seoul",
+  },
+  {
     id: "yg-republique",
     name: "Same Cafe (더세임)",
     city: "seoul",
@@ -1351,6 +1369,11 @@ const SEARCH_INDEX = [
   { k: ["ZEROBASEONE", "ZB1", "제로베이스원", "제베원"], s: ["wakeone"] },
   { k: ["P NATION", "PNATION", "피네이션"], s: ["p-nation"] },
   { k: ["PSY", "싸이", "Jessi", "제시", "HyunA", "현아"], s: ["p-nation"] },
+  { k: ["Fantagio", "판타지오"], s: ["fantagio"] },
+  { k: ["ASTRO", "아스트로", "Cha Eun-woo", "Cha Eunwoo", "차은우", "Kim Seon-ho", "김선호"], s: ["fantagio"] },
+  // Agencies that have asked fans not to visit: no pin on purpose. `n` is the
+  // i18n key of a short notice shown instead (see renderSearchNotice in app.js).
+  { k: ["KQ", "KQ Entertainment", "KQ엔터테인먼트", "케이큐", "ATEEZ", "에이티즈", "xikers", "싸이커스", "Block B", "블락비"], s: [], n: "noticeNoVisitKQ" },
   // --- KPop Demon Hunters (fictional group + film locations) ---
   { k: ["KPop Demon Hunters", "K-Pop Demon Hunters", "Demon Hunters", "KDH", "HUNTR/X", "HUNTRX", "Huntrix", "Golden", "Soda Pop", "케이팝 데몬 헌터스", "케데헌", "헌트릭스"],
     s: ["myeongdong-street", "naksan-park", "n-seoul-tower", "bukchon-hanok-village", "seoul-olympic-stadium", "coex-kpop-square", "gyeongbokgung-palace", "lotte-world-tower", "national-museum-korea-shop", "cheongdam-bridge", "jayang-station"] },
@@ -1402,5 +1425,6 @@ function _searchNorm(str) {
 const _SEARCH_ENTRIES = SEARCH_INDEX.map(e => ({
   keys: e.k.map(_searchNorm).filter(Boolean),
   spots: new Set(e.s),
+  notice: e.n || null,
 }));
 
