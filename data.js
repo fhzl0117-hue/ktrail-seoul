@@ -1267,3 +1267,140 @@ const CATEGORY_ICONS = {
   stay: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v-7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7"/><path d="M2 18h20"/><path d="M4 9V6a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg>',
   eat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/><line x1="5" y1="2" x2="5" y2="22"/><path d="M19 2a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h2V2Z"/><line x1="19" y1="13" x2="19" y2="22"/></svg>',
 };
+// ---- Search index (added Oct 2026) ----
+// Artist / label / place keywords → the pins they relate to. Spot `name` and
+// `blurb` are English only, so without this a search for "방탄소년단", "ive"
+// or "Jimin" either found nothing or matched the wrong text. `k` is a list
+// of aliases (English, Korean, abbreviations); matching ignores case,
+// spaces and punctuation, so "(G)I-DLE", "g idle" and "gidle" all hit the
+// same entry. `s` is the list of spot ids. Only add a spot to an entry when
+// its blurb/address supports the link — this is the "related pins" list.
+const _SM = ["sm-hq", "sm-studio-center", "kwangya-seongsu", "seongsu-dong", "onion-seongsu"];
+const SEARCH_INDEX = [
+  // --- BTS and members ---
+  { k: ["BTS", "BT21", "Bangtan", "Bangtan Boys", "Bangtan Sonyeondan", "방탄소년단", "방탄", "防弾少年団", "防弹少年团", "ARMY", "아미"],
+    s: ["hybe-hq", "line-friends-hongdae", "k-star-road-gangnamdol", "busan-asiad-stadium", "gwangalli-beach", "hwangnyeongsan", "gamcheon-culture-village", "dadaepo-beach", "zm-illennial-cafe", "goyang-rm-mural", "becke-garden"] },
+  { k: ["RM", "Kim Namjoon", "Namjoon", "알엠", "김남준", "남준"], s: ["goyang-rm-mural", "hybe-hq", "k-star-road-gangnamdol"] },
+  { k: ["Jin", "Kim Seokjin", "Seokjin", "진", "김석진", "석진"], s: ["becke-garden", "hybe-hq", "k-star-road-gangnamdol"] },
+  { k: ["Jimin", "Park Jimin", "지민", "박지민"], s: ["dadaepo-beach", "zm-illennial-cafe", "hybe-hq", "k-star-road-gangnamdol"] },
+  { k: ["Suga", "Agust D", "Min Yoongi", "Yoongi", "슈가", "민윤기", "윤기"], s: ["hybe-hq", "k-star-road-gangnamdol"] },
+  { k: ["J-Hope", "Jhope", "Jung Hoseok", "Hoseok", "제이홉", "정호석", "호석"], s: ["hybe-hq", "k-star-road-gangnamdol"] },
+  { k: ["V", "Kim Taehyung", "Taehyung", "뷔", "김태형", "태형"], s: ["hybe-hq", "k-star-road-gangnamdol"] },
+  { k: ["Jungkook", "Jeon Jungkook", "정국", "전정국"], s: ["hybe-hq", "k-star-road-gangnamdol"] },
+  // --- HYBE family ---
+  { k: ["HYBE", "Big Hit", "Bighit", "하이브", "빅히트"], s: ["hybe-hq", "ador", "source-music", "belift-lab", "pledis", "inspire-arena"] },
+  { k: ["TXT", "Tomorrow X Together", "투모로우바이투게더", "투바투"], s: ["hybe-hq"] },
+  { k: ["ENHYPEN", "엔하이픈", "엔진"], s: ["hybe-hq", "belift-lab"] },
+  { k: ["ILLIT", "아일릿"], s: ["belift-lab", "hybe-hq"] },
+  { k: ["LE SSERAFIM", "LESSERAFIM", "르세라핌", "ル・セラフィム"], s: ["hybe-hq", "source-music", "inspire-arena"] },
+  { k: ["BOYNEXTDOOR", "BND", "보이넥스트도어", "보넥도"], s: ["hybe-hq"] },
+  { k: ["NewJeans", "NJZ", "뉴진스", "ニュージーンズ"], s: ["ador", "incheon-asiad-stadium", "hwangwuchi-beach"] },
+  { k: ["ADOR", "어도어"], s: ["ador"] },
+  { k: ["Source Music", "쏘스뮤직", "소스뮤직"], s: ["source-music"] },
+  { k: ["Belift Lab", "Belift", "빌리프랩", "빌리프랩"], s: ["belift-lab"] },
+  { k: ["Pledis", "Pledis Entertainment", "플레디스"], s: ["pledis"] },
+  { k: ["SEVENTEEN", "SVT", "세븐틴", "セブンティーン", "캐럿", "Carat"], s: ["pledis"] },
+  { k: ["NU'EST", "NUEST", "뉴이스트"], s: ["pledis"] },
+  { k: ["TWS", "투어스"], s: ["pledis"] },
+  // --- SM family ---
+  { k: ["SM", "SM Entertainment", "SM엔터", "SM엔터테인먼트", "에스엠"], s: [..._SM, "bexco"] },
+  { k: ["EXO", "엑소"], s: [..._SM, "k-star-road-gangnamdol"] },
+  { k: ["NCT", "NCT 127", "NCT Dream", "NCT Wish", "엔시티"], s: _SM },
+  { k: ["aespa", "æspa", "에스파"], s: _SM },
+  { k: ["RIIZE", "라이즈"], s: _SM },
+  { k: ["Girls' Generation", "Girls Generation", "SNSD", "소녀시대"], s: [..._SM, "k-star-road-gangnamdol"] },
+  { k: ["Red Velvet", "레드벨벳"], s: _SM },
+  { k: ["SHINee", "샤이니"], s: _SM },
+  { k: ["Super Junior", "슈퍼주니어", "슈주"], s: _SM },
+  { k: ["TVXQ", "동방신기", "东方神起", "東方神起"], s: _SM },
+  // --- JYP family ---
+  { k: ["JYP", "JYP Entertainment", "제이와이피", "JYP엔터"], s: ["jyp-hq"] },
+  { k: ["TWICE", "트와이스", "トゥワイス"], s: ["jyp-hq"] },
+  { k: ["Stray Kids", "StrayKids", "SKZ", "스트레이 키즈", "스트레이키즈", "스키즈", "ストレイキッズ"], s: ["jyp-hq"] },
+  { k: ["ITZY", "있지"], s: ["jyp-hq"] },
+  { k: ["NMIXX", "엔믹스"], s: ["jyp-hq"] },
+  { k: ["DAY6", "데이식스"], s: ["jyp-hq"] },
+  { k: ["Xdinary Heroes", "엑스디너리 히어로즈", "엑디즈"], s: ["jyp-hq", "inspire-arena"] },
+  { k: ["2PM", "투피엠"], s: ["jyp-hq"] },
+  // --- YG family ---
+  { k: ["YG", "YG Entertainment", "와이지", "YG엔터"], s: ["yg-hq", "yg-republique"] },
+  { k: ["BLACKPINK", "BLINK", "블랙핑크", "블핑", "ブラックピンク"], s: ["yg-hq", "yg-republique", "goyang-stadium"] },
+  { k: ["BIGBANG", "빅뱅", "VIP"], s: ["yg-hq", "yg-republique"] },
+  { k: ["TREASURE", "트레저"], s: ["yg-hq", "yg-republique"] },
+  { k: ["BABYMONSTER", "BABY MONSTER", "베이비몬스터", "베몬"], s: ["yg-hq", "yg-republique"] },
+  { k: ["G-Dragon", "GD", "지드래곤", "권지용"], s: ["goyang-stadium"] },
+  { k: ["The Same E", "theSameE", "더세임", "더 세임"], s: ["yg-republique"] },
+  // --- Other agencies ---
+  { k: ["Starship", "Starship Entertainment", "스타쉽", "스타쉽엔터"], s: ["starship"] },
+  { k: ["IVE", "아이브", "アイヴ"], s: ["starship"] },
+  { k: ["Monsta X", "MONSTA X", "몬스타엑스", "몬엑"], s: ["starship"] },
+  { k: ["CRAVITY", "크래비티"], s: ["starship"] },
+  { k: ["Cube", "Cube Entertainment", "큐브", "큐브엔터"], s: ["cube"] },
+  { k: ["(G)I-DLE", "GIDLE", "G-IDLE", "I-DLE", "여자아이들", "아이들", "(여자)아이들"], s: ["cube"] },
+  { k: ["BTOB", "비투비"], s: ["cube", "thanks-nature-cafe"] },
+  { k: ["Yook Sungjae", "Sungjae", "육성재", "성재"], s: ["thanks-nature-cafe"] },
+  { k: ["FNC", "FNC Entertainment", "에프엔씨"], s: ["fnc"] },
+  { k: ["SF9", "에스에프나인"], s: ["fnc"] },
+  { k: ["FT Island", "FTISLAND", "FT아일랜드"], s: ["fnc"] },
+  { k: ["CNBLUE", "씨엔블루"], s: ["fnc"] },
+  { k: ["RBW", "알비더블유"], s: ["rbw"] },
+  { k: ["MAMAMOO", "Mamamoo", "마마무"], s: ["rbw"] },
+  { k: ["ONEUS", "원어스"], s: ["rbw"] },
+  { k: ["ONEWE", "원위"], s: ["rbw"] },
+  { k: ["WAKEONE", "Wake One", "웨이크원"], s: ["wakeone"] },
+  { k: ["ZEROBASEONE", "ZB1", "제로베이스원", "제베원"], s: ["wakeone"] },
+  { k: ["P NATION", "PNATION", "피네이션"], s: ["p-nation"] },
+  { k: ["PSY", "싸이", "Jessi", "제시", "HyunA", "현아"], s: ["p-nation"] },
+  // --- KPop Demon Hunters (fictional group + film locations) ---
+  { k: ["KPop Demon Hunters", "K-Pop Demon Hunters", "Demon Hunters", "KDH", "HUNTR/X", "HUNTRX", "Huntrix", "Golden", "Soda Pop", "케이팝 데몬 헌터스", "케데헌", "헌트릭스"],
+    s: ["myeongdong-street", "naksan-park", "n-seoul-tower", "bukchon-hanok-village", "seoul-olympic-stadium", "coex-kpop-square", "gyeongbokgung-palace", "lotte-world-tower", "national-museum-korea-shop", "cheongdam-bridge", "jayang-station"] },
+  // --- Shows, events, venues ---
+  { k: ["Music Bank", "뮤직뱅크", "뮤뱅"], s: ["kbs-music-bank"] },
+  { k: ["Inkigayo", "인기가요"], s: ["sbs-inkigayo"] },
+  { k: ["M Countdown", "엠카운트다운", "엠카"], s: ["cj-enm-center"] },
+  { k: ["Weverse Con", "위버스콘"], s: ["inspire-arena"] },
+  { k: ["KCON", "케이콘"], s: ["kintex"] },
+  { k: ["INK Concert", "인천 한류관광콘서트", "인천 케이팝 콘서트"], s: ["sangsang-platform"] },
+  { k: ["Busan One Asia Festival", "BOF", "부산원아시아페스티벌"], s: ["bexco"] },
+  { k: ["BIFF", "Busan International Film Festival", "부산국제영화제"], s: ["busan-cinema-center"] },
+  { k: ["Handsomes", "핸섬가이즈", "잘생긴 놈들"], s: ["becke-garden"] },
+  { k: ["airport fashion", "공항패션", "Incheon Airport", "ICN", "인천공항", "공항"], s: ["incheon-airport"] },
+  // --- Korean place names (names in data.js are English-only) ---
+  { k: ["성수", "성수동", "서울숲", "Seongsu", "Seoul Forest"], s: ["seongsu-dong", "onion-seongsu", "eat-daelim-changgo", "kwangya-seongsu", "sm-hq", "cube", "stay-designers-premier-seongsu"] },
+  { k: ["홍대", "홍대입구", "Hongdae", "Hongik"], s: ["hongdae-busking", "line-friends-hongdae", "thanks-nature-cafe", "eat-oksang-dalbit-hongdae", "stay-mercure-hongdae"] },
+  { k: ["명동", "Myeongdong"], s: ["myeongdong-street", "eat-myeongdong-gyoja", "stay-ibis-myeongdong"] },
+  { k: ["강남", "청담", "압구정", "Gangnam", "Cheongdam", "Apgujeong"], s: ["k-star-road-gangnamdol", "starship", "sm-studio-center", "eat-mingles", "stay-andaz-gangnam", "p-nation"] },
+  { k: ["잠실", "롯데월드", "Jamsil", "Lotte World"], s: ["jamsil-arena", "lotte-world-tower", "seoul-olympic-stadium", "stay-lotte-hotel-world"] },
+  { k: ["고척", "고척돔", "고척스카이돔", "Gocheok"], s: ["gocheok-skydome"] },
+  { k: ["KSPO", "케이스포돔", "올림픽공원", "올림픽체조경기장", "Olympic Park"], s: ["kspo-dome"] },
+  { k: ["상암", "디지털미디어시티", "DMC", "Sangam"], s: ["sbs-inkigayo", "cj-enm-center"] },
+  { k: ["용산", "Yongsan"], s: ["hybe-hq", "ador", "source-music", "belift-lab"] },
+  { k: ["코엑스", "삼성동", "COEX"], s: ["coex-kpop-square"] },
+  { k: ["경복궁", "Gyeongbok"], s: ["gyeongbokgung-palace"] },
+  { k: ["남산", "N서울타워", "서울타워", "Namsan"], s: ["n-seoul-tower"] },
+  { k: ["북촌", "한옥마을", "Bukchon"], s: ["bukchon-hanok-village"] },
+  { k: ["낙산", "낙산공원", "Naksan"], s: ["naksan-park"] },
+  { k: ["광안리", "광안대교", "Gwangalli"], s: ["gwangalli-beach"] },
+  { k: ["감천", "감천문화마을", "Gamcheon"], s: ["gamcheon-culture-village"] },
+  { k: ["다대포", "Dadaepo"], s: ["dadaepo-beach"] },
+  { k: ["자갈치", "Jagalchi"], s: ["jagalchi-market"] },
+  { k: ["황령산", "Hwangnyeong"], s: ["hwangnyeongsan"] },
+  { k: ["벡스코", "BEXCO"], s: ["bexco"] },
+  { k: ["아시아드", "Asiad"], s: ["busan-asiad-stadium", "incheon-asiad-stadium"] },
+  { k: ["킨텍스", "일산", "Ilsan", "KINTEX"], s: ["kintex", "goyang-stadium", "goyang-rm-mural"] },
+  { k: ["월미도", "영종도", "Wolmido", "Yeongjong"], s: ["incheon-airport", "sangsang-platform", "inspire-arena", "incheon-asiad-stadium"] },
+  { k: ["황우치", "Hwangwuchi"], s: ["hwangwuchi-beach", "becke-garden"] },
+  { k: ["인스파이어", "인스파이어 아레나", "Inspire"], s: ["inspire-arena"] },
+  { k: ["상상플랫폼", "Sangsang"], s: ["sangsang-platform"] },
+];
+
+// Normalise for matching: lowercase, drop spaces/punctuation (keeps Hangul,
+// kana, CJK, Latin letters and digits).
+function _searchNorm(str) {
+  return String(str).toLowerCase().replace(/[\s'’`".,!?()\[\]{}\-_/\\:;·・&+*]/g, "");
+}
+const _SEARCH_ENTRIES = SEARCH_INDEX.map(e => ({
+  keys: e.k.map(_searchNorm).filter(Boolean),
+  spots: new Set(e.s),
+}));
+

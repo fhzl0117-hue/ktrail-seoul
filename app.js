@@ -57,23 +57,34 @@ document.querySelectorAll(".tab").forEach(tab => {
 
 // ---- City toggle ----
 let activeCity = "seoul";
+function setActiveCity(key, onPick) {
+  const city = CITIES.find(c => c.key === key);
+  if (!city || key === activeCity) return;
+  activeCity = key;
+  renderCityToggle("city-toggle", onPick);
+  renderCityToggle("city-toggle-list", onPick);
+  if (window._leafletMap) {
+    window._leafletMap.setView(city.center, city.zoom);
+  }
+  onPick();
+}
 function renderCityToggle(containerId, onPick) {
   const el = document.getElementById(containerId);
   el.innerHTML = "";
+  // While a search is active, each city button also shows how many pins
+  // match there (language-neutral: just a number), so a hit in another
+  // city is visible instead of silently hidden behind the city toggle.
+  const counts = searchQuery.trim() ? searchCountsByCity() : null;
   CITIES.forEach(city => {
     const btn = document.createElement("button");
     btn.className = "city-btn" + (city.key === activeCity ? " city-btn--active" : "");
     btn.textContent = tCity(city.key);
-    btn.addEventListener("click", () => {
-      if (city.key === activeCity) return;
-      activeCity = city.key;
-      renderCityToggle("city-toggle", onPick);
-      renderCityToggle("city-toggle-list", onPick);
-      if (window._leafletMap) {
-        window._leafletMap.setView(city.center, city.zoom);
-      }
-      onPick();
-    });
+    if (counts) {
+      const n = counts[city.key] || 0;
+      btn.textContent += " · " + n;
+      if (n === 0 && city.key !== activeCity) btn.style.opacity = "0.5";
+    }
+    btn.addEventListener("click", () => setActiveCity(city.key, onPick));
     el.appendChild(btn);
   });
 }
@@ -98,11 +109,88 @@ function renderChips(containerId, onPick) {
 }
 
 // ---- Search ----
-// Scoped to the active city (not global) on purpose: the map is always
-// zoomed to one city, so a cross-city match would show pins the user
-// can't see anyway. The List tab stays consistent with the Map tab
-// rather than behaving differently depending on which tab you're on.
+// Matches artists/labels/places through SEARCH_INDEX (data.js): English and
+// Korean aliases map to the pins that relate to them, so "BTS", "방탄소년단"
+// or "Jimin" surface the right pins even though spot names/blurbs are English
+// only. When a query isn't a known alias it falls back to word-start text
+// matching on name/blurb/address (so "ive" no longer hits "olive"/"live").
+// Matches are found across ALL cities; the map still shows one city at a
+// time, so the city buttons show per-city counts and the view jumps to the
+// city that has results when the current one has none.
 let searchQuery = "";
+const _searchCache = { q: null, hits: null };
+
+function _escRe(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+function _entryHits(qn) {
+  const out = new Set();
+  if (!qn) return out;
+  _SEARCH_ENTRIES.forEach(e => {
+    if (e.keys.some(k => k === qn || (qn.length >= 2 && k.startsWith(qn)))) e.spots.forEach(id => out.add(id));
+  });
+  return out;
+}
+function _textHits(t) {
+  const out = new Set();
+  const ascii = /^[\x00-\x7f]+$/.test(t);
+  const re = ascii ? new RegExp("(^|[^a-z0-9])" + _escRe(t)) : null;
+  PILGRIMAGE_SPOTS.forEach(s => {
+    const hay = (s.name + " " + s.blurb + " " + (s.address || "")).toLowerCase();
+    if (ascii ? re.test(hay) : hay.includes(t)) out.add(s.id);
+  });
+  return out;
+}
+function _textHitsName(t) {
+  const out = new Set();
+  const ascii = /^[\x00-\x7f]+$/.test(t);
+  const re = ascii ? new RegExp("(^|[^a-z0-9])" + _escRe(t)) : null;
+  PILGRIMAGE_SPOTS.forEach(s => {
+    const n = s.name.toLowerCase();
+    if (ascii ? re.test(n) : n.includes(t)) out.add(s.id);
+  });
+  return out;
+}
+function _cityHits(t) {
+  const out = new Set();
+  if (t.length < (/^[\x00-\x7f]+$/.test(t) ? 3 : 2)) return out;
+  const ko = { seoul: "서울", busan: "부산", goyang: "고양", incheon: "인천", jeju: "제주" };
+  CITIES.forEach(c => {
+    if (c.key.startsWith(t) || c.label.toLowerCase().startsWith(t) || (ko[c.key] && ko[c.key].startsWith(t))) {
+      PILGRIMAGE_SPOTS.forEach(s => { if (s.city === c.key) out.add(s.id); });
+    }
+  });
+  return out;
+}
+function searchHits(qRaw) {
+  const raw = qRaw.trim().toLowerCase();
+  if (!raw) return null;
+  if (_searchCache.q === raw) return _searchCache.hits;
+  let hits = _entryHits(_searchNorm(raw));
+  if (hits.size > 0) {
+    // Known artist/label/place: its related pins, plus any pin literally named that.
+    if (raw.length >= 2) _textHitsName(raw).forEach(id => hits.add(id));
+    _cityHits(raw).forEach(id => hits.add(id));
+  } else {
+    // Unknown alias: every whitespace-separated word must match something.
+    hits = null;
+    raw.split(/\s+/).forEach(t => {
+      const th = new Set([..._entryHits(_searchNorm(t)), ..._textHits(t), ..._cityHits(t)]);
+      hits = hits === null ? th : new Set([...hits].filter(id => th.has(id)));
+    });
+  }
+  _searchCache.q = raw; _searchCache.hits = hits;
+  return hits;
+}
+function searchCountsByCity() {
+  const hits = searchHits(searchQuery);
+  const counts = {};
+  PILGRIMAGE_SPOTS.forEach(s => {
+    if ((activeCategory === "all" || s.category === activeCategory) && (!hits || hits.has(s.id))) {
+      counts[s.city] = (counts[s.city] || 0) + 1;
+    }
+  });
+  return counts;
+}
+
 function setSearchQuery(q) {
   searchQuery = q;
   [["search-input", "search-clear"], ["search-input-list", "search-clear-list"]].forEach(([inputId, clearId]) => {
@@ -111,6 +199,14 @@ function setSearchQuery(q) {
     if (input && input.value !== q) input.value = q;
     if (clearBtn) clearBtn.hidden = q.length === 0;
   });
+  // Nothing here but matches elsewhere -> jump to the city with the most.
+  if (q.trim().length >= 2) {
+    const counts = searchCountsByCity();
+    if (!counts[activeCity]) {
+      const best = CITIES.filter(c => counts[c.key]).sort((a, b) => counts[b.key] - counts[a.key])[0];
+      if (best) { setActiveCity(best.key, applyFilters); return; } // re-renders everything
+    }
+  }
   applyFilters();
 }
 ["search-input", "search-input-list"].forEach(id => {
@@ -123,17 +219,19 @@ function setSearchQuery(q) {
 });
 
 function filteredSpots() {
-  const q = searchQuery.trim().toLowerCase();
+  const hits = searchHits(searchQuery);
   return PILGRIMAGE_SPOTS.filter(s =>
     s.city === activeCity &&
     (activeCategory === "all" || s.category === activeCategory) &&
-    (q === "" || s.name.toLowerCase().includes(q) || s.blurb.toLowerCase().includes(q))
+    (!hits || hits.has(s.id))
   );
 }
 
 // Re-renders both the map markers and the list — the one thing every
 // filter control (city toggle, chips, legend) needs to do after a pick.
 function applyFilters() {
+  renderCityToggle("city-toggle", applyFilters);       // per-city search counts
+  renderCityToggle("city-toggle-list", applyFilters);
   renderMarkers();
   renderList();
 }
