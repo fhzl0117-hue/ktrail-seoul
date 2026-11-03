@@ -1221,6 +1221,52 @@ const PILGRIMAGE_SPOTS = [
     linkUrl: "https://www.google.com/search?q=Mingles+restaurant+Cheongdam+Seoul",
     linkLabel: "View on map",
   },
+  // ---- Busan Stay + Eat (Nov 2026) ----
+  // Added after cross-checking each against 2+ sources (the hotels' own
+  // site / Busan's tourism guide / travel guides). Coordinates are
+  // building-level approximations like the rest of the Stay/Eat entries.
+  // Somunnan Amso Galbi (Haeundae) was also checked but left out: no
+  // reliable coordinates found, and a wrong pin would misdirect the
+  // Directions button.
+  {
+    id: "stay-paradise-busan",
+    name: "Paradise Hotel Busan",
+    city: "busan",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 35.1593,
+    lng: 129.1604,
+    blurb: "Five-star beachfront hotel right on Haeundae Beach, in the same ward (Haeundae-gu) as BEXCO and the Busan Cinema Center — a natural base for Busan One Asia Festival weekends and BIFF week.",
+    address: "296 Haeundaehaebyeon-ro, Haeundae-gu, Busan",
+    linkUrl: "https://www.google.com/search?q=Paradise+Hotel+Busan+Haeundae+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "stay-lotte-busan",
+    name: "Lotte Hotel Busan",
+    city: "busan",
+    category: "stay",
+    categoryLabel: "Hotel",
+    lat: 35.1578,
+    lng: 129.0600,
+    blurb: "Five-star hotel in Seomyeon, downtown Busan, connected underground to Seomyeon Station, where Subway Lines 1 and 2 cross — the most transit-central base for reaching Busan's scattered K-pop pins.",
+    address: "772 Gaya-daero, Busanjin-gu, Busan",
+    linkUrl: "https://www.google.com/search?q=Lotte+Hotel+Busan+Seomyeon+booking",
+    linkLabel: "Check rates",
+  },
+  {
+    id: "eat-biff-square-street-food",
+    name: "BIFF Square Street Food",
+    city: "busan",
+    category: "eat",
+    categoryLabel: "Street food",
+    lat: 35.0985,
+    lng: 129.0288,
+    blurb: "The Nampo-dong film street that has hosted the Busan International Film Festival since 1995, lined with stalls — try ssiat hotteok, a Busan-style sweet pancake stuffed with pine nuts, sunflower and pumpkin seeds. Between Gukje Market and Jagalchi Market, so it pairs with the Jagalchi pin.",
+    address: "BIFF Square, Nampo-dong, Jung-gu, Busan",
+    linkUrl: "https://www.google.com/search?q=BIFF+Square+ssiat+hotteok+Busan",
+    linkLabel: "View on map",
+  },
 ];
 
 const CATEGORIES = [
@@ -1406,9 +1452,12 @@ const SEARCH_INDEX = [
   { k: ["광안리", "광안대교", "Gwangalli"], s: ["gwangalli-beach"] },
   { k: ["감천", "감천문화마을", "Gamcheon"], s: ["gamcheon-culture-village"] },
   { k: ["다대포", "Dadaepo"], s: ["dadaepo-beach"] },
-  { k: ["자갈치", "Jagalchi"], s: ["jagalchi-market"] },
+  { k: ["자갈치", "Jagalchi"], s: ["jagalchi-market", "eat-biff-square-street-food"] },
   { k: ["황령산", "Hwangnyeong"], s: ["hwangnyeongsan"] },
-  { k: ["벡스코", "BEXCO"], s: ["bexco"] },
+  { k: ["벡스코", "BEXCO"], s: ["bexco", "stay-paradise-busan"] },
+  { k: ["해운대", "Haeundae"], s: ["stay-paradise-busan", "bexco", "busan-cinema-center"] },
+  { k: ["서면", "Seomyeon"], s: ["stay-lotte-busan"] },
+  { k: ["남포동", "BIFF", "부산국제영화제", "Nampo"], s: ["eat-biff-square-street-food"] },
   { k: ["아시아드", "Asiad"], s: ["busan-asiad-stadium", "incheon-asiad-stadium"] },
   { k: ["킨텍스", "일산", "Ilsan", "KINTEX"], s: ["kintex", "goyang-stadium", "goyang-rm-mural"] },
   { k: ["월미도", "영종도", "Wolmido", "Yeongjong"], s: ["incheon-airport", "sangsang-platform", "inspire-arena", "incheon-asiad-stadium"] },
